@@ -101,7 +101,7 @@ export function InvoiceDocument({
       {/* Top Action Bar */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs print:hidden">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FE0000] to-[#ED2025] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#e20c0c] to-[#ED2025] text-white flex items-center justify-center font-bold text-sm shadow-xs">
             <FileText className="w-4 h-4" />
           </div>
           <div>
@@ -129,7 +129,7 @@ export function InvoiceDocument({
           <a
             href={pdfUrl}
             download={fileName}
-            className="px-3.5 py-2 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-xs"
+            className="px-3.5 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-xs"
             title="Download official attached PDF invoice"
           >
             <Download className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export function InvoiceDocument({
         {/* PDF Viewer Header */}
         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-[#FE0000] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-[#e20c0c] flex items-center justify-center font-bold">
               <FileText className="w-5 h-5" />
             </div>
             <div>

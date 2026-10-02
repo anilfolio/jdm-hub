@@ -296,7 +296,7 @@ export function ShipmentsView() {
                   <div
                     key={m}
                     className={`p-3.5 rounded-xl border text-center transition-all ${isCurrent
-                      ? "border-[#FE0000] bg-red-50/30 shadow-xs ring-2 ring-red-100"
+                      ? "border-[#e20c0c] bg-red-50/30 shadow-xs ring-2 ring-red-100"
                       : isCompleted
                         ? "border-emerald-300 bg-emerald-50/50 text-emerald-800"
                         : "border-slate-200 bg-slate-50/60 text-slate-400"
@@ -304,7 +304,7 @@ export function ShipmentsView() {
                   >
                     <div
                       className={`w-7 h-7 rounded-full mx-auto mb-1.5 flex items-center justify-center text-[11px] font-bold ${isCurrent
-                        ? "bg-[#FE0000] text-white animate-pulse shadow-sm"
+                        ? "bg-[#e20c0c] text-white animate-pulse shadow-sm"
                         : isCompleted
                           ? "bg-emerald-500 text-white"
                           : "bg-slate-200 text-slate-500"
@@ -318,7 +318,7 @@ export function ShipmentsView() {
                     </div>
                     <span
                       className={`text-[11px] font-bold block leading-tight ${isCurrent
-                        ? "text-[#FE0000]"
+                        ? "text-[#e20c0c]"
                         : isCompleted
                           ? "text-slate-900"
                           : "text-slate-400"
@@ -486,7 +486,7 @@ export function ShipmentsView() {
 
             <button
               onClick={() => setSelectedRequest(selectedReq)}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold rounded-xl transition-colors shadow-xs cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold rounded-xl transition-colors shadow-xs cursor-pointer"
             >
               <span>View Complete Request Audit Log</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -567,7 +567,7 @@ export function ShipmentsView() {
                 key={tab}
                 onClick={() => setMilestoneFilter(tab)}
                 className={`px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${isActive
-                  ? "bg-[#FE0000] text-white shadow-sm"
+                  ? "bg-[#e20c0c] text-white shadow-sm"
                   : "bg-slate-100 hover:bg-slate-200/70 text-slate-600"
                   }`}
               >
@@ -591,7 +591,7 @@ export function ShipmentsView() {
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
             placeholder="Search req, vehicle, carrier..."
-            className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] transition-all"
+            className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] transition-all"
           />
           {searchFilter && (
             <button
@@ -721,7 +721,7 @@ export function ShipmentsView() {
                             e.stopPropagation();
                             handleSelectShipment(req.id);
                           }}
-                          className="px-3.5 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-1.5 transition-all active:scale-95 group-hover:shadow cursor-pointer"
+                          className="px-3.5 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-1.5 transition-all active:scale-95 group-hover:shadow cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View</span>

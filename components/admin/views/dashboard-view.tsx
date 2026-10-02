@@ -120,7 +120,7 @@ export function AdminDashboardView() {
           { label: "SOURCING", value: requests.filter((r) => r.status === "Sourcing").length, link: "/admin/requests?status=Sourcing", icon: Search, color: "text-amber-600" },
           { label: "QUOTED", value: requests.filter((r) => r.status === "Quoted").length, link: "/admin/requests?status=Quoted", icon: FileCheck, color: "text-purple-600" },
           { label: "INVOICING", value: requests.filter((r) => r.status === "Invoicing").length, link: "/admin/requests?status=Invoicing", icon: FileText, color: "text-indigo-600" },
-          { label: "AWAITING PAYMENT", value: requests.filter((r) => r.status === "Awaiting Payment" && r.payment?.status !== "Paid").length, link: "/admin/requests?status=Awaiting Payment", icon: CreditCard, color: "text-[#FE0000]" },
+          { label: "AWAITING PAYMENT", value: requests.filter((r) => r.status === "Awaiting Payment" && r.payment?.status !== "Paid").length, link: "/admin/requests?status=Awaiting Payment", icon: CreditCard, color: "text-[#e20c0c]" },
           { label: "READY TO ORDER", value: requests.filter((r) => r.payment?.status === "Paid" && !r.supplierOrder).length, link: "/admin/requests?status=Awaiting Payment", icon: ShoppingBag, color: "text-emerald-600" },
           { label: "SHIPPED", value: requests.filter((r) => r.status === "Shipped").length, link: "/admin/requests?status=Shipped", icon: Truck, color: "text-cyan-600" },
           { label: "DELIVERED", value: requests.filter((r) => r.status === "Delivered").length, link: "/admin/requests?status=Delivered", icon: CheckCircle2, color: "text-teal-600" },
@@ -156,7 +156,7 @@ export function AdminDashboardView() {
                   {currentTab === "all" && "All Requests & Orders"}
                 </h2>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${currentTab === "active"
-                  ? "text-[#FE0000] bg-red-50"
+                  ? "text-[#e20c0c] bg-red-50"
                   : currentTab === "attention"
                     ? "text-amber-700 bg-amber-50"
                     : currentTab === "delivered_completed"
@@ -176,7 +176,7 @@ export function AdminDashboardView() {
 
             <Link
               href="/admin/requests"
-              className="text-xs font-bold text-[#FE0000] hover:text-[#C8101E] transition-colors flex items-center gap-1 self-start sm:self-auto"
+              className="text-xs font-bold text-[#e20c0c] hover:text-[#C8101E] transition-colors flex items-center gap-1 self-start sm:self-auto"
             >
               View Full Register ({requests.length})
               <ChevronRight className="w-3.5 h-3.5" />
@@ -195,7 +195,7 @@ export function AdminDashboardView() {
                   }`}
               >
                 <span>Active & Open</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full  ${currentTab === "active" ? "bg-red-50 text-[#FE0000]" : "bg-slate-200 text-slate-700"
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full  ${currentTab === "active" ? "bg-red-50 text-[#e20c0c]" : "bg-slate-200 text-slate-700"
                   }`}>
                   {activeOpenRequests.length}
                 </span>
@@ -257,7 +257,7 @@ export function AdminDashboardView() {
                   setCurrentPage(1);
                 }}
                 placeholder="Search by Request #, Customer, Part..."
-                className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 hover:bg-slate-100 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#FE0000] transition-all"
+                className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 hover:bg-slate-100 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#e20c0c] transition-all"
               />
             </div>
           </div>
@@ -315,7 +315,7 @@ export function AdminDashboardView() {
                       <span className="font-medium line-clamp-1">{req.part.name}</span>
                       <span className="text-[10px] text-slate-400">Qty: {req.part.quantity}</span>
                       {req.supporting?.freightPreference && (
-                        <span className="text-[10px] font-medium text-[#FE0000] block mt-0.5">
+                        <span className="text-[10px] font-medium text-[#e20c0c] block mt-0.5">
                           Freight: {req.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : req.supporting.freightPreference}
                         </span>
                       )}
@@ -330,7 +330,7 @@ export function AdminDashboardView() {
                       {req.lastUpdated}
                     </td>
                     <td className="py-3.5 px-4 text-center">
-                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-white group-hover:bg-red-50 text-slate-700 group-hover:text-[#FE0000] font-semibold text-xs rounded-xl border border-slate-200 group-hover:border-red-200 shadow-xs transition-colors">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-white group-hover:bg-red-50 text-slate-700 group-hover:text-[#e20c0c] font-semibold text-xs rounded-xl border border-slate-200 group-hover:border-red-200 shadow-xs transition-colors">
                         View
                         <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                       </span>

@@ -97,7 +97,7 @@ export function UsersView() {
         <button
           type="button"
           onClick={handleOpenAdd}
-          className="px-3.5 py-2 bg-[#FE0000] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto"
+          className="px-3.5 py-2 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           Add Internal User
@@ -204,7 +204,7 @@ export function UsersView() {
             {/* Header */}
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center shrink-0 border border-rose-100 shadow-inner">
-                <Users className="w-6 h-6 text-[#FE0000]" />
+                <Users className="w-6 h-6 text-[#e20c0c]" />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-900 mb-1">
@@ -231,7 +231,7 @@ export function UsersView() {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Liam Cooper"
                     required
-                    className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                    className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#e20c0c]/10 focus:border-[#e20c0c] transition-all bg-white placeholder:text-slate-400 shadow-sm"
                   />
                 </div>
               </div>
@@ -251,7 +251,7 @@ export function UsersView() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="e.g. liam.cooper@JDMHUB.io"
                       required
-                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#e20c0c]/10 focus:border-[#e20c0c] transition-all bg-white placeholder:text-slate-400 shadow-sm"
                     />
                   </div>
                 </div>
@@ -269,7 +269,7 @@ export function UsersView() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="e.g. +64 21 000 0000"
-                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#e20c0c]/10 focus:border-[#e20c0c] transition-all bg-white placeholder:text-slate-400 shadow-sm"
                     />
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export function UsersView() {
                     <select
                       value={role}
                       onChange={(e) => setRole(e.target.value as StaffRole)}
-                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white shadow-sm appearance-none cursor-pointer"
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#e20c0c]/10 focus:border-[#e20c0c] transition-all bg-white shadow-sm appearance-none cursor-pointer"
                     >
                       <option value="Administrator">Administrator</option>
                       <option value="Procurement">Procurement</option>
@@ -313,7 +313,7 @@ export function UsersView() {
                       onChange={(e) => setDepartment(e.target.value)}
                       placeholder="e.g. Strategic Sourcing"
                       required
-                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#e20c0c]/10 focus:border-[#e20c0c] transition-all bg-white placeholder:text-slate-400 shadow-sm"
                     />
                   </div>
                 </div>
@@ -333,7 +333,7 @@ export function UsersView() {
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="e.g. Sourcing Specialist"
                     required
-                    className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                    className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#e20c0c]/10 focus:border-[#e20c0c] transition-all bg-white placeholder:text-slate-400 shadow-sm"
                   />
                 </div>
               </div>
@@ -348,7 +348,7 @@ export function UsersView() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 text-sm font-bold bg-[#FE0000] hover:bg-[#C8101E] text-white rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2 group"
+                  className="px-5 py-2.5 text-sm font-bold bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2 group"
                 >
                   <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
                   {editingUser ? "Save Changes" : "Create User"}

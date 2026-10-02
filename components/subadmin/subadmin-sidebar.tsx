@@ -70,7 +70,7 @@ export function SubadminSidebar({
           href: "/subadmin/dashboard?filter=pending",
           icon: Camera,
           badge: pendingSubadminCount > 0 ? pendingSubadminCount : undefined,
-          badgeColor: "bg-[#FE0000] text-white",
+          badgeColor: "bg-[#e20c0c] text-white",
         },
         {
           name: "Awaiting Approval",
@@ -101,7 +101,7 @@ export function SubadminSidebar({
         `}
       >
         <div
-          className={`h-16 flex items-center bg-[#FE0000] border-b border-slate-800 shrink-0 px-4 ${collapsed ? "lg:justify-center lg:px-2.5" : "justify-between"
+          className={`h-16 flex items-center bg-[#e20c0c] border-b border-slate-800 shrink-0 px-4 ${collapsed ? "lg:justify-center lg:px-2.5" : "justify-between"
             }`}
         >
           <Link
@@ -109,7 +109,7 @@ export function SubadminSidebar({
             onClick={onCloseMobile}
             className={`flex items-center gap-3 ${collapsed ? "lg:hidden" : "flex"}`}
           >
-            <div className="w-9 h-9 rounded-xl border-2 border-white bg-[#FE0000] flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 rounded-xl border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
               <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">P</span>
             </div>
             <div>
@@ -130,7 +130,7 @@ export function SubadminSidebar({
               href="/subadmin/dashboard"
               className="hidden lg:flex items-center justify-center"
             >
-              <div className="w-9 h-9 rounded-lg border-2 border-white bg-[#FE0000] flex items-center justify-center shadow-sm">
+              <div className="w-9 h-9 rounded-lg border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
                 <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">A</span>
               </div>
             </Link>
@@ -176,7 +176,7 @@ export function SubadminSidebar({
                       onClick={onCloseMobile}
                       title={collapsed ? item.name : undefined}
                       className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all group overflow-hidden ${active
-                        ? "bg-[#1E2538] text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-[60%] before:bg-[#FE0000] before:rounded-r-full"
+                        ? "bg-[#1E2538] text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-[60%] before:bg-[#e20c0c] before:rounded-r-full"
                         : "text-slate-400 hover:text-white hover:bg-[#1E2538]/50"
                         } ${collapsed ? "lg:justify-center lg:px-0" : ""}`}
                     >
@@ -214,7 +214,7 @@ export function SubadminSidebar({
               }`}
           >
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#FE0000] hover:bg-[#9B0A0F] flex items-center justify-center text-white font-black text-xs shrink-0 shadow-md">
+              <div className="w-8 h-8 rounded-full bg-[#e20c0c] hover:bg-[#9B0A0F] flex items-center justify-center text-white font-black text-xs shrink-0 shadow-md">
                 {(currentStaffUser?.name || "Akira Yamamoto")
                   .split(" ")
                   .map((n) => n[0])

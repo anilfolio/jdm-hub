@@ -119,7 +119,7 @@ export function PaymentsView() {
               type="button"
               onClick={() => setStatusFilter(filter)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${statusFilter === filter
-                ? "bg-[#FE0000] text-white shadow-xs"
+                ? "bg-[#e20c0c] text-white shadow-xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
             >

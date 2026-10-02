@@ -55,7 +55,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               clsx(
                 "w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400",
                 "border border-slate-300 rounded-lg transition-all duration-150 ease-in-out",
-                "focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20",
+                "focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20",
                 leftIcon ? "pl-11" : "pl-4",
                 rightIcon ? "pr-11" : "pr-4",
                 error &&

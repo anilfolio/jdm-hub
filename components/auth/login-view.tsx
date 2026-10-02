@@ -408,7 +408,7 @@ export function LoginView() {
                       setAuthMode("forgot_password");
                       setForgotEmail(email);
                     }}
-                    className="text-xs font-bold text-[#FE0000] hover:underline py-1 px-1 -mr-1"
+                    className="text-xs font-bold text-[#e20c0c] hover:underline py-1 px-1 -mr-1"
                   >
                     Forgot password?
                   </button>
@@ -424,7 +424,7 @@ export function LoginView() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
                     required
-                    className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400 border border-slate-300 rounded-lg transition-all pl-11 pr-12 focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20"
+                    className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400 border border-slate-300 rounded-lg transition-all pl-11 pr-12 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20"
                   />
                   <button
                     type="button"
@@ -448,7 +448,7 @@ export function LoginView() {
                     type="checkbox"
                     checked={rememberWorkstation}
                     onChange={(e) => setRememberWorkstation(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#FE0000] accent-[#FE0000] focus:ring-0 cursor-pointer"
+                    className="w-4 h-4 rounded text-[#e20c0c] accent-[#e20c0c] focus:ring-0 cursor-pointer"
                   />
                   <span>Remember this workstation for 30 days</span>
                 </label>
@@ -458,7 +458,7 @@ export function LoginView() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-lg transition-all shadow-xs"
+                className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-lg transition-all shadow-xs"
                 isLoading={isLoggingIn}
                 loadingText="Authenticating..."
               >
@@ -534,12 +534,12 @@ export function LoginView() {
                     )
                   }
                   className={`group relative p-2.5 sm:p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 sm:block ${email === "sarah.jenkins@JDMHUB.io"
-                    ? "border-[#FE0000] bg-red-50/50 ring-1 ring-[#FE0000]/30 shadow-xs"
+                    ? "border-[#e20c0c] bg-red-50/50 ring-1 ring-[#e20c0c]/30 shadow-xs"
                     : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50"
                     }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0 sm:block">
-                    <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-red-100 text-[#FE0000] shrink-0 sm:inline-block sm:mb-1.5">
+                    <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-red-100 text-[#e20c0c] shrink-0 sm:inline-block sm:mb-1.5">
                       Admin
                     </span>
                     <div className="min-w-0 text-left">
@@ -553,11 +553,11 @@ export function LoginView() {
                   </div>
                   <div className="sm:hidden shrink-0 flex items-center">
                     {email === "sarah.jenkins@JDMHUB.io" ? (
-                      <span className="w-5 h-5 rounded-full bg-[#FE0000] text-white flex items-center justify-center shadow-xs">
+                      <span className="w-5 h-5 rounded-full bg-[#e20c0c] text-white flex items-center justify-center shadow-xs">
                         <Check className="w-3 h-3" />
                       </span>
                     ) : (
-                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-[#FE0000] px-2 py-0.5 rounded bg-slate-100">
+                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-[#e20c0c] px-2 py-0.5 rounded bg-slate-100">
                         Select
                       </span>
                     )}
@@ -617,8 +617,8 @@ export function LoginView() {
                 onClick={() => {
                   router.push("/register");
                 }}
-                className="w-full h-12 border-slate-300 hover:border-[#FE0000] text-slate-800 hover:text-[#FE0000] bg-white hover:bg-red-50/40 transition-all font-bold text-xs sm:text-sm shadow-xs rounded-xl group flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
-                rightIcon={<ArrowRight className="w-4 h-4 text-[#FE0000] group-hover:translate-x-0.5 transition-transform shrink-0" />}
+                className="w-full h-12 border-slate-300 hover:border-[#e20c0c] text-slate-800 hover:text-[#e20c0c] bg-white hover:bg-red-50/40 transition-all font-bold text-xs sm:text-sm shadow-xs rounded-xl group flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                rightIcon={<ArrowRight className="w-4 h-4 text-[#e20c0c] group-hover:translate-x-0.5 transition-transform shrink-0" />}
               >
                 <span>Register your business account</span>
               </Button>
@@ -634,7 +634,7 @@ export function LoginView() {
           <div className="space-y-5 animate-in fade-in duration-200">
             {/* Eyebrow */}
             <div className="flex items-center justify-between">
-              <span className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#FE0000] antialiased">
+              <span className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#e20c0c] antialiased">
                 TRADE CUSTOMER REGISTRATION
               </span>
             </div>
@@ -713,7 +713,7 @@ export function LoginView() {
                       setAuthMode("login");
                       setRegSubmitted(false);
                     }}
-                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] text-white rounded-xl shadow-xs"
+                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] text-white rounded-xl shadow-xs"
                   >
                     Return to Sign In →
                   </Button>
@@ -806,7 +806,7 @@ export function LoginView() {
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="Minimum 6 characters"
                       required
-                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400 border border-slate-300 rounded-lg transition-all pl-11 pr-12 focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20"
+                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400 border border-slate-300 rounded-lg transition-all pl-11 pr-12 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20"
                     />
                     <button
                       type="button"
@@ -850,7 +850,7 @@ export function LoginView() {
                           setLegalModalOpen(true);
                         }
                       }}
-                      className="mt-0.5 w-4 h-4 rounded text-[#FE0000] focus:ring-0 cursor-pointer accent-[#FE0000] shrink-0"
+                      className="mt-0.5 w-4 h-4 rounded text-[#e20c0c] focus:ring-0 cursor-pointer accent-[#e20c0c] shrink-0"
                       required
                     />
                     <span className="leading-snug">
@@ -863,7 +863,7 @@ export function LoginView() {
                           setLegalDocType("terms");
                           setLegalModalOpen(true);
                         }}
-                        className="font-bold text-[#FE0000] hover:text-[#9B0A0F] underline underline-offset-2 cursor-pointer"
+                        className="font-bold text-[#e20c0c] hover:text-[#9B0A0F] underline underline-offset-2 cursor-pointer"
                       >
                         Terms of Trade
                       </button>{" "}
@@ -876,7 +876,7 @@ export function LoginView() {
                           setLegalDocType("privacy");
                           setLegalModalOpen(true);
                         }}
-                        className="font-bold text-[#FE0000] hover:text-[#9B0A0F] underline underline-offset-2 cursor-pointer"
+                        className="font-bold text-[#e20c0c] hover:text-[#9B0A0F] underline underline-offset-2 cursor-pointer"
                       >
                         Privacy Policy
                       </button>
@@ -902,7 +902,7 @@ export function LoginView() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-lg transition-all shadow-xs"
+                  className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-lg transition-all shadow-xs"
                   isLoading={isRegistering}
                   loadingText="Submitting..."
                 >
@@ -916,7 +916,7 @@ export function LoginView() {
                     <button
                       type="button"
                       onClick={() => setAuthMode("login")}
-                      className="font-bold text-[#FE0000] hover:underline"
+                      className="font-bold text-[#e20c0c] hover:underline"
                     >
                       Sign In to your account →
                     </button>
@@ -944,7 +944,7 @@ export function LoginView() {
               <button
                 type="button"
                 onClick={() => setAuthMode("login")}
-                className="text-slate-400 hover:text-[#FE0000] text-[11px] underline font-bold shrink-0 ml-1"
+                className="text-slate-400 hover:text-[#e20c0c] text-[11px] underline font-bold shrink-0 ml-1"
               >
                 Change
               </button>
@@ -1008,7 +1008,7 @@ export function LoginView() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] text-white rounded-lg transition-all shadow-xs"
+                className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] text-white rounded-lg transition-all shadow-xs"
                 isLoading={mfaStatus === "loading"}
                 loadingText="Verifying..."
                 disabled={mfaCode.length < 6 || mfaStatus === "success"}
@@ -1035,7 +1035,7 @@ export function LoginView() {
         {authMode === "forgot_password" && (
           <div className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
             {/* Eyebrow */}
-            <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.06em] text-[#FE0000] antialiased block">
+            <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.06em] text-[#e20c0c] antialiased block">
               SECURE ACCOUNT ACCESS
             </span>
 
@@ -1082,7 +1082,7 @@ export function LoginView() {
                       setCurrentPassword(generatedRecoveryPin);
                       setAuthMode("change_password");
                     }}
-                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] text-white rounded-xl"
+                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] text-white rounded-xl"
                   >
                     Enter Code & Set New Password →
                   </Button>
@@ -1112,7 +1112,7 @@ export function LoginView() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] text-white rounded-xl transition-all shadow-xs"
+                  className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] text-white rounded-xl transition-all shadow-xs"
                   isLoading={isSendingReset}
                   loadingText="Sending Recovery Code..."
                 >
@@ -1125,7 +1125,7 @@ export function LoginView() {
               <button
                 type="button"
                 onClick={() => setAuthMode("login")}
-                className="text-xs font-bold text-slate-600 hover:text-[#FE0000] inline-flex items-center gap-1 py-1"
+                className="text-xs font-bold text-slate-600 hover:text-[#e20c0c] inline-flex items-center gap-1 py-1"
               >
                 <span>← Back to Sign In</span>
               </button>
@@ -1139,7 +1139,7 @@ export function LoginView() {
         {authMode === "change_password" && (
           <div className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
             {/* Eyebrow */}
-            <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.06em] text-[#FE0000] antialiased block">
+            <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.06em] text-[#e20c0c] antialiased block">
               SECURE ACCOUNT ACCESS
             </span>
 
@@ -1169,7 +1169,7 @@ export function LoginView() {
                   <Button
                     type="button"
                     onClick={() => router.push(getPortalRoute(email))}
-                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] text-white rounded-xl"
+                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] text-white rounded-xl"
                   >
                     Go to {getPortalName(email)} Now →
                   </Button>
@@ -1207,7 +1207,7 @@ export function LoginView() {
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       placeholder="Current password or recovery PIN"
                       required
-                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-12 focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20"
+                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-12 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20"
                     />
                     <button
                       type="button"
@@ -1242,7 +1242,7 @@ export function LoginView() {
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Create new password"
                       required
-                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-12 focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20"
+                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-12 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20"
                     />
                     <button
                       type="button"
@@ -1277,7 +1277,7 @@ export function LoginView() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Repeat new password"
                       required
-                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-12 focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20"
+                      className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-12 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20"
                     />
                     <button
                       type="button"
@@ -1321,7 +1321,7 @@ export function LoginView() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full h-12 text-xs sm:text-sm font-bold bg-[#FE0000] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-xl shadow-xs"
+                  className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-xl shadow-xs"
                   isLoading={isUpdatingPassword}
                   loadingText="Updating Password..."
                   disabled={!isLengthValid || !hasUppercase || !hasNumberOrSymbol || !isMatch}
@@ -1335,7 +1335,7 @@ export function LoginView() {
               <button
                 type="button"
                 onClick={() => setAuthMode("login")}
-                className="text-xs font-bold text-slate-600 hover:text-[#FE0000] inline-flex items-center gap-1 py-1"
+                className="text-xs font-bold text-slate-600 hover:text-[#e20c0c] inline-flex items-center gap-1 py-1"
               >
                 <span>← Back to Sign In</span>
               </button>

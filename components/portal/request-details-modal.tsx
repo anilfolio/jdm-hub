@@ -257,7 +257,7 @@ export function RequestDetailsModal() {
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all group-hover:scale-110 ${isPast
                         ? "bg-emerald-500 text-white"
                         : isCurrent
-                          ? "bg-[#FE0000] text-white ring-4 ring-red-500/20 animate-pulse"
+                          ? "bg-[#e20c0c] text-white ring-4 ring-red-500/20 animate-pulse"
                           : "bg-slate-700 text-slate-400 group-hover:bg-slate-600 group-hover:text-white"
                         }`}
                     >
@@ -292,7 +292,7 @@ export function RequestDetailsModal() {
           <button
             onClick={() => setActiveTab("overview")}
             className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "overview"
-              ? "border-[#FE0000] text-[#FE0000]"
+              ? "border-[#e20c0c] text-[#e20c0c]"
               : "border-transparent hover:text-slate-900"
               }`}
           >
@@ -304,14 +304,14 @@ export function RequestDetailsModal() {
             <button
               onClick={() => setActiveTab("quote")}
               className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "quote"
-                ? "border-[#FE0000] text-[#FE0000]"
+                ? "border-[#e20c0c] text-[#e20c0c]"
                 : "border-transparent hover:text-slate-900"
                 }`}
             >
               <FileCheck2 className="w-3.5 h-3.5" />
               <span>Quotation & Pricing</span>
               {req.status === "Quoted" && (
-                <span className="w-2 h-2 rounded-full bg-[#FE0000]" />
+                <span className="w-2 h-2 rounded-full bg-[#e20c0c]" />
               )}
             </button>
           )}
@@ -320,7 +320,7 @@ export function RequestDetailsModal() {
             <button
               onClick={() => setActiveTab("shipment")}
               className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "shipment"
-                ? "border-[#FE0000] text-[#FE0000]"
+                ? "border-[#e20c0c] text-[#e20c0c]"
                 : "border-transparent hover:text-slate-900"
                 }`}
             >
@@ -333,14 +333,14 @@ export function RequestDetailsModal() {
             <button
               onClick={() => setActiveTab("Subadmin")}
               className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "Subadmin"
-                ? "border-[#FE0000] text-[#FE0000]"
+                ? "border-[#e20c0c] text-[#e20c0c]"
                 : "border-transparent hover:text-slate-900"
                 }`}
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Subadmin Review</span>
               {req.status === "Subadmin Review" && (
-                <span className="w-2 h-2 rounded-full bg-[#FE0000]" />
+                <span className="w-2 h-2 rounded-full bg-[#e20c0c]" />
               )}
             </button>
           )}
@@ -352,7 +352,7 @@ export function RequestDetailsModal() {
                 setSelectedRequestDetailsTab?.("invoice");
               }}
               className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "invoice"
-                ? "border-[#FE0000] text-[#FE0000]"
+                ? "border-[#e20c0c] text-[#e20c0c]"
                 : "border-transparent hover:text-slate-900 text-slate-700"
                 }`}
               title="View & Download Official GST Tax Invoice"
@@ -373,7 +373,7 @@ export function RequestDetailsModal() {
               onClick={() => setShowDirectContactModal(true)}
               className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors inline-flex items-center gap-1.5"
             >
-              <Phone className="w-3.5 h-3.5 text-[#FE0000]" />
+              <Phone className="w-3.5 h-3.5 text-[#e20c0c]" />
               <span>Contact Operations (Email / Teams / Phone)</span>
             </button>
           </div>
@@ -424,7 +424,7 @@ export function RequestDetailsModal() {
                   {req.status === "Quoted" && (
                     <button
                       onClick={() => setActiveTab("quote")}
-                      className="px-4 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
+                      className="px-4 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
                     >
                       Review Quote →
                     </button>
@@ -435,7 +435,7 @@ export function RequestDetailsModal() {
                         setPaymentRequest(req);
                         setIsPaymentModalOpen(true);
                       }}
-                      className="px-4 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
+                      className="px-4 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
                     >
                       Record Settlement (Unpaid) →
                     </button>
@@ -448,7 +448,7 @@ export function RequestDetailsModal() {
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-50/90 via-white to-slate-50 border border-red-200/90 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#FE0000] text-white">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#e20c0c] text-white">
                         Quotation Ready
                       </span>
                       <span className="text-xs font-semibold text-slate-500 ">
@@ -500,7 +500,7 @@ export function RequestDetailsModal() {
 
                     <button
                       onClick={() => setActiveTab("quote")}
-                      className="px-4 py-2 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all inline-flex items-center gap-1.5 shrink-0"
+                      className="px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all inline-flex items-center gap-1.5 shrink-0"
                     >
                       <Camera className="w-3.5 h-3.5" />
                       <span>View Quote &amp; Photos</span>
@@ -515,7 +515,7 @@ export function RequestDetailsModal() {
                 {/* Vehicle Specifications */}
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                    <Car className="w-4 h-4 text-[#FE0000]" />
+                    <Car className="w-4 h-4 text-[#e20c0c]" />
                     <span>Vehicle Information</span>
                   </div>
                   <div className="space-y-2 text-xs">
@@ -555,7 +555,7 @@ export function RequestDetailsModal() {
                 {/* Part Requirements */}
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                    <Package className="w-4 h-4 text-[#FE0000]" />
+                    <Package className="w-4 h-4 text-[#e20c0c]" />
                     <span>Part Specifications</span>
                   </div>
                   <div className="space-y-2 text-xs">
@@ -597,7 +597,7 @@ export function RequestDetailsModal() {
               <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900 mb-2">
-                    <MapPin className="w-4 h-4 text-[#FE0000]" />
+                    <MapPin className="w-4 h-4 text-[#e20c0c]" />
                     <span>Delivery Address & Logistics</span>
                   </div>
                   <div className="text-xs text-slate-600 space-y-0.5">
@@ -625,7 +625,7 @@ export function RequestDetailsModal() {
 
                 <div>
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900 mb-2">
-                    <FileText className="w-4 h-4 text-[#FE0000]" />
+                    <FileText className="w-4 h-4 text-[#e20c0c]" />
                     <span>Customer Notes</span>
                   </div>
                   <p className="text-xs text-slate-600 italic bg-white p-3 rounded-lg border border-slate-200">
@@ -667,7 +667,7 @@ export function RequestDetailsModal() {
                       </p>
                       {req.supporting?.freightPreference && (
                         <div className="mt-1">
-                          <span className="text-[10px] font-bold text-[#FE0000] bg-red-50 px-2 py-0.5 rounded border border-red-100 inline-flex items-center gap-1">
+                          <span className="text-[10px] font-bold text-[#e20c0c] bg-red-50 px-2 py-0.5 rounded border border-red-100 inline-flex items-center gap-1">
                             Freight Preference: {req.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : req.supporting.freightPreference}
                           </span>
                         </div>
@@ -753,7 +753,7 @@ export function RequestDetailsModal() {
                   <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 text-[#FE0000] flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 text-[#e20c0c] flex items-center justify-center">
                           <Camera className="w-4 h-4" />
                         </div>
                         <div>
@@ -876,12 +876,12 @@ export function RequestDetailsModal() {
                       {/* Required Selection Header */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Truck className="w-4 h-4 text-[#FE0000]" />
+                          <Truck className="w-4 h-4 text-[#e20c0c]" />
                           <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">Select Your Freight Option</span>
                         </div>
                         <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border ${selectedFreightType
                           ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                          : 'bg-red-50 text-[#FE0000] border-red-200 animate-pulse'
+                          : 'bg-red-50 text-[#e20c0c] border-red-200 animate-pulse'
                           }`}>
                           {selectedFreightType ? '✓ Selected' : '⚠ Required'}
                         </span>
@@ -892,20 +892,20 @@ export function RequestDetailsModal() {
                         <div
                           onClick={() => setSelectedFreightType("Air")}
                           className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreightType === "Air"
-                            ? "border-[#FE0000] bg-red-50/30 shadow-lg shadow-red-500/10 ring-1 ring-[#FE0000]/20"
+                            ? "border-[#e20c0c] bg-red-50/30 shadow-lg shadow-red-500/10 ring-1 ring-[#e20c0c]/20"
                             : selectedFreightType === null
-                              ? "border-slate-300 bg-white hover:border-[#FE0000]/50 hover:shadow-md"
+                              ? "border-slate-300 bg-white hover:border-[#e20c0c]/50 hover:shadow-md"
                               : "border-slate-200 bg-white hover:border-slate-300"
                             }`}
                         >
                           {/* Radio indicator */}
-                          <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedFreightType === "Air" ? "border-[#FE0000]" : "border-slate-300"
+                          <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedFreightType === "Air" ? "border-[#e20c0c]" : "border-slate-300"
                             }`}>
-                            {selectedFreightType === "Air" && <div className="w-2.5 h-2.5 bg-[#FE0000] rounded-full" />}
+                            {selectedFreightType === "Air" && <div className="w-2.5 h-2.5 bg-[#e20c0c] rounded-full" />}
                           </div>
 
                           <div className="flex items-center gap-2.5 mb-3">
-                            <div className={`p-2 rounded-xl ${selectedFreightType === "Air" ? "bg-red-100 text-[#FE0000]" : "bg-slate-100 text-slate-500"}`}>
+                            <div className={`p-2 rounded-xl ${selectedFreightType === "Air" ? "bg-red-100 text-[#e20c0c]" : "bg-slate-100 text-slate-500"}`}>
                               <Send className="w-5 h-5" />
                             </div>
                             <div>
@@ -930,20 +930,20 @@ export function RequestDetailsModal() {
                         <div
                           onClick={() => setSelectedFreightType("Sea")}
                           className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreightType === "Sea"
-                            ? "border-[#FE0000] bg-red-50/30 shadow-lg shadow-red-500/10 ring-1 ring-[#FE0000]/20"
+                            ? "border-[#e20c0c] bg-red-50/30 shadow-lg shadow-red-500/10 ring-1 ring-[#e20c0c]/20"
                             : selectedFreightType === null
-                              ? "border-slate-300 bg-white hover:border-[#FE0000]/50 hover:shadow-md"
+                              ? "border-slate-300 bg-white hover:border-[#e20c0c]/50 hover:shadow-md"
                               : "border-slate-200 bg-white hover:border-slate-300"
                             }`}
                         >
                           {/* Radio indicator */}
-                          <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedFreightType === "Sea" ? "border-[#FE0000]" : "border-slate-300"
+                          <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedFreightType === "Sea" ? "border-[#e20c0c]" : "border-slate-300"
                             }`}>
-                            {selectedFreightType === "Sea" && <div className="w-2.5 h-2.5 bg-[#FE0000] rounded-full" />}
+                            {selectedFreightType === "Sea" && <div className="w-2.5 h-2.5 bg-[#e20c0c] rounded-full" />}
                           </div>
 
                           <div className="flex items-center gap-2.5 mb-3">
-                            <div className={`p-2 rounded-xl ${selectedFreightType === "Sea" ? "bg-red-100 text-[#FE0000]" : "bg-slate-100 text-slate-500"}`}>
+                            <div className={`p-2 rounded-xl ${selectedFreightType === "Sea" ? "bg-red-100 text-[#e20c0c]" : "bg-slate-100 text-slate-500"}`}>
                               <Truck className="w-5 h-5" />
                             </div>
                             <div>
@@ -973,7 +973,7 @@ export function RequestDetailsModal() {
 
                       {/* Validation prompt when no freight selected */}
                       {!selectedFreightType && (
-                        <p className="text-[11px] text-[#FE0000] font-medium text-center py-1">
+                        <p className="text-[11px] text-[#e20c0c] font-medium text-center py-1">
                           Please select a freight option above to continue
                         </p>
                       )}
@@ -983,9 +983,9 @@ export function RequestDetailsModal() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           {req.quoteAcceptance?.selectedFreightType === "Air" ? (
-                            <Send className="w-4 h-4 text-[#FE0000]" />
+                            <Send className="w-4 h-4 text-[#e20c0c]" />
                           ) : (
-                            <Truck className="w-4 h-4 text-[#FE0000]" />
+                            <Truck className="w-4 h-4 text-[#e20c0c]" />
                           )}
                           <span className="text-xs font-bold text-slate-900">
                             Selected Freight: {req.quoteAcceptance?.selectedFreightType || "Sea"}
@@ -1055,7 +1055,7 @@ export function RequestDetailsModal() {
                                 setActiveTab("invoice");
                                 setSelectedRequestDetailsTab?.("invoice");
                               }}
-                              className="px-3 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+                              className="px-3 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
                             >
                               <FileText className="w-3.5 h-3.5" />
                               <span>View Invoice Tab</span>
@@ -1124,7 +1124,7 @@ export function RequestDetailsModal() {
                               setPaymentRequest(req);
                               setIsPaymentModalOpen(true);
                             }}
-                            className="px-4 py-2 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm inline-flex items-center gap-1.5"
+                            className="px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm inline-flex items-center gap-1.5"
                           >
                             <DollarSign className="w-3.5 h-3.5" />
                             <span>Record Settlement (Status: Unpaid) →</span>
@@ -1172,7 +1172,7 @@ export function RequestDetailsModal() {
                             setIsAcceptingQuote(true);
                           }}
                           className={`px-6 py-2.5 font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all inline-flex items-center gap-2 ${selectedFreightType
-                            ? 'bg-[#FE0000] hover:bg-[#9B0A0F] text-white shadow-red-500/25'
+                            ? 'bg-[#e20c0c] hover:bg-[#9B0A0F] text-white shadow-red-500/25'
                             : 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
                             }`}
                         >
@@ -1188,7 +1188,7 @@ export function RequestDetailsModal() {
                     <div className="p-5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-black space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-300">
                       <div className="border-b border-slate-200 pb-4">
                         <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                          <ShieldCheck className="w-5 h-5 text-[#FE0000]" />
+                          <ShieldCheck className="w-5 h-5 text-[#e20c0c]" />
                           Quote Acceptance — Final Review
                         </h4>
                         <p className="text-xs text-slate-500 mt-1">
@@ -1221,7 +1221,7 @@ export function RequestDetailsModal() {
                         <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                              <Camera className="w-4 h-4 text-[#FE0000]" />
+                              <Camera className="w-4 h-4 text-[#e20c0c]" />
                               <span>Pre-Dispatch Part Photos ({adminPhotos.length})</span>
                             </div>
                             <span className="text-[10px] text-slate-500">Click to view full size</span>
@@ -1250,15 +1250,15 @@ export function RequestDetailsModal() {
                       <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-between">
                         <div className="flex items-center gap-2 text-xs">
                           {selectedFreightType === "Air" ? (
-                            <Send className="w-4 h-4 text-[#FE0000]" />
+                            <Send className="w-4 h-4 text-[#e20c0c]" />
                           ) : (
-                            <Truck className="w-4 h-4 text-[#FE0000]" />
+                            <Truck className="w-4 h-4 text-[#e20c0c]" />
                           )}
                           <span className="font-bold text-slate-900">
                             {selectedFreightType === "Air" ? "Air Express" : "Sea Freight"} — {selectedFreightType === "Air" ? "7–10 days" : "25–40 days"}
                           </span>
                         </div>
-                        <span className=" text-sm font-bold text-[#FE0000]">
+                        <span className=" text-sm font-bold text-[#e20c0c]">
                           ${(
                             (quote.subtotal +
                               (selectedFreightType === "Air"
@@ -1277,7 +1277,7 @@ export function RequestDetailsModal() {
                             type="checkbox"
                             checked={verifyVehicle}
                             onChange={(e) => setVerifyVehicle(e.target.checked)}
-                            className="w-4 h-4 rounded text-[#FE0000] focus:ring-0 shrink-0"
+                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0"
                           />
                           <span>
                             <strong>Verify Vehicle Information:</strong> {req.vehicle.year}{" "}
@@ -1292,7 +1292,7 @@ export function RequestDetailsModal() {
                             type="checkbox"
                             checked={verifyPart}
                             onChange={(e) => setVerifyPart(e.target.checked)}
-                            className="w-4 h-4 rounded text-[#FE0000] focus:ring-0 shrink-0"
+                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0"
                           />
                           <span>
                             <strong>Verify Part Information:</strong> {req.part.name} (Qty:{" "}
@@ -1306,7 +1306,7 @@ export function RequestDetailsModal() {
                             type="checkbox"
                             checked={verifyAddress}
                             onChange={(e) => setVerifyAddress(e.target.checked)}
-                            className="w-4 h-4 rounded text-[#FE0000] focus:ring-0 shrink-0"
+                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0"
                           />
                           <span>
                             <strong>Verify Delivery Address:</strong>{" "}
@@ -1336,7 +1336,7 @@ export function RequestDetailsModal() {
                                   setShowTermsModal(true);
                                 }
                               }}
-                              className="w-4 h-4 rounded text-[#FE0000] focus:ring-0 cursor-pointer shrink-0"
+                              className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 cursor-pointer shrink-0"
                             />
                             <span className="text-xs text-slate-800">
                               <strong>Accept Procurement Terms:</strong> I agree to the{" "}
@@ -1346,7 +1346,7 @@ export function RequestDetailsModal() {
                                   e.stopPropagation();
                                   setShowTermsModal(true);
                                 }}
-                                className="text-[#FE0000] font-bold hover:underline cursor-pointer"
+                                className="text-[#e20c0c] font-bold hover:underline cursor-pointer"
                               >
                                 Particular Terms of Trade
                               </button>{" "}
@@ -1380,7 +1380,7 @@ export function RequestDetailsModal() {
                             !verifyVehicle || !verifyPart || !verifyAddress || !acceptTerms
                           }
                           onClick={handleConfirmAcceptance}
-                          className="px-6 py-2.5 bg-[#FE0000] hover:bg-[#d31318] disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none text-white font-bold text-sm uppercase rounded-xl shadow-md shadow-red-500/20 transition-all inline-flex items-center gap-2"
+                          className="px-6 py-2.5 bg-[#e20c0c] hover:bg-[#d31318] disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none text-white font-bold text-sm uppercase rounded-xl shadow-md shadow-red-500/20 transition-all inline-flex items-center gap-2"
                         >
                           <ShieldCheck className="w-4 h-4" />
                           Confirm Acceptance & Record Order
@@ -1471,7 +1471,7 @@ export function RequestDetailsModal() {
                           className={`absolute -left-6 top-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center ${m.isCompleted
                             ? "bg-emerald-500 border-emerald-500 text-white"
                             : isCurrent
-                              ? "bg-[#FE0000] border-[#FE0000] text-white animate-pulse"
+                              ? "bg-[#e20c0c] border-[#e20c0c] text-white animate-pulse"
                               : "bg-white border-slate-300"
                             }`}
                         >
@@ -1482,7 +1482,7 @@ export function RequestDetailsModal() {
                           <div className="flex items-center gap-2">
                             <span
                               className={`text-xs font-bold ${isCurrent
-                                ? "text-[#FE0000]"
+                                ? "text-[#e20c0c]"
                                 : m.isCompleted
                                   ? "text-slate-900"
                                   : "text-slate-500"
@@ -1514,7 +1514,7 @@ export function RequestDetailsModal() {
                       setSelectedRequest(null);
                       router.push(`/customer/shipments?id=${encodeURIComponent(id)}`);
                     }}
-                    className="inline-flex items-center gap-1.5 font-bold text-[#FE0000] hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1.5 font-bold text-[#e20c0c] hover:underline cursor-pointer"
                   >
                     <span>Open in Full Shipments View</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -1531,7 +1531,7 @@ export function RequestDetailsModal() {
                 <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                      <ShieldCheck className="w-5 h-5 text-[#FE0000]" />
+                      <ShieldCheck className="w-5 h-5 text-[#e20c0c]" />
                       Quality Assurance Review
                     </h3>
                     <p className="text-xs text-slate-500 mt-1">
@@ -1601,7 +1601,7 @@ export function RequestDetailsModal() {
                         approveSubadmin(req.id);
                         setActiveTab("overview");
                       }}
-                      className="px-6 py-2.5 text-sm font-bold text-white bg-[#FE0000] hover:bg-[#9B0A0F] rounded-xl shadow-md transition-colors flex items-center gap-2"
+                      className="px-6 py-2.5 text-sm font-bold text-white bg-[#e20c0c] hover:bg-[#9B0A0F] rounded-xl shadow-md transition-colors flex items-center gap-2"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       Approve & Dispatch
@@ -1647,7 +1647,7 @@ export function RequestDetailsModal() {
           <div className="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden space-y-4 p-6">
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-red-50 text-[#FE0000] flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-red-50 text-[#e20c0c] flex items-center justify-center font-bold">
                   <Headphones className="w-5 h-5" />
                 </div>
                 <div>
@@ -1677,7 +1677,7 @@ export function RequestDetailsModal() {
               <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-slate-50 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-[#FE0000]" />
+                    <Mail className="w-4 h-4 text-[#e20c0c]" />
                     <span className="font-bold text-slate-900">Email Operations</span>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
@@ -1694,7 +1694,7 @@ export function RequestDetailsModal() {
                     )}&body=${encodeURIComponent(
                       `Hi Autohub Operations Team,\n\nRegarding request ${req.requestNumber} (${req.part.name}):\n\n[Please enter your inquiry here]\n\nTrade Customer: SP Motors Auckland\nContact: James Wilson`
                     )}`}
-                    className="px-3 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center gap-1.5"
+                    className="px-3 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center gap-1.5"
                   >
                     <Mail className="w-3.5 h-3.5" />
                     <span>Open Email Draft →</span>

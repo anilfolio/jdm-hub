@@ -131,7 +131,7 @@ export function ShipmentsView() {
               type="button"
               onClick={() => setMilestoneFilter(filter)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${milestoneFilter === filter
-                ? "bg-[#FE0000] text-white shadow-xs"
+                ? "bg-[#e20c0c] text-white shadow-xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
             >
@@ -207,7 +207,7 @@ export function ShipmentsView() {
                               const newMs = e.target.value as ShipmentMilestone;
                               updateShipmentMilestone(req.id, newMs, `Milestone updated to ${newMs}`);
                             }}
-                            className="text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:border-[#FE0000] rounded-lg px-2 py-1 shadow-xs focus:ring-1 focus:ring-[#FE0000] cursor-pointer"
+                            className="text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:border-[#e20c0c] rounded-lg px-2 py-1 shadow-xs focus:ring-1 focus:ring-[#e20c0c] cursor-pointer"
                             title="Select status to advance or reverse milestone"
                           >
                             {MILESTONES.map((m) => (

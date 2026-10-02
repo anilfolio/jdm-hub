@@ -30,7 +30,7 @@ export default function AdminInvoicePage() {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl border border-slate-200 p-10 max-w-md w-full text-center shadow-sm">
-          <div className="w-12 h-12 rounded-2xl bg-red-50 text-[#FE0000] flex items-center justify-center mx-auto mb-4 font-bold">
+          <div className="w-12 h-12 rounded-2xl bg-red-50 text-[#e20c0c] flex items-center justify-center mx-auto mb-4 font-bold">
             <FileText className="w-6 h-6" />
           </div>
           <h2 className="text-lg font-bold text-slate-900 mb-1">Invoice Not Found</h2>
@@ -40,7 +40,7 @@ export default function AdminInvoicePage() {
           <button
             type="button"
             onClick={() => router.push("/admin/requests")}
-            className="w-full py-2.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-sm cursor-pointer"
+            className="w-full py-2.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-sm cursor-pointer"
           >
             Return to All Requests
           </button>
@@ -122,7 +122,7 @@ export default function AdminInvoicePage() {
               <span className="text-slate-300">/</span>
               <span className="font-bold text-slate-700">{request.requestNumber}</span>
               <span className="text-slate-300">/</span>
-              <span className="font-bold text-[#FE0000]">Tax Invoice</span>
+              <span className="font-bold text-[#e20c0c]">Tax Invoice</span>
             </div>
           </div>
 
@@ -130,8 +130,8 @@ export default function AdminInvoicePage() {
             {/* Status Badge */}
             <span
               className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border flex items-center gap-1.5 ${isPaid
-                  ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                  : "bg-amber-50 text-amber-700 border-amber-200"
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                : "bg-amber-50 text-amber-700 border-amber-200"
                 }`}
             >
               {isPaid ? (
@@ -153,8 +153,8 @@ export default function AdminInvoicePage() {
               onClick={handleTogglePaymentStatus}
               disabled={isUpdatingPayment}
               className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 shadow-xs cursor-pointer ${isPaid
-                  ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
-                  : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
+                : "bg-emerald-600 hover:bg-emerald-700 text-white"
                 }`}
             >
               <CreditCard className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export default function AdminInvoicePage() {
                 <button
                   type="button"
                   onClick={handlePrint}
-                  className="px-3.5 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  className="px-3.5 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
                   title="Print PDF"
                 >
                   <Printer className="w-3.5 h-3.5" />
@@ -194,7 +194,7 @@ export default function AdminInvoicePage() {
           <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-[#FE0000] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-[#e20c0c] flex items-center justify-center font-bold">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
@@ -232,7 +232,7 @@ export default function AdminInvoicePage() {
             </p>
             <Link
               href={`/admin/requests/${request.id}`}
-              className="px-5 py-2.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-xs inline-flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-xs inline-flex items-center gap-2 cursor-pointer"
             >
               <UploadCloud className="w-4 h-4" />
               <span>Go to Workspace &amp; Upload PDF</span>

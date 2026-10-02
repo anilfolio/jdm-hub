@@ -58,7 +58,7 @@ export function MfaCodeInput({
           className={clsx(
             "w-full h-12 px-4 bg-white rounded-lg text-slate-900 text-center font-mono text-xl sm:text-2xl tracking-[0.3em] sm:tracking-[0.35em] font-bold transition-all",
             "bg-[#E8EAEF]/60 border border-slate-300 shadow-2xs",
-            "focus:bg-white focus:outline-none focus:border-[#FE0000] focus:ring-2 focus:ring-[#FE0000]/20",
+            "focus:bg-white focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20",
             hasError && "border-red-500 bg-red-50/40 text-red-900 focus:border-red-600 focus:ring-red-500/20",
             disabled && "bg-slate-200/60 text-slate-400 cursor-not-allowed border-slate-300"
           )}

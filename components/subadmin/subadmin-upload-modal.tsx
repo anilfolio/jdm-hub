@@ -54,7 +54,7 @@ export function SubadminUploadModal({ requestId, onClose }: SubadminUploadModalP
         <div className="sticky top-0 z-10 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between">
           <div>
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <Camera className="w-5 h-5 text-[#FE0000]" />
+              <Camera className="w-5 h-5 text-[#e20c0c]" />
               Upload Subadmin Media
             </h2>
             <p className="text-sm font-medium text-slate-500 mt-1">
@@ -71,7 +71,7 @@ export function SubadminUploadModal({ requestId, onClose }: SubadminUploadModalP
 
         <form onSubmit={(e) => handleSubmit(e, false)} className="p-6 space-y-6">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#FE0000]"></div>
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#e20c0c]"></div>
             <div className="p-5">
               <div className="flex items-start justify-between mb-4">
                 <div>
@@ -118,9 +118,9 @@ export function SubadminUploadModal({ requestId, onClose }: SubadminUploadModalP
             <label className="block text-sm font-bold text-slate-900 mb-2">
               Media Upload (Drag & Drop)
             </label>
-            <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center hover:border-[#FE0000] hover:bg-red-50/50 transition-colors cursor-pointer group">
+            <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center hover:border-[#e20c0c] hover:bg-red-50/50 transition-colors cursor-pointer group">
               <div className="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-red-100 flex items-center justify-center mx-auto mb-3 transition-colors">
-                <UploadCloud className="w-6 h-6 text-slate-400 group-hover:text-[#FE0000] transition-colors" />
+                <UploadCloud className="w-6 h-6 text-slate-400 group-hover:text-[#e20c0c] transition-colors" />
               </div>
               <p className="text-sm font-bold text-slate-700 mb-1">Click or drag photos/videos here</p>
               <p className="text-xs text-slate-500">Supports JPG, PNG, MP4 (Max 50MB per file)</p>
@@ -135,7 +135,7 @@ export function SubadminUploadModal({ requestId, onClose }: SubadminUploadModalP
               required
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-[#FE0000] text-sm min-h-[100px]"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-[#e20c0c] text-sm min-h-[100px]"
               placeholder="E.g., Factory seal intact. No visible damage on outer casing. Serial numbers match invoice."
             />
           </div>
@@ -181,7 +181,7 @@ export function SubadminUploadModal({ requestId, onClose }: SubadminUploadModalP
               <button
                 type="submit"
                 disabled={isUploading || notes.trim() === ""}
-                className="px-6 py-2.5 text-sm font-bold text-white bg-[#FE0000] hover:bg-[#9B0A0F] rounded-xl shadow-md transition-colors flex items-center gap-2 disabled:opacity-50"
+                className="px-6 py-2.5 text-sm font-bold text-white bg-[#e20c0c] hover:bg-[#9B0A0F] rounded-xl shadow-md transition-colors flex items-center gap-2 disabled:opacity-50"
               >
                 {isUploading && !isLoggingIssue ? (
                   <>

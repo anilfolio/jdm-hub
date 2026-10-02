@@ -85,7 +85,7 @@ export function PortalSidebar({
             label: "Requests",
             icon: FileText,
             badge: metrics.awaitingAction > 0 ? metrics.awaitingAction : undefined,
-            badgeColor: "bg-[#FE0000] text-white",
+            badgeColor: "bg-[#e20c0c] text-white",
           },
           {
             id: "orders",
@@ -138,7 +138,7 @@ export function PortalSidebar({
         <div className="flex flex-col flex-1 min-h-0">
           {/* Brand Header */}
           <div
-            className={`h-16 flex items-center bg-[#FE0000] border-b border-[#FE0000]/60 shrink-0 px-4 ${collapsed ? "lg:justify-center lg:px-2.5" : "justify-between"
+            className={`h-16 flex items-center bg-[#e20c0c] border-b border-[#e20c0c]/60 shrink-0 px-4 ${collapsed ? "lg:justify-center lg:px-2.5" : "justify-between"
               }`}
           >
             <Link
@@ -146,7 +146,7 @@ export function PortalSidebar({
               onClick={onCloseMobile}
               className={`flex items-center gap-3 cursor-pointer group ${collapsed ? "lg:hidden" : "flex"}`}
             >
-              <div className="w-9 h-9 rounded-xl border-2 border-white bg-[#FE0000] flex items-center justify-center shadow-sm">
+              <div className="w-9 h-9 rounded-xl border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
                 <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">P</span>
               </div>
               <div className="flex flex-col">
@@ -165,7 +165,7 @@ export function PortalSidebar({
                 href="/customer/dashboard"
                 className="hidden lg:flex items-center justify-center"
               >
-                <div className="w-9 h-9 rounded-lg border-2 border-white bg-[#FE0000] flex items-center justify-center shadow-sm">
+                <div className="w-9 h-9 rounded-lg border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
                   <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">P</span>
                 </div>
               </Link>
@@ -201,7 +201,7 @@ export function PortalSidebar({
                         }}
                         title={collapsed ? item.label : undefined}
                         className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all group overflow-hidden ${isActive
-                          ? "bg-[#1E2538] text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-[60%] before:bg-[#FE0000] before:rounded-r-full"
+                          ? "bg-[#1E2538] text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-[60%] before:bg-[#e20c0c] before:rounded-r-full"
                           : "text-slate-400 hover:text-white hover:bg-[#1E2538]/50"
                           } ${collapsed ? "lg:justify-center lg:px-0" : ""}`}
                       >
@@ -242,7 +242,7 @@ export function PortalSidebar({
             title={collapsed ? `${activeCustomer.contactName} (${activeCustomer.businessName})` : undefined}
           >
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0 uppercase">
+              <div className="w-8 h-8 rounded-full bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0 uppercase">
                 {activeCustomer.contactName
                   .split(" ")
                   .map((n) => n[0])

@@ -38,7 +38,7 @@ export function SubadminMediaTab({ request }: SubadminMediaTabProps) {
     <div className="space-y-6">
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
         <div className="flex items-center gap-3 mb-6">
-          <Camera className="w-5 h-5 text-[#FE0000]" />
+          <Camera className="w-5 h-5 text-[#e20c0c]" />
           <div>
             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
               Subadmin Port Inspection Evidence
@@ -90,7 +90,7 @@ export function SubadminMediaTab({ request }: SubadminMediaTabProps) {
               Admin Review
             </h4>
             <textarea
-              className="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] mb-4"
+              className="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] mb-4"
               placeholder="Add optional notes before approving..."
               rows={3}
               value={adminNotes}

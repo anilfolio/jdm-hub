@@ -138,7 +138,7 @@ export function PaymentsView() {
               key={tab}
               onClick={() => setFilterStatus(tab)}
               className={`px-3.5 py-1.5 rounded-xl transition-all ${isActive
-                ? "bg-[#FE0000] text-white shadow-xs"
+                ? "bg-[#e20c0c] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
                 }`}
             >
@@ -241,7 +241,7 @@ export function PaymentsView() {
                           {paymentStatus === "Unpaid" ? (
                             <button
                               onClick={() => handleOpenPaymentModal(req)}
-                              className="px-3.5 py-1.5 bg-[#FE0000] hover:bg-[#ED2025] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-xs transition-all"
+                              className="px-3.5 py-1.5 bg-[#e20c0c] hover:bg-[#ED2025] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-xs transition-all"
                             >
                               Settlement Details →
                             </button>

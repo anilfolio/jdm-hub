@@ -34,7 +34,7 @@
 
     <!-- Red Accent Gradient -->
     <linearGradient id="redAccent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FE0000" />
+      <stop offset="0%" stop-color="#e20c0c" />
       <stop offset="100%" stop-color="#b91c1c" />
     </linearGradient>
 
@@ -58,7 +58,7 @@
 
   <!-- Subtle Radial Glow behind Part -->
   <circle cx="300" cy="290" r="220" fill="#38bdf8" fill-opacity="0.04" />
-  <circle cx="300" cy="290" r="160" fill="#FE0000" fill-opacity="0.05" />
+  <circle cx="300" cy="290" r="160" fill="#e20c0c" fill-opacity="0.05" />
 
   <!-- Technical Circular Crosshairs & Dimension Rings -->
   <circle cx="300" cy="290" r="190" fill="none" stroke="#334155" stroke-width="1" stroke-dasharray="4 6" opacity="0.6" />
@@ -69,7 +69,7 @@
   <!-- Top Header Banner / Badge -->
   <g transform="translate(40, 36)">
     <rect width="180" height="26" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1" />
-    <circle cx="16" cy="13" r="4" fill="#FE0000" />
+    <circle cx="16" cy="13" r="4" fill="#e20c0c" />
     <text x="28" y="17" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="800" letter-spacing="1.2">OEM SPECIFICATION</text>
   </g>
 
@@ -146,9 +146,9 @@
 
   <!-- Callout 2: Precision Ball Joint -->
   <g transform="translate(460, 200)">
-    <line x1="-30" y1="20" x2="5" y2="-5" stroke="#FE0000" stroke-width="1.2" stroke-linecap="round" />
-    <circle cx="-30" cy="20" r="3" fill="#FE0000" />
-    <rect x="5" y="-18" width="115" height="24" rx="4" fill="#0f172a" stroke="#FE0000" stroke-width="1" />
+    <line x1="-30" y1="20" x2="5" y2="-5" stroke="#e20c0c" stroke-width="1.2" stroke-linecap="round" />
+    <circle cx="-30" cy="20" r="3" fill="#e20c0c" />
+    <rect x="5" y="-18" width="115" height="24" rx="4" fill="#0f172a" stroke="#e20c0c" stroke-width="1" />
     <text x="62" y="-2" fill="#f87171" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="700">BALL STUD ASSEMBLY</text>
   </g>
 

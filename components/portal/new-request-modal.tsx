@@ -322,7 +322,7 @@ export function NewRequestModal() {
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#FE0000] to-[#B91C1C] flex items-center justify-center shadow-md shadow-red-500/20 text-white font-black text-sm">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#e20c0c] to-[#B91C1C] flex items-center justify-center shadow-md shadow-red-500/20 text-white font-black text-sm">
               +
             </div>
             <div>
@@ -355,7 +355,7 @@ export function NewRequestModal() {
               </span>
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">
                 Request Number:{" "}
-                <span className="text-[#FE0000]  font-black">
+                <span className="text-[#e20c0c]  font-black">
                   {submittedRequestNumber}
                 </span>
               </h3>
@@ -395,7 +395,7 @@ export function NewRequestModal() {
             <div className="flex justify-center gap-3 pt-2">
               <button
                 onClick={handleClose}
-                className="px-6 py-2.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all"
+                className="px-6 py-2.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all"
               >
                 Return to Dashboard
               </button>
@@ -421,7 +421,7 @@ export function NewRequestModal() {
                     type="button"
                     onClick={() => setStep(s.num as 1 | 2 | 3 | 4)}
                     className={`p-3 text-center flex items-center justify-center gap-2 border-b-2 font-bold transition-all ${isActive
-                      ? "border-[#FE0000] text-[#FE0000] bg-white shadow-xs"
+                      ? "border-[#e20c0c] text-[#e20c0c] bg-white shadow-xs"
                       : isPassed
                         ? "border-emerald-500 text-emerald-700 bg-emerald-50/30"
                         : "border-transparent text-slate-400 hover:text-slate-600"
@@ -439,7 +439,7 @@ export function NewRequestModal() {
               {step === 1 && (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                    <Car className="w-4 h-4 text-[#FE0000]" />
+                    <Car className="w-4 h-4 text-[#e20c0c]" />
                     <span>Enter complete vehicle identification details for exact fitment</span>
                   </div>
 
@@ -457,7 +457,7 @@ export function NewRequestModal() {
                           const models = POPULAR_MAKES_AND_MODELS[newMake] || ["Other Model"];
                           setVehicle({ ...vehicle, make: newMake, model: models[0] });
                         }}
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none bg-white font-medium cursor-pointer"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none bg-white font-medium cursor-pointer"
                       >
                         {Object.keys(POPULAR_MAKES_AND_MODELS).map((mk) => (
                           <option key={mk} value={mk}>
@@ -478,7 +478,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, model: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none bg-white font-medium cursor-pointer"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none bg-white font-medium cursor-pointer"
                       >
                         {(
                           POPULAR_MAKES_AND_MODELS[vehicle.make] || [
@@ -506,7 +506,7 @@ export function NewRequestModal() {
                             year: parseInt(e.target.value) || 2024,
                           })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none bg-white font-medium cursor-pointer"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none bg-white font-medium cursor-pointer"
                       >
                         {AVAILABLE_YEARS.map((yr) => (
                           <option key={yr} value={yr}>
@@ -529,7 +529,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, vin: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200  focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200  focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                         placeholder="e.g. GDH201-0012845"
                       />
                     </div>
@@ -545,7 +545,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, registration: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200  uppercase focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200  uppercase focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                         placeholder="e.g. MTB842"
                       />
                     </div>
@@ -562,7 +562,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, engine: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                         placeholder="e.g. 1GD-FTV 2.8L"
                       />
                     </div>
@@ -577,7 +577,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, variant: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                         placeholder="e.g. GL / DX / SR5"
                       />
                     </div>
@@ -594,7 +594,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, transmission: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                         placeholder="e.g. 6-Speed Automatic"
                       />
                     </div>
@@ -608,7 +608,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setVehicle({ ...vehicle, driveConfig: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                       >
                         <option value="4WD">4WD / All-Wheel Drive</option>
                         <option value="RWD">RWD / Rear-Wheel Drive</option>
@@ -623,7 +623,7 @@ export function NewRequestModal() {
               {step === 2 && (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                    <Package className="w-4 h-4 text-[#FE0000]" />
+                    <Package className="w-4 h-4 text-[#e20c0c]" />
                     <span>Specify part requirements, preference, and condition</span>
                   </div>
 
@@ -636,7 +636,7 @@ export function NewRequestModal() {
                       required
                       value={part.name}
                       onChange={(e) => setPart({ ...part, name: e.target.value })}
-                      className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                      className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                       placeholder="e.g. Left Front Lower Control Arm Assembly"
                     />
                   </div>
@@ -652,7 +652,7 @@ export function NewRequestModal() {
                         onChange={(e) =>
                           setPart({ ...part, partNumber: e.target.value })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200  focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200  focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                         placeholder="e.g. 48069-26150"
                       />
                     </div>
@@ -672,7 +672,7 @@ export function NewRequestModal() {
                             quantity: parseInt(e.target.value) || 1,
                           })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                       />
                     </div>
                   </div>
@@ -690,7 +690,7 @@ export function NewRequestModal() {
                             preference: e.target.value as PartPreference,
                           })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                       >
                         <option value="Genuine OEM">Genuine OEM Factory</option>
                         <option value="OEM Supplier Tier 1">
@@ -715,7 +715,7 @@ export function NewRequestModal() {
                             condition: e.target.value as PartCondition,
                           })
                         }
-                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                        className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                       >
                         <option value="Brand New OEM">Brand New OEM</option>
                         <option value="Brand New Certified Aftermarket">
@@ -737,7 +737,7 @@ export function NewRequestModal() {
               {step === 3 && (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                    <FileText className="w-4 h-4 text-[#FE0000]" />
+                    <FileText className="w-4 h-4 text-[#e20c0c]" />
                     <span>Upload photos, parts diagrams, and workshop notes</span>
                   </div>
 
@@ -750,7 +750,7 @@ export function NewRequestModal() {
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Add any specific details, urgency, or fitment notes..."
-                      className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] outline-none"
+                      className="w-full text-xs p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] outline-none"
                     />
                   </div>
 
@@ -759,11 +759,11 @@ export function NewRequestModal() {
                     <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
                       Multiple Photos (Damage / Existing Part)
                     </label>
-                    <div className="border-2 border-dashed border-slate-200 hover:border-[#FE0000]/60 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-50/50">
+                    <div className="border-2 border-dashed border-slate-200 hover:border-[#e20c0c]/60 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-50/50">
                       <UploadCloud className="w-6 h-6 text-slate-400 mx-auto mb-1" />
                       <p className="text-xs text-slate-600 font-medium">
                         Drag photos here or{" "}
-                        <span className="text-[#FE0000] font-bold">browse</span>
+                        <span className="text-[#e20c0c] font-bold">browse</span>
                       </p>
                       <p className="text-[10px] text-slate-400">
                         PNG, JPG or WEBP up to 10MB
@@ -831,14 +831,14 @@ export function NewRequestModal() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-[#FE0000]" />
+                      <MapPin className="w-4 h-4 text-[#e20c0c]" />
                       <span>Select saved delivery workshop address before submitting</span>
                     </div>
                     {!isAddingNewAddress && (
                       <button
                         type="button"
                         onClick={() => setIsAddingNewAddress(true)}
-                        className="text-xs font-bold text-[#FE0000] hover:underline flex items-center gap-1"
+                        className="text-xs font-bold text-[#e20c0c] hover:underline flex items-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>Add New Address</span>
@@ -848,7 +848,7 @@ export function NewRequestModal() {
 
                   {/* Inline Address Creation with NZ Post Autocomplete */}
                   {isAddingNewAddress && (
-                    <div className="p-4 bg-slate-50 border-2 border-dashed border-[#FE0000]/40 rounded-xl space-y-3 animate-in fade-in zoom-in duration-150">
+                    <div className="p-4 bg-slate-50 border-2 border-dashed border-[#e20c0c]/40 rounded-xl space-y-3 animate-in fade-in zoom-in duration-150">
                       <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                         <span className="font-bold text-xs text-slate-900">Add New Workshop Bay (NZ Post Autocomplete)</span>
                         <button
@@ -883,14 +883,14 @@ export function NewRequestModal() {
                           placeholder="Location Label (e.g. Takapuna Bay 2)"
                           value={modalAddressForm.label}
                           onChange={(e) => setModalAddressForm({ ...modalAddressForm, label: e.target.value })}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#FE0000]"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#e20c0c]"
                         />
                         <input
                           type="text"
                           placeholder="Contact Name"
                           value={modalAddressForm.recipientName}
                           onChange={(e) => setModalAddressForm({ ...modalAddressForm, recipientName: e.target.value })}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#FE0000]"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#e20c0c]"
                         />
                       </div>
 
@@ -900,21 +900,21 @@ export function NewRequestModal() {
                           placeholder="Street Address *"
                           value={modalAddressForm.streetAddress}
                           onChange={(e) => setModalAddressForm({ ...modalAddressForm, streetAddress: e.target.value })}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#FE0000]"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#e20c0c]"
                         />
                         <input
                           type="text"
                           placeholder="City *"
                           value={modalAddressForm.city}
                           onChange={(e) => setModalAddressForm({ ...modalAddressForm, city: e.target.value })}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#FE0000]"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#e20c0c]"
                         />
                         <input
                           type="text"
                           placeholder="Postcode"
                           value={modalAddressForm.postalCode}
                           onChange={(e) => setModalAddressForm({ ...modalAddressForm, postalCode: e.target.value })}
-                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#FE0000]"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg outline-none focus:border-[#e20c0c]"
                         />
                       </div>
 
@@ -934,7 +934,7 @@ export function NewRequestModal() {
                             setSelectedAddress(newAddr);
                             setIsAddingNewAddress(false);
                           }}
-                          className="px-4 py-1.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-lg shadow-xs"
+                          className="px-4 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-lg shadow-xs"
                         >
                           Save & Select Depot
                         </button>
@@ -950,7 +950,7 @@ export function NewRequestModal() {
                           key={addr.id}
                           onClick={() => setSelectedAddress(addr)}
                           className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all flex items-start justify-between ${isSelected
-                            ? "border-[#FE0000] bg-red-50/10 shadow-xs"
+                            ? "border-[#e20c0c] bg-red-50/10 shadow-xs"
                             : "border-slate-200 hover:border-slate-300 bg-white"
                             }`}
                         >
@@ -979,7 +979,7 @@ export function NewRequestModal() {
 
                           <div
                             className={`w-5 h-5 rounded-full border flex items-center justify-center ${isSelected
-                              ? "border-[#FE0000] bg-[#FE0000] text-white"
+                              ? "border-[#e20c0c] bg-[#e20c0c] text-white"
                               : "border-slate-300"
                               }`}
                           >
@@ -991,7 +991,7 @@ export function NewRequestModal() {
                   </div>
 
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-2 text-xs text-slate-700">
-                    <Sparkles className="w-4 h-4 text-[#FE0000] shrink-0 mt-0.5" />
+                    <Sparkles className="w-4 h-4 text-[#e20c0c] shrink-0 mt-0.5" />
                     <p>
                       <strong className="text-slate-900">Automatic Request Code:</strong> Submitting will lock
                       your request and generate a tracked procurement reference in format{" "}
@@ -1030,7 +1030,7 @@ export function NewRequestModal() {
                 ) : (
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md shadow-red-500/30 hover:shadow-lg transition-all transform active:scale-95"
+                    className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md shadow-red-500/30 hover:shadow-lg transition-all transform active:scale-95"
                   >
                     <Check className="w-4 h-4 stroke-[3]" />
                     <span>Generate Request & Submit</span>

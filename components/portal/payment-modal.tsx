@@ -277,7 +277,7 @@ export function PaymentModal() {
                     value={bankReference}
                     onChange={(e) => setBankReference(e.target.value)}
                     placeholder="e.g. ANZ-TX-98124912"
-                    className="w-full text-xs p-2.5 rounded-lg border border-slate-200 outline-none focus:border-[#FE0000] bg-white "
+                    className="w-full text-xs p-2.5 rounded-lg border border-slate-200 outline-none focus:border-[#e20c0c] bg-white "
                   />
                   <p className="text-[10px] text-slate-400 mt-1">
                     If you have already initiated your bank transfer, enter your transaction reference above to assist our accounts team with reconciliation.
@@ -320,7 +320,7 @@ export function PaymentModal() {
               {bankReference.trim() ? (
                 <button
                   onClick={handleSubmitRemittanceNote}
-                  className="px-4 py-2.5 bg-[#FE0000] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  className="px-4 py-2.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
                 >
                   <span>Submit Remittance Note</span>
                   <ArrowRight className="w-4 h-4" />
@@ -328,7 +328,7 @@ export function PaymentModal() {
               ) : (
                 <button
                   onClick={() => setIsPaymentModalOpen(false)}
-                  className="px-4 py-2.5 bg-[#FE0000] hover:bg-[#ED2025] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition-all cursor-pointer"
+                  className="px-4 py-2.5 bg-[#e20c0c] hover:bg-[#ED2025] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition-all cursor-pointer"
                 >
                   I Understand
                 </button>

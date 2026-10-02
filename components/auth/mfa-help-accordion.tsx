@@ -34,7 +34,7 @@ export function MfaHelpAccordion({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className="group flex items-center gap-1.5 py-1 text-[13px] font-bold text-[#FE0000] hover:text-[#FE0000] transition-colors select-none"
+        className="group flex items-center gap-1.5 py-1 text-[13px] font-bold text-[#e20c0c] hover:text-[#e20c0c] transition-colors select-none"
       >
         <span
           className={clsx(
@@ -51,7 +51,7 @@ export function MfaHelpAccordion({
       {isOpen && (
         <div className="mt-2.5 p-3.5 bg-white rounded-lg border border-slate-200 shadow-xs animate-in fade-in-50 slide-in-from-top-1 duration-150 text-left">
           <div className="flex items-center gap-2 mb-1.5 text-slate-800">
-            <KeyRound className="w-4 h-4 text-[#FE0000] shrink-0" />
+            <KeyRound className="w-4 h-4 text-[#e20c0c] shrink-0" />
             <h4 className="text-xs font-bold">Can&apos;t scan the QR code?</h4>
           </div>
 

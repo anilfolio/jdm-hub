@@ -60,7 +60,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
     <span>
       {parts.map((part, i) =>
         regex.test(part) ? (
-          <span key={i} className="text-[#FE0000] font-bold underline underline-offset-2 decoration-[#FE0000]/40">
+          <span key={i} className="text-[#e20c0c] font-bold underline underline-offset-2 decoration-[#e20c0c]/40">
             {part}
           </span>
         ) : (
@@ -560,7 +560,7 @@ export function GlobalSearchModal() {
       case "quoted":
         return "bg-blue-50 text-blue-700 border-blue-200/80";
       case "status":
-        return "bg-red-50 text-[#FE0000] border-red-200/80";
+        return "bg-red-50 text-[#e20c0c] border-red-200/80";
       case "info":
         return "bg-indigo-50 text-indigo-700 border-indigo-200/80";
       default:
@@ -584,7 +584,7 @@ export function GlobalSearchModal() {
       >
         {/* Top Search Input Bar */}
         <div className="relative flex items-center px-4 py-3.5 border-b border-slate-100 bg-white">
-          <div className="w-10 h-10 rounded-2xl bg-red-50 text-[#FE0000] flex items-center justify-center shrink-0 mr-3 border border-red-100">
+          <div className="w-10 h-10 rounded-2xl bg-red-50 text-[#e20c0c] flex items-center justify-center shrink-0 mr-3 border border-red-100">
             <Search className="w-5 h-5 stroke-[2.5]" />
           </div>
 
@@ -638,8 +638,8 @@ export function GlobalSearchModal() {
                 type="button"
                 onClick={() => setActiveCategory(cat.key)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${isSelected
-                    ? "bg-[#FE0000] text-white shadow-xs"
-                    : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/70"
+                  ? "bg-[#e20c0c] text-white shadow-xs"
+                  : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/70"
                   }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-slate-400"}`} />
@@ -704,16 +704,16 @@ export function GlobalSearchModal() {
                   onClick={() => handleSelectItem(item)}
                   onMouseEnter={() => setSelectedIndex(index)}
                   className={`group relative p-3 sm:p-3.5 rounded-2xl cursor-pointer transition-all flex items-center justify-between gap-3 ${isSelected
-                      ? "bg-red-50/70 border border-red-200/80 shadow-xs"
-                      : "hover:bg-slate-50/80 border border-transparent"
+                    ? "bg-red-50/70 border border-red-200/80 shadow-xs"
+                    : "hover:bg-slate-50/80 border border-transparent"
                     }`}
                 >
                   {/* Left: Icon & Details */}
                   <div className="flex items-start gap-3 min-w-0">
                     <div
                       className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-colors border ${isSelected
-                          ? "bg-white text-[#FE0000] border-red-200 shadow-xs"
-                          : "bg-slate-100/80 text-slate-500 border-slate-200/60"
+                        ? "bg-white text-[#e20c0c] border-red-200 shadow-xs"
+                        : "bg-slate-100/80 text-slate-500 border-slate-200/60"
                         }`}
                     >
                       {getCategoryIcon(item.category)}
@@ -756,8 +756,8 @@ export function GlobalSearchModal() {
 
                     <div
                       className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${isSelected
-                          ? "bg-[#FE0000] text-white shadow-xs translate-x-0.5"
-                          : "bg-slate-100 text-slate-400 group-hover:text-slate-700"
+                        ? "bg-[#e20c0c] text-white shadow-xs translate-x-0.5"
+                        : "bg-slate-100 text-slate-400 group-hover:text-slate-700"
                         }`}
                     >
                       <ArrowRight className="w-3.5 h-3.5" />

@@ -13,7 +13,7 @@ import {
  * - Commercial / Quoted: Purple
  * - Customer Approval / Cleared: Emerald
  * - Financial Invoicing: Indigo
- * - Financial Action Required: Brand Red (#FE0000)
+ * - Financial Action Required: Brand Red (#e20c0c)
  * - Purchase Order Released: Brand Navy (#2B4499)
  * - Quality / Inspection: Rose / Amber
  * - Transit / Logistics: Cyan
@@ -33,7 +33,7 @@ export function getStatusBadgeClasses(status: RequestStatus | string): string {
     case "Invoicing":
       return "bg-indigo-50 text-indigo-700 border-indigo-200 ring-indigo-600/10";
     case "Awaiting Payment":
-      return "bg-red-50 text-[#FE0000] border-red-200 ring-red-600/10";
+      return "bg-red-50 text-[#e20c0c] border-red-200 ring-red-600/10";
     case "Ordered":
       return "bg-blue-50 text-[#2B4499] border-blue-200 ring-blue-600/10";
     case "Subadmin Pending":
@@ -64,8 +64,8 @@ export function getPaymentBadgeClasses(status: PaymentStatus | string) {
   return {
     badgeClass: isPaid
       ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-      : "bg-red-50 text-[#FE0000] border-red-200",
-    dotClass: isPaid ? "bg-emerald-500" : "bg-[#FE0000] animate-pulse",
+      : "bg-red-50 text-[#e20c0c] border-red-200",
+    dotClass: isPaid ? "bg-emerald-500" : "bg-[#e20c0c] animate-pulse",
     label: isPaid ? "Paid" : "Unpaid",
   };
 }

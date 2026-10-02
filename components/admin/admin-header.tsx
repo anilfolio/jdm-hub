@@ -71,7 +71,7 @@ export function AdminHeader({
               onClick={onToggleMobile}
               type="button"
               aria-label="Open navigation drawer"
-              className="lg:hidden p-2 -ml-1 rounded-xl text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 cursor-pointer shrink-0"
+              className="lg:hidden p-2 -ml-1 rounded-xl text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 cursor-pointer shrink-0"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -84,7 +84,7 @@ export function AdminHeader({
               type="button"
               aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="hidden lg:inline-flex p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 cursor-pointer shrink-0"
+              className="hidden lg:inline-flex p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 cursor-pointer shrink-0"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -93,7 +93,7 @@ export function AdminHeader({
           <h1 className="text-base sm:text-xl lg:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2 truncate">
             <span className="truncate">{getSectionTitle()}</span>
             {requestedIdParam && (
-              <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-md bg-red-50 text-[#FE0000] font-bold border border-red-200 shrink-0">
+              <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-md bg-red-50 text-[#e20c0c] font-bold border border-red-200 shrink-0">
                 Workspace
               </span>
             )}
@@ -117,7 +117,7 @@ export function AdminHeader({
             type="button"
             onClick={() => openSearch()}
             aria-label="Open Global Search (Cmd+K)"
-            className="hidden md:flex relative w-64 lg:w-80 items-center justify-between pl-10 pr-3 py-2 text-xs bg-slate-100/90 hover:bg-slate-100 text-slate-400 hover:text-slate-600 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 focus:border-[#FE0000] transition-all shadow-xs text-left cursor-pointer group"
+            className="hidden md:flex relative w-64 lg:w-80 items-center justify-between pl-10 pr-3 py-2 text-xs bg-slate-100/90 hover:bg-slate-100 text-slate-400 hover:text-slate-600 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] transition-all shadow-xs text-left cursor-pointer group"
           >
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-hover:text-slate-600 transition-colors pointer-events-none" />
             <span className="truncate">Search invoice #, quotes, parts, ref...</span>

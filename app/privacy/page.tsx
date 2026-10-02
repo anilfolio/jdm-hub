@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#FE0000] text-white flex items-center justify-center font-black text-sm">
+              <div className="w-7 h-7 rounded-lg bg-[#e20c0c] text-white flex items-center justify-center font-black text-sm">
                 A
               </div>
               <span className="font-black italic text-lg tracking-tight text-slate-900 uppercase ">
@@ -35,13 +35,13 @@ export default function PrivacyPolicyPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/terms"
-              className="text-xs font-semibold text-slate-600 hover:text-[#FE0000] transition-colors"
+              className="text-xs font-semibold text-slate-600 hover:text-[#e20c0c] transition-colors"
             >
               Particular Terms of Trade →
             </Link>
             <Link
               href="/register"
-              className="px-3.5 py-1.5 rounded-xl bg-[#FE0000] hover:bg-[#9B0A0F] text-white text-xs font-bold transition-all shadow-xs"
+              className="px-3.5 py-1.5 rounded-xl bg-[#e20c0c] hover:bg-[#9B0A0F] text-white text-xs font-bold transition-all shadow-xs"
             >
               Apply for Trade Account
             </Link>
@@ -132,7 +132,7 @@ export default function PrivacyPolicyPage() {
         < div className="flex items-center justify-between pt-4" >
           <Link
             href="/register"
-            className="text-xs font-bold text-[#FE0000] hover:underline inline-flex items-center gap-1"
+            className="text-xs font-bold text-[#e20c0c] hover:underline inline-flex items-center gap-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Return to Registration Form</span>

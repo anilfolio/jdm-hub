@@ -113,7 +113,7 @@ export function NotificationCenter() {
         {unreadNotificationsCount > 0 && (
           <span
             suppressHydrationWarning
-            className="absolute -top-1 -right-1 w-5 h-5 bg-[#FE0000] text-white font-black text-[11px] rounded-full flex items-center justify-center shadow-md shadow-red-500/30 border-2 border-white animate-pulse"
+            className="absolute -top-1 -right-1 w-5 h-5 bg-[#e20c0c] text-white font-black text-[11px] rounded-full flex items-center justify-center shadow-md shadow-red-500/30 border-2 border-white animate-pulse"
           >
             {unreadNotificationsCount}
           </span>
@@ -129,7 +129,7 @@ export function NotificationCenter() {
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-bold text-slate-900">Notifications</h3>
                 {unreadNotificationsCount > 0 && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-[#FE0000]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-[#e20c0c]">
                     {unreadNotificationsCount} new
                   </span>
                 )}
@@ -141,7 +141,7 @@ export function NotificationCenter() {
             {unreadNotificationsCount > 0 && (
               <button
                 onClick={markAllNotificationsAsRead}
-                className="text-[11px] font-semibold text-[#FE0000] hover:underline flex items-center gap-1"
+                className="text-[11px] font-semibold text-[#e20c0c] hover:underline flex items-center gap-1"
               >
                 <Check className="w-3 h-3" />
                 Mark all read
@@ -170,8 +170,8 @@ export function NotificationCenter() {
                     <div className="flex items-center justify-between gap-1 mb-0.5">
                       <h4
                         className={`text-xs truncate ${!n.read
-                            ? "font-bold text-slate-900"
-                            : "font-semibold text-slate-700"
+                          ? "font-bold text-slate-900"
+                          : "font-semibold text-slate-700"
                           }`}
                       >
                         {n.title}
@@ -185,7 +185,7 @@ export function NotificationCenter() {
                     </p>
                   </div>
                   {!n.read && (
-                    <span className="w-2 h-2 rounded-full bg-[#FE0000] shrink-0 mt-1.5" />
+                    <span className="w-2 h-2 rounded-full bg-[#e20c0c] shrink-0 mt-1.5" />
                   )}
                 </div>
               ))

@@ -209,7 +209,7 @@ For formal queries contact ops@JDMHUB.autohub.co.nz
             placeholder="Search documents or request ID..."
             value={docSearch}
             onChange={(e) => setDocSearch(e.target.value)}
-            className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#FE0000]"
+            className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-[#e20c0c]"
           />
         </div>
       </div>
@@ -260,7 +260,7 @@ For formal queries contact ops@JDMHUB.autohub.co.nz
                         if (target) setSelectedRequest(target);
                         else setActiveTab("requests");
                       }}
-                      className=" text-[#FE0000] font-bold hover:underline"
+                      className=" text-[#e20c0c] font-bold hover:underline"
                       title="Open linked request details"
                     >
                       {d.ref}

@@ -212,7 +212,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
             </div>
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <span className="text-slate-500">Freight Preference:</span>
-              <span className="font-bold text-[#FE0000] bg-red-50 px-2 py-0.5 rounded border border-red-100">
+              <span className="font-bold text-[#e20c0c] bg-red-50 px-2 py-0.5 rounded border border-red-100">
                 {request.supporting?.freightPreference === "Sea Freight" ? "Ocean Freight" : (request.supporting?.freightPreference || "Not Specified")}
               </span>
             </div>
@@ -277,7 +277,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
             </h3>
             <button
               onClick={() => onNavigateToTab?.('sourcing')}
-              className="text-[#FE0000] hover:text-[#9B0A0F] text-xs font-bold flex items-center gap-1 hover:underline"
+              className="text-[#e20c0c] hover:text-[#9B0A0F] text-xs font-bold flex items-center gap-1 hover:underline"
             >
               <Plus className="w-3.5 h-3.5" /> Add Quote
             </button>
@@ -297,7 +297,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                     key={quote.id}
                     onClick={() => selectSupplierQuotation(request.id, quote.id)}
                     className={`border rounded-xl p-4 cursor-pointer transition-all duration-200 ${isSelected
-                      ? "border-[#FE0000] ring-1 ring-[#FE0000] bg-red-50/10 shadow-sm"
+                      ? "border-[#e20c0c] ring-1 ring-[#e20c0c] bg-red-50/10 shadow-sm"
                       : "border-slate-200 bg-white hover:border-slate-300"
                       }`}
                   >
@@ -308,13 +308,13 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                           {quote.supplierCountry || "Japan"}
                         </span>
                         {isSelected && (
-                          <span className="text-[10px] text-[#FE0000] font-bold bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                          <span className="text-[10px] text-[#e20c0c] font-bold bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
                             SELECTED
                           </span>
                         )}
                       </div>
                       <div className="text-right shrink-0">
-                        <div className={`font-bold text-[15px]  ${isSelected ? "text-[#FE0000]" : "text-slate-900"}`}>
+                        <div className={`font-bold text-[15px]  ${isSelected ? "text-[#e20c0c]" : "text-slate-900"}`}>
                           ${totalCost.toFixed(2)} NZD
                         </div>
                       </div>
@@ -343,7 +343,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
           <div className="flex justify-between items-start mb-5 border-b border-slate-100 pb-5">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-[10px] font-bold text-[#FE0000] bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-md uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-[#e20c0c] bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-md uppercase tracking-widest">
                   FORMAL QUOTATION
                 </span>
                 <span className="text-xs text-slate-400 ">QTE-2026-00138</span>
@@ -367,7 +367,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                   max="100"
                   value={targetMargin}
                   onChange={e => setTargetMargin(e.target.value)}
-                  className="w-full text-sm font-bold text-slate-900 bg-white border border-slate-200 rounded-lg p-2.5 pl-3 pr-8 focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 focus:border-[#FE0000] shadow-sm transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full text-sm font-bold text-slate-900 bg-white border border-slate-200 rounded-lg p-2.5 pl-3 pr-8 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] shadow-sm transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <span className="text-slate-400 font-bold">%</span>
@@ -381,7 +381,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
             <div className="flex justify-between items-center mb-4">
               <div className="text-xs font-bold text-slate-800 uppercase tracking-widest">SELECT YOUR FREIGHT TRANSIT OPTION:</div>
               {request.supporting?.freightPreference && (
-                <div className="text-[11px] font-bold text-[#FE0000] bg-red-50 px-2 py-1 rounded border border-red-100">
+                <div className="text-[11px] font-bold text-[#e20c0c] bg-red-50 px-2 py-1 rounded border border-red-100">
                   Customer Preference: {request.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : request.supporting.freightPreference}
                 </div>
               )}
@@ -393,10 +393,10 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                   setSelectedFreight('air');
                   setFreightCost(defaultAir);
                 }}
-                className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreight === 'air' ? 'border-[#FE0000] bg-red-50/20 shadow-md' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'}`}
+                className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreight === 'air' ? 'border-[#e20c0c] bg-red-50/20 shadow-md' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'}`}
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={`p-2 rounded-xl ${selectedFreight === 'air' ? 'bg-red-50 text-[#FE0000]' : 'bg-slate-100 text-slate-500'}`}>
+                  <div className={`p-2 rounded-xl ${selectedFreight === 'air' ? 'bg-red-50 text-[#e20c0c]' : 'bg-slate-100 text-slate-500'}`}>
                     <Plane className="w-5 h-5" />
                   </div>
                   <div className="font-bold text-[15px] text-slate-900">Air Express</div>
@@ -406,8 +406,8 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                   <span className="font-bold text-slate-900 tracking-wide">+${defaultAir.toFixed(2)} NZD</span>
                 </div>
                 {/* Radio Circle */}
-                <div className={`absolute top-5 right-5 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedFreight === 'air' ? 'border-[#FE0000]' : 'border-slate-300'}`}>
-                  {selectedFreight === 'air' && <div className="w-2.5 h-2.5 bg-[#FE0000] rounded-full" />}
+                <div className={`absolute top-5 right-5 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedFreight === 'air' ? 'border-[#e20c0c]' : 'border-slate-300'}`}>
+                  {selectedFreight === 'air' && <div className="w-2.5 h-2.5 bg-[#e20c0c] rounded-full" />}
                 </div>
               </div>
 
@@ -417,10 +417,10 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                   setSelectedFreight('ocean');
                   setFreightCost(defaultOcean);
                 }}
-                className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreight === 'ocean' ? 'border-[#FE0000] bg-red-50/20 shadow-md' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'}`}
+                className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreight === 'ocean' ? 'border-[#e20c0c] bg-red-50/20 shadow-md' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'}`}
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={`p-2 rounded-xl ${selectedFreight === 'ocean' ? 'bg-red-50 text-[#FE0000]' : 'bg-slate-100 text-slate-500'}`}>
+                  <div className={`p-2 rounded-xl ${selectedFreight === 'ocean' ? 'bg-red-50 text-[#e20c0c]' : 'bg-slate-100 text-slate-500'}`}>
                     <Anchor className="w-5 h-5" />
                   </div>
                   <div className="font-bold text-[15px] text-slate-900">Ocean Freight</div>
@@ -430,8 +430,8 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                   <span className="font-bold text-slate-900 tracking-wide">+${defaultOcean.toFixed(2)} NZD</span>
                 </div>
                 {/* Radio Circle */}
-                <div className={`absolute top-5 right-5 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedFreight === 'ocean' ? 'border-[#FE0000]' : 'border-slate-300'}`}>
-                  {selectedFreight === 'ocean' && <div className="w-2.5 h-2.5 bg-[#FE0000] rounded-full" />}
+                <div className={`absolute top-5 right-5 w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedFreight === 'ocean' ? 'border-[#e20c0c]' : 'border-slate-300'}`}>
+                  {selectedFreight === 'ocean' && <div className="w-2.5 h-2.5 bg-[#e20c0c] rounded-full" />}
                 </div>
               </div>
             </div>
@@ -466,7 +466,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
               </div>
               <div className="flex justify-between items-center pt-5 mt-2 border-t-2 border-slate-200">
                 <span className="font-bold text-slate-900 text-base">Total Landed Price (Door-to-Door):</span>
-                <span className="font-bold text-[#FE0000] text-base tracking-tight">${totalCustomerQuote.toFixed(2)} NZD</span>
+                <span className="font-bold text-[#e20c0c] text-base tracking-tight">${totalCustomerQuote.toFixed(2)} NZD</span>
               </div>
             </div>
           </div>
@@ -475,7 +475,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
           <div className="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-200">
             <div className="flex items-center justify-between mb-2">
               <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-[#FE0000]" />
+                <MessageSquare className="w-4 h-4 text-[#e20c0c]" />
                 Admin Comments &amp; Notes for Customer
               </label>
             </div>
@@ -487,7 +487,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
               value={advisoryNote}
               onChange={(e) => setAdvisoryNote(e.target.value)}
               placeholder="e.g. Genuine OEM Japan direct stock. Includes 12-month Autohub warranty. Inspected before dispatch..."
-              className="w-full text-xs font-medium text-slate-900 bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 focus:border-[#FE0000] shadow-sm transition-all resize-y"
+              className="w-full text-xs font-medium text-slate-900 bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] shadow-sm transition-all resize-y"
             />
           </div>
 
@@ -495,7 +495,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
           <div className="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-200">
             <div className="flex items-center justify-between mb-2">
               <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                <Camera className="w-4 h-4 text-[#FE0000]" />
+                <Camera className="w-4 h-4 text-[#e20c0c]" />
                 Part Photos for Customer Quote
               </label>
             </div>
@@ -509,7 +509,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
               onDragLeave={() => setIsDraggingPhotos(false)}
               onDrop={handlePhotoDrop}
               className={`relative border-2 border-dashed rounded-xl p-5 text-center transition-all duration-200 cursor-pointer ${isDraggingPhotos
-                ? 'border-[#FE0000] bg-red-50/40 scale-[1.01]'
+                ? 'border-[#e20c0c] bg-red-50/40 scale-[1.01]'
                 : 'border-slate-300 hover:border-red-300 bg-white hover:bg-slate-100/50'
                 }`}
               onClick={() => document.getElementById('quote-photo-input')?.click()}
@@ -523,7 +523,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                 onChange={handlePhotoUpload}
               />
               <div className="flex flex-col items-center gap-2">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isDraggingPhotos ? 'bg-red-50 text-[#FE0000]' : 'bg-slate-100 text-slate-400'
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isDraggingPhotos ? 'bg-red-50 text-[#e20c0c]' : 'bg-slate-100 text-slate-400'
                   }`}>
                   <ImagePlus className="w-5 h-5" />
                 </div>
@@ -577,7 +577,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
               disabled={!selectedQuote}
               className={`w-full sm:flex-1 font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md text-sm ${!selectedQuote
                 ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none border border-slate-300'
-                : 'bg-[#FE0000] hover:bg-[#CC162C] text-white shadow-red-500/20'
+                : 'bg-[#e20c0c] hover:bg-[#CC162C] text-white shadow-red-500/20'
                 }`}
             >
               <Check className="w-4 h-4" />
@@ -659,11 +659,11 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                 {/* Email Header */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-black italic text-[#FE0000] text-sm tracking-tight">JDMspan className="not-italic text-slate-900"HUB/span></span>
+                    <span className="font-black italic text-[#e20c0c] text-sm tracking-tight">JDMspan className="not-italic text-slate-900"HUB/span></span>
                     <span className="text-[10px] text-slate-400 ml-1">|</span>
                     <span className="text-[10px] text-slate-500 font-medium">Automotive B2B Procurement</span>
                   </div>
-                  <span className="text-[10px] font-bold text-[#FE0000] bg-red-50 border border-red-200 px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-bold text-[#e20c0c] bg-red-50 border border-red-200 px-2 py-0.5 rounded">
                     FORMAL QUOTE
                   </span>
                 </div>
@@ -696,7 +696,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                   </div>
                   <div className="flex justify-between items-center pt-1 text-sm font-bold">
                     <span className="text-slate-900">Total Landed Price (Door-to-Door):</span>
-                    <span className="font-bold text-[#FE0000]  text-base">${totalCustomerQuote.toFixed(2)} NZD</span>
+                    <span className="font-bold text-[#e20c0c]  text-base">${totalCustomerQuote.toFixed(2)} NZD</span>
                   </div>
                   <div className="text-[10px] text-slate-500 text-right">Includes 15% NZ GST</div>
                 </div>
@@ -742,7 +742,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                 {quotePhotos.length > 0 && (
                   <div className="space-y-2">
                     <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <Camera className="w-3.5 h-3.5 text-[#FE0000]" />
+                      <Camera className="w-3.5 h-3.5 text-[#e20c0c]" />
                       <span>Part Photos ({quotePhotos.length})</span>
                     </div>
                     <div className="grid grid-cols-3 gap-2">
@@ -762,7 +762,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
 
                 {/* Email Call To Action Button */}
                 <div className="pt-2 text-center">
-                  <div className="inline-block bg-[#FE0000] text-white font-bold py-2.5 px-6 rounded-xl text-xs uppercase tracking-wider shadow-sm">
+                  <div className="inline-block bg-[#e20c0c] text-white font-bold py-2.5 px-6 rounded-xl text-xs uppercase tracking-wider shadow-sm">
                     Review &amp; Approve Quote in Customer Portal →
                   </div>
                   <p className="text-[10px] text-slate-400 mt-2">
@@ -798,7 +798,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                     handleIssueQuote();
                   }}
                   disabled={!selectedQuote}
-                  className="bg-[#FE0000] hover:bg-[#CC162C] text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-sm text-xs flex items-center gap-1.5"
+                  className="bg-[#e20c0c] hover:bg-[#CC162C] text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-sm text-xs flex items-center gap-1.5"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Confirm &amp; Issue Quote Now</span>

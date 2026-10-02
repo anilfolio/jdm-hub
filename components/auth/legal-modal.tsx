@@ -88,7 +88,7 @@ export function LegalModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 bg-slate-50/90 shrink-0">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-2">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#FE0000]/10 border border-[#FE0000]/20 flex items-center justify-center text-[#FE0000] shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#e20c0c]/10 border border-[#e20c0c]/20 flex items-center justify-center text-[#e20c0c] shrink-0">
               {activeDoc === "terms" ? (
                 <FileText className="w-4 h-4" />
               ) : (
@@ -130,7 +130,7 @@ export function LegalModal({
               if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
             }}
             className={`py-2.5 sm:py-3 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${activeDoc === "terms"
-              ? "border-[#FE0000] text-[#FE0000]"
+              ? "border-[#e20c0c] text-[#e20c0c]"
               : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
           >
@@ -146,7 +146,7 @@ export function LegalModal({
               if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
             }}
             className={`py-2.5 sm:py-3 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${activeDoc === "privacy"
-              ? "border-[#FE0000] text-[#FE0000]"
+              ? "border-[#e20c0c] text-[#e20c0c]"
               : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
           >
@@ -478,7 +478,7 @@ export function LegalModal({
         {!hasScrolledToBottom && showAcceptButton && (
           <div className="flex items-center justify-between text-xs text-amber-900 bg-amber-50 px-4 sm:px-6 py-2 border-t border-amber-200 shrink-0">
             <span className="flex items-center gap-2 font-medium min-w-0 pr-2">
-              <ArrowDown className="w-4 h-4 animate-bounce text-[#FE0000] shrink-0" />
+              <ArrowDown className="w-4 h-4 animate-bounce text-[#e20c0c] shrink-0" />
               <span className="truncate sm:whitespace-normal">
                 <span className="sm:hidden">Scroll to view all terms to agree</span>
                 <span className="hidden sm:inline">Please scroll through and view the entire terms to enable acceptance</span>
@@ -515,7 +515,7 @@ export function LegalModal({
                   }
                 }}
                 className={`flex-[2] sm:flex-initial h-11 px-4 sm:px-5 text-xs font-bold rounded-xl transition-all shadow-xs inline-flex items-center justify-center gap-2 ${hasScrolledToBottom
-                  ? "bg-[#FE0000] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white shadow-md shadow-red-500/20 active:scale-95 cursor-pointer"
+                  ? "bg-[#e20c0c] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white shadow-md shadow-red-500/20 active:scale-95 cursor-pointer"
                   : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300"
                   }`}
                 title={hasScrolledToBottom ? "Click to accept" : "Please scroll to bottom first"}

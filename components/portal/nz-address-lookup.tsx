@@ -168,9 +168,9 @@ export function NZAddressLookup({
       {label && (
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-[#FE0000]" />
+            <MapPin className="w-3.5 h-3.5 text-[#e20c0c]" />
             <span>{label}</span>
-            {required && <span className="text-[#FE0000]">*</span>}
+            {required && <span className="text-[#e20c0c]">*</span>}
           </label>
           <div className="flex items-center gap-1.5">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
@@ -185,7 +185,7 @@ export function NZAddressLookup({
       <div className="relative">
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none flex items-center gap-1.5">
           {isLoading ? (
-            <Loader2 className="w-4 h-4 animate-spin text-[#FE0000]" />
+            <Loader2 className="w-4 h-4 animate-spin text-[#e20c0c]" />
           ) : (
             <Search className="w-4 h-4" />
           )}
@@ -202,7 +202,7 @@ export function NZAddressLookup({
             else if (query.trim().length >= 2) performSearch(query);
           }}
           placeholder={placeholder}
-          className="w-full pl-9 pr-20 py-2.5 bg-slate-50 hover:bg-white focus:bg-white text-xs text-slate-900 border border-slate-200/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] transition-all shadow-xs"
+          className="w-full pl-9 pr-20 py-2.5 bg-slate-50 hover:bg-white focus:bg-white text-xs text-slate-900 border border-slate-200/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] transition-all shadow-xs"
         />
 
         <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -244,7 +244,7 @@ export function NZAddressLookup({
                 >
                   <div className="flex items-start gap-2.5 min-w-0">
                     <div
-                      className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${isHighlighted ? "bg-[#FE0000] text-white" : "bg-slate-100 text-slate-500"
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${isHighlighted ? "bg-[#e20c0c] text-white" : "bg-slate-100 text-slate-500"
                         }`}
                     >
                       <MapPin className="w-3.5 h-3.5" />

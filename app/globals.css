@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --brand-red: #FE0000;
+  --brand-red: #e20c0c;
   --brand-red-hover: #D81419;
   --brand-red-dark: #9B0A0F;
   --brand-navy: #2B4499;

@@ -243,7 +243,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-100">
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[#FE0000]" />
+              <FileText className="w-5 h-5 text-[#e20c0c]" />
               Official PDF Invoice Upload &amp; Release
             </h3>
             <p className="text-xs text-slate-500 mt-1 max-w-3xl leading-relaxed">
@@ -305,7 +305,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                 <button
                   type="button"
                   onClick={handleOpenPreview}
-                  className="text-xs text-[#FE0000] hover:text-[#9B0A0F] font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                  className="text-xs text-[#e20c0c] hover:text-[#9B0A0F] font-bold flex items-center gap-1 hover:underline cursor-pointer"
                   title="Open live PDF invoice preview"
                 >
                   <Eye className="w-3.5 h-3.5" />
@@ -320,7 +320,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-xs font-bold text-slate-700">
-                    Invoice Number <span className="text-[#FE0000]">*</span>
+                    Invoice Number <span className="text-[#e20c0c]">*</span>
                   </label>
                   <span className="text-[11px] font-semibold text-slate-400">
                     Configurable &amp; Editable
@@ -332,7 +332,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                     value={invoiceNumber}
                     onChange={(e) => setInvoiceNumber(e.target.value)}
                     placeholder="e.g. INV-2026-000128"
-                    className="w-full text-sm p-3 rounded-xl bg-white border border-slate-200 shadow-xs focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 focus:border-[#FE0000] font-bold text-slate-900 pr-24"
+                    className="w-full text-sm p-3 rounded-xl bg-white border border-slate-200 shadow-xs focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] font-bold text-slate-900 pr-24"
                     required
                   />
                   <button
@@ -353,7 +353,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
               {/* 1. Drag & Drop PDF Invoice Upload */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-2">
-                  Attach Official PDF Invoice (Drag &amp; Drop) <span className="text-[#FE0000]">*</span>
+                  Attach Official PDF Invoice (Drag &amp; Drop) <span className="text-[#e20c0c]">*</span>
                 </label>
 
                 <input
@@ -413,12 +413,12 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
                     className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${isDragging
-                      ? "border-[#FE0000] bg-red-50/50 scale-[1.01]"
+                      ? "border-[#e20c0c] bg-red-50/50 scale-[1.01]"
                       : "border-slate-300 bg-slate-50/70 hover:bg-slate-100/70 hover:border-slate-400"
                       }`}
                   >
                     <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 mb-3 shadow-xs">
-                      <UploadCloud className="w-6 h-6 text-[#FE0000]" />
+                      <UploadCloud className="w-6 h-6 text-[#e20c0c]" />
                     </div>
                     <p className="text-sm font-bold text-slate-800">
                       Drag &amp; drop PDF invoice here
@@ -455,7 +455,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                 <button
                   type="submit"
                   disabled={isMarking}
-                  className="w-full py-3.5 rounded-xl text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 bg-[#FE0000] hover:bg-[#9B0A0F] disabled:opacity-50 disabled:cursor-not-allowed text-white cursor-pointer active:scale-98"
+                  className="w-full py-3.5 rounded-xl text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 bg-[#e20c0c] hover:bg-[#9B0A0F] disabled:opacity-50 disabled:cursor-not-allowed text-white cursor-pointer active:scale-98"
                 >
                   {isMarking ? (
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
@@ -490,7 +490,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
             {/* Modal Header */}
             <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-[#FE0000] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-[#e20c0c] flex items-center justify-center font-bold">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>

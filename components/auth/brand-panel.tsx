@@ -9,7 +9,7 @@ export function BrandPanel() {
       aria-label="Brand Overview"
       className="relative w-full h-full min-h-[640px] flex flex-col justify-between overflow-hidden text-white p-8 sm:p-12 lg:p-16 select-none"
       style={{
-        backgroundColor: "#FE0000",
+        backgroundColor: "#e20c0c",
       }}
     >
       {/* 3D-Like Angular Faceted Polygon Shards matching reference image */}
@@ -82,13 +82,13 @@ export function BrandPanel() {
 
       {/* Top Platform Identity with Approved AutoHub 'A' Logo Badge */}
       <div className="relative z-10 flex items-center gap-3 select-none">
-        <div className="w-10 h-10 rounded-xl border-2 border-white bg-[#FE0000] shadow-md flex items-center justify-center font-black text-xl text-white tracking-tighter leading-none shrink-0 transition-transform duration-200 hover:scale-105">
-          P
+        <div className="w-10 h-10 rounded-xl border-2 border-white bg-[#e20c0c] shadow-md flex items-center justify-center font-black text-xl text-white tracking-tighter leading-none shrink-0 transition-transform duration-200 hover:scale-105">
+          JD
         </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm sm:text-[20px] font-black italic tracking-tight text-white uppercase ">
-              JDMspan className="not-italic font-bold text-white"HUB/span>
+            <span className="text-sm sm:text-[20px] font-black tracking-tight text-white uppercase ">
+              JDMHUB
             </span>
             <span className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/70 bg-white/40 px-1.5 py-0.5 rounded border border-white/15 leading-none">
               Platform
@@ -103,7 +103,7 @@ export function BrandPanel() {
         <div className="mb-4 select-none">
           <div className="inline-block">
             <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black italic tracking-tight text-white leading-none  uppercase">
-              JDMspan className="not-italic font-extrabold text-white"HUB/span>
+              JDM<span className="not-italic font-extrabold text-white">HUB</span>
             </h1>
             {/* Precision aerodynamic speed accent blade beneath PRO */}
             <div className="flex items-center gap-1.5 mt-3.5">

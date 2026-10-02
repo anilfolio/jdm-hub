@@ -15,7 +15,7 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
       {/* Mobile Top Header (Visible only on <1024px screens) - Ultra Premium Brand Gradient */}
       <header className="lg:hidden sticky top-0 w-full bg-gradient-to-r from-[#D9141B] via-[#C40E14] to-[#8A080C] text-white px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between shadow-md border-b border-red-900/30 z-30 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg border-2 border-white/90 bg-[#FE0000] flex items-center justify-center font-black text-sm leading-none text-white shadow-xs shrink-0">
+          <div className="w-8 h-8 rounded-lg border-2 border-white/90 bg-[#e20c0c] flex items-center justify-center font-black text-sm leading-none text-white shadow-xs shrink-0">
             P
           </div>
           <div className="flex flex-col">
@@ -62,7 +62,7 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
               href="/terms"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#FE0000] active:text-[#FE0000] transition-colors underline underline-offset-2 py-0.5 px-1"
+              className="hover:text-[#e20c0c] active:text-[#e20c0c] transition-colors underline underline-offset-2 py-0.5 px-1"
             >
               Terms of Trade
             </a>
@@ -71,7 +71,7 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
               href="/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#FE0000] active:text-[#FE0000] transition-colors underline underline-offset-2 py-0.5 px-1"
+              className="hover:text-[#e20c0c] active:text-[#e20c0c] transition-colors underline underline-offset-2 py-0.5 px-1"
             >
               Privacy Policy
             </a>
