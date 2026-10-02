@@ -112,7 +112,7 @@ export function AdminDashboardView() {
   return (
     <div className="space-y-6">
       {/* SECTION 5: Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-3">
         {[
           { label: "NEW REQUESTS", value: requests.filter((r) => r.status === "Submitted").length, link: "/admin/requests?status=Submitted", icon: Inbox, color: "text-sky-600" },
           { label: "SOURCING", value: requests.filter((r) => r.status === "Sourcing").length, link: "/admin/requests?status=Sourcing", icon: Search, color: "text-amber-600" },
@@ -143,7 +143,7 @@ export function AdminDashboardView() {
 
       {/* Main Section: ACTIVE & OPEN ORDERS (Default) */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-5 border-b border-slate-100 flex flex-col gap-4">
+        <div className="p-3 md:p-4 border-b border-slate-100 flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
@@ -182,7 +182,7 @@ export function AdminDashboardView() {
           </div>
 
           {/* Tab navigation pills & Quick search */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-2">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex items-center gap-1.5 overflow-x-auto bg-slate-100 p-2 rounded-xl">
               <button
                 type="button"

@@ -147,7 +147,7 @@ export function PortalSidebar({
               className={`flex items-center gap-3 cursor-pointer group ${collapsed ? "lg:hidden" : "flex"}`}
             >
               <div className="w-9 h-9 rounded-xl border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
-                <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">P</span>
+                <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">JD</span>
               </div>
               <div className="flex flex-col">
                 <span className="font-black italic text-white uppercase text-lg tracking-tight leading-none ">
