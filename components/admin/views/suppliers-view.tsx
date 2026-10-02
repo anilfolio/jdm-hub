@@ -1,0 +1,601 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+  Package,
+  Plus,
+  Edit2,
+  Trash2,
+  Building,
+  Mail,
+  Phone,
+  Globe,
+  Star,
+  CheckCircle2,
+  X,
+  User,
+} from "lucide-react";
+import { Supplier, SupplierQuotation, SupplierStatus } from "@/types/shared";
+import { useUnifiedData } from "@/context/unified-data-context";
+
+export function SuppliersView() {
+  const { suppliers, requests, addSupplier, updateSupplier, updateSupplierStatus } = useUnifiedData();
+
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
+
+  // Form State
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("Japan");
+  const [category, setCategory] = useState("Genuine OEM");
+  const [specializations, setSpecializations] = useState("Toyota, Lexus");
+  const [formStatus, setFormStatus] = useState<SupplierStatus>("Active");
+
+  const handleOpenAdd = () => {
+    setEditingSupplier(null);
+    setName("");
+    setContact("");
+    setEmail("");
+    setPhone("");
+    setCountry("Japan");
+    setCategory("Genuine OEM");
+    setSpecializations("Toyota, Lexus");
+    setFormStatus("Active");
+    setShowAddModal(true);
+  };
+
+  const handleOpenEdit = (s: Supplier) => {
+    setEditingSupplier(s);
+    setName(s.name);
+    setContact(s.contact);
+    setEmail(s.email);
+    setPhone(s.phone);
+    setCountry(s.country);
+    setCategory(s.category);
+    setSpecializations(s.specializations.join(", "));
+    setFormStatus(s.status);
+    setShowAddModal(true);
+  };
+
+  const handleSaveSupplier = (e: React.FormEvent) => {
+    e.preventDefault();
+    const specs = specializations.split(",").map((s) => s.trim()).filter(Boolean);
+
+    if (editingSupplier) {
+      updateSupplier(editingSupplier.id, {
+        name,
+        contact,
+        email,
+        phone,
+        country,
+        category,
+        specializations: specs,
+        status: formStatus,
+      });
+    } else {
+      const newSup: Supplier = {
+        id: `sup-${Date.now()}`,
+        name,
+        contact,
+        email,
+        phone,
+        country,
+        category,
+        specializations: specs,
+        rating: 5,
+        status: formStatus,
+      };
+      addSupplier(newSup);
+    }
+
+    setShowAddModal(false);
+  };
+
+  // Extract quotation history across requests for this supplier
+  const getSupplierQuotationHistory = (supId: string): { reqNum: string; quote: SupplierQuotation }[] => {
+    const list: { reqNum: string; quote: SupplierQuotation }[] = [];
+    requests.forEach((r) => {
+      r.supplierQuotations?.forEach((q) => {
+        if (q.supplierId === supId) {
+          list.push({ reqNum: r.requestNumber, quote: q });
+        }
+      });
+    });
+    return list;
+  };
+
+  const filteredSuppliers = suppliers.filter((s) => {
+    if (statusFilter !== "All" && s.status !== statusFilter) return false;
+    if (!search.trim()) return true;
+    const q = search.toLowerCase().trim();
+    return (
+      s.name.toLowerCase().includes(q) ||
+      s.contact.toLowerCase().includes(q) ||
+      s.country.toLowerCase().includes(q) ||
+      s.category.toLowerCase().includes(q) ||
+      s.specializations.some((spec) => spec.toLowerCase().includes(q))
+    );
+  });
+
+  const activeCount = suppliers.filter((s) => s.status === "Active" || s.status === "Preferred").length;
+  const inactiveCount = suppliers.filter((s) => s.status === "Inactive" || s.status === "Suspended").length;
+
+  const getStatusBadgeClass = (status: SupplierStatus) => {
+    switch (status) {
+      case "Active":
+        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+      case "Preferred":
+        return "bg-purple-50 text-purple-700 border-purple-200 font-bold";
+      case "Suspended":
+        return "bg-amber-50 text-amber-700 border-amber-200 font-semibold";
+      case "Inactive":
+      default:
+        return "bg-slate-100 text-slate-500 border-slate-200";
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Top Banner & Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-slate-400 block text-[11px] uppercase font-bold tracking-wider">
+            Total Distribution Partners
+          </span>
+          <span className=" text-2xl font-black text-slate-900 mt-1 block">
+            {suppliers.length}
+          </span>
+          <span className="text-[10px] text-slate-400 mt-0.5 block">
+            Authorized regional OEM & aftermarket partners
+          </span>
+        </div>
+
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-slate-400 block text-[11px] uppercase font-bold tracking-wider">
+            Active / Preferred Suppliers
+          </span>
+          <span className=" text-2xl font-black text-emerald-600 mt-1 block">
+            {activeCount}
+          </span>
+          <span className="text-[10px] text-slate-400 mt-0.5 block">
+            Authorized for quoting and ordering
+          </span>
+        </div>
+
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-slate-400 block text-[11px] uppercase font-bold tracking-wider">
+            Inactive / Suspended
+          </span>
+          <span className=" text-2xl font-black text-slate-500 mt-1 block">
+            {inactiveCount}
+          </span>
+          <span className="text-[10px] text-slate-400 mt-0.5 block">
+            Excluded from active procurement selection
+          </span>
+        </div>
+      </div>
+
+      {/* Controls Bar: Search, Filters & Add */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="w-full sm:w-80">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search Supplier Name, Country, Specialization..."
+            className="w-full px-3.5 py-2 text-xs bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FE0000]/30 focus:border-[#FE0000]"
+          />
+        </div>
+
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+          {(["All", "Active", "Preferred", "Suspended", "Inactive"] as const).map((filter) => (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setStatusFilter(filter)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${statusFilter === filter
+                ? "bg-[#FE0000] text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleOpenAdd}
+          className="px-3.5 py-2 bg-[#FE0000] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
+        >
+          <Plus className="w-4 h-4" />
+          Add Supplier
+        </button>
+      </div>
+
+      {/* Supplier Directory Table */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="overflow-x-auto custom-scrollbar">
+          <table className="w-full min-w-[700px] text-left text-xs border-collapse">
+            <thead>
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <th className="py-3 px-4">Supplier Name</th>
+                <th className="py-3 px-4">Contact</th>
+                <th className="py-3 px-4">Country</th>
+                <th className="py-3 px-4">Category</th>
+                <th className="py-3 px-4">Specializations</th>
+                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredSuppliers.map((s) => (
+                <tr key={s.id} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-slate-900">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 font-bold">
+                        {s.name[0]}
+                      </div>
+                      <div>
+                        <span>{s.name}</span>
+                        {s.rating && (
+                          <div className="flex items-center gap-0.5 text-amber-500 text-[10px] mt-0.5">
+                            {Array.from({ length: s.rating }).map((_, idx) => (
+                              <Star key={idx} className="w-2.5 h-2.5 fill-amber-400" />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-700">
+                    <span className="font-semibold block">{s.contact}</span>
+                    <span className="text-[10px] text-slate-400">{s.email}</span>
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-600">{s.country}</td>
+                  <td className="py-3.5 px-4 font-medium text-slate-700">{s.category}</td>
+                  <td className="py-3.5 px-4">
+                    <div className="flex flex-wrap gap-1">
+                      {s.specializations.map((spec) => (
+                        <span
+                          key={spec}
+                          className="bg-slate-100 text-slate-700 text-[10px] font-medium px-2 py-0.5 rounded"
+                        >
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="py-3.5 px-4">
+                    <span
+                      className={`text-[10px] px-2.5 py-0.5 rounded-full border font-bold ${getStatusBadgeClass(
+                        s.status
+                      )}`}
+                    >
+                      {s.status}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-4 text-center">
+                    <div className="flex items-center justify-center gap-1.5">
+                      {/* Live Quick Status Selector */}
+                      <select
+                        value={s.status}
+                        onChange={(e) => updateSupplierStatus(s.id, e.target.value as SupplierStatus)}
+                        className="text-[11px] font-medium py-1 px-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus:ring-1 focus:ring-[#FE0000] cursor-pointer"
+                        title="Change Supplier Operational Status"
+                      >
+                        <option value="Active">Active</option>
+                        <option value="Preferred">Preferred</option>
+                        <option value="Suspended">Suspended</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSupplier(s)}
+                        className="px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg shadow-xs"
+                      >
+                        History
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(s)}
+                        className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Supplier Detail & Quotation History Modal */}
+      {selectedSupplier && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#2B4499] text-white flex items-center justify-center font-bold text-lg">
+                  {selectedSupplier.name[0]}
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">{selectedSupplier.name}</h3>
+                  <span className="text-xs text-slate-500">
+                    {selectedSupplier.country} • {selectedSupplier.category}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedSupplier(null)}
+                className="p-2 text-slate-400 hover:text-slate-700 rounded-xl"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Supplier Contact info */}
+            <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
+              <div>
+                <span className="text-slate-400 block text-[11px]">Contact Representative</span>
+                <span className="font-bold text-slate-900 text-sm">
+                  {selectedSupplier.contact}
+                </span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[11px]">Email</span>
+                <span className="font-medium text-slate-800">{selectedSupplier.email}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[11px]">Phone</span>
+                <span className="font-medium text-slate-800">{selectedSupplier.phone}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[11px]">Country</span>
+                <span className="font-medium text-slate-800">{selectedSupplier.country}</span>
+              </div>
+            </div>
+
+            {/* Quotation History (Section 12) */}
+            <div>
+              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
+                Quotation History on JDMHUB (
+                {getSupplierQuotationHistory(selectedSupplier.id).length})
+              </h4>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {getSupplierQuotationHistory(selectedSupplier.id).length === 0 ? (
+                  <p className="text-xs text-slate-400 italic">
+                    No quotations registered for this supplier yet.
+                  </p>
+                ) : (
+                  getSupplierQuotationHistory(selectedSupplier.id).map(({ reqNum, quote }) => (
+                    <div
+                      key={quote.id}
+                      className="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between text-xs"
+                    >
+                      <div>
+                        <span className=" font-bold text-[#FE0000] mr-2">{reqNum}</span>
+                        <span className="font-semibold text-slate-800">
+                          {quote.supplierPartRef}
+                        </span>
+                        <span className="text-slate-500 block text-[11px] mt-0.5">
+                          {quote.condition} • {quote.leadTimeDays} Days Lead Time
+                        </span>
+                      </div>
+                      <div className="text-right ">
+                        <span className="font-bold text-slate-900 block">
+                          NZ${Number(quote.supplierCost).toFixed(2)}
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          +NZ${Number(quote.supplierFreight).toFixed(2)} freight
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-6 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setSelectedSupplier(null)}
+                className="px-4 py-2 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Add / Edit Supplier */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+            onClick={() => setShowAddModal(false)}
+          />
+
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-6">
+
+            {/* Header */}
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center shrink-0 border border-rose-100 shadow-inner">
+                <Building className="w-6 h-6 text-[#FE0000]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 mb-1">
+                  {editingSupplier ? "Edit Supplier" : "Add Supplier Directory Record"}
+                </h3>
+                <p className="text-sm text-slate-500">
+                  Enter supplier details for procurement sourcing.
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveSupplier} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Supplier Name <span className="text-rose-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <Building className="w-4 h-4 text-slate-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Osaka Auto Spares Ltd"
+                    required
+                    className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Contact Person <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <User className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={contact}
+                      onChange={(e) => setContact(e.target.value)}
+                      required
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Country <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Globe className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      required
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Email <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Mail className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Phone <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Phone className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Category <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Package className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      placeholder="e.g. Genuine Japanese OEM"
+                      required
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Specializations (Comma separated)
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Star className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={specializations}
+                      onChange={(e) => setSpecializations(e.target.value)}
+                      placeholder="e.g. Toyota, Nissan, Brake Rotors"
+                      className="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-[#FE0000]/10 focus:border-[#FE0000] transition-all bg-white placeholder:text-slate-400 shadow-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-5 py-2.5 text-sm font-semibold text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 rounded-xl transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 text-sm font-bold bg-[#FE0000] hover:bg-[#C8101E] text-white rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2 group"
+                >
+                  <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+                  {editingSupplier ? "Save Changes" : "Create Supplier"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

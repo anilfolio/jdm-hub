@@ -1,0 +1,476 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+  Truck,
+  Plane,
+  Building,
+  CheckCircle2,
+  Clock,
+  ExternalLink,
+  Plus,
+  ArrowRight,
+  ShieldCheck,
+  Package,
+  Calendar,
+  MapPin,
+} from "lucide-react";
+import { PartRequest, ShipmentMilestone } from "@/types/shared";
+import { useUnifiedData } from "@/context/unified-data-context";
+import { ShipmentMilestoneBadge } from "../../status-badge";
+
+interface ShipmentTabProps {
+  request: PartRequest;
+}
+
+export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
+  const {
+    requests,
+    createShipment,
+    updateShipmentMilestone,
+    recordDelivery,
+    completeRequest,
+  } = useUnifiedData();
+
+  const request = requests.find((r) => r.id === initialRequest.id) || initialRequest;
+
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showAdvanceModal, setShowAdvanceModal] = useState(false);
+  const [showDeliveryModal, setShowDeliveryModal] = useState(false);
+
+  // Create Shipment Form
+  const [carrier, setCarrier] = useState("DHL Global Forwarding");
+  const [estimatedDelivery, setEstimatedDelivery] = useState("2026-09-18");
+  const [trackingNumber, setTrackingNumber] = useState("AWB-9988776655");
+  const [origin, setOrigin] = useState("Nagoya Consolidation Hub, Japan");
+  const [destination, setDestination] = useState(request.deliveryAddress.label);
+
+  // Advance Milestone Form
+  const [selectedMilestone, setSelectedMilestone] = useState<ShipmentMilestone>("In Transit");
+  const [milestoneNote, setMilestoneNote] = useState("");
+  const [deliveryProof, setDeliveryProof] = useState("Signed by Workshop Manager");
+
+  const shipment = request.shipment;
+
+  const MILESTONES: { name: ShipmentMilestone; label: string; desc: string }[] = [
+    {
+      name: "Received At Shipping Facility",
+      label: "1. Received At Facility",
+      desc: "Supplier consignment delivered to export warehouse.",
+    },
+    {
+      name: "In Transit",
+      label: "2. In Transit",
+      desc: "Dispatched on international airfreight flight.",
+    },
+    {
+      name: "Arrived in NZ",
+      label: "3. Arrived in NZ",
+      desc: "Touched down at Auckland Airport cargo terminal.",
+    },
+    {
+      name: "Out For Delivery",
+      label: "4. Out For Delivery",
+      desc: "Dispatched on local Auckland courier van.",
+    },
+    {
+      name: "Delivered",
+      label: "5. Delivered",
+      desc: "Successfully delivered to customer workshop.",
+    },
+  ];
+
+  const handleCreateShipment = (e: React.FormEvent) => {
+    e.preventDefault();
+    createShipment(request.id, {
+      carrier,
+      trackingNumber,
+      estimatedDelivery,
+      origin,
+      destination,
+    });
+    setShowCreateModal(false);
+  };
+
+  const handleAdvanceMilestone = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateShipmentMilestone(request.id, selectedMilestone, milestoneNote);
+    setShowAdvanceModal(false);
+  };
+
+  const handleRecordDelivery = (e: React.FormEvent) => {
+    e.preventDefault();
+    recordDelivery(request.id, deliveryProof);
+    setShowDeliveryModal(false);
+  };
+
+  const getMilestoneIndex = (name: ShipmentMilestone) => {
+    return MILESTONES.findIndex((m) => m.name === name);
+  };
+
+  const currentMilestoneIndex = shipment ? getMilestoneIndex(shipment.currentMilestone) : -1;
+
+  return (
+    <div className="space-y-6">
+      {/* Top Banner */}
+      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div>
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-bold text-slate-900">
+              Operations & Shipment Tracking
+            </h3>
+            {shipment && <ShipmentMilestoneBadge milestone={shipment.currentMilestone} />}
+          </div>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Customer-facing status remains <span className="font-bold text-slate-700">SHIPPED</span>.
+            Internal logistics milestones are tracked below.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5">
+          {!shipment ? (
+            <button
+              type="button"
+              onClick={() => setShowCreateModal(true)}
+              className="px-4 py-2 bg-[#FE0000] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+            >
+              <Plus className="w-4 h-4" />
+              Create Shipment
+            </button>
+          ) : (
+            <div className="flex flex-wrap items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-300 shadow-xs">
+              <label className="text-xs font-bold text-slate-700 whitespace-nowrap">
+                Shipment Status:
+              </label>
+              <select
+                value={shipment.currentMilestone}
+                onChange={(e) => {
+                  const newMs = e.target.value as ShipmentMilestone;
+                  updateShipmentMilestone(request.id, newMs, `Milestone updated to ${newMs}`);
+                }}
+                className="text-xs font-bold text-slate-900 bg-slate-50 border border-slate-300 hover:border-[#FE0000] rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 cursor-pointer"
+                title="Select status to advance or reverse milestone"
+              >
+                {MILESTONES.map((m) => (
+                  <option key={m.name} value={m.name}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedMilestone(shipment.currentMilestone);
+                  setShowAdvanceModal(true);
+                }}
+                className="text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:underline px-1 whitespace-nowrap"
+                title="Add a custom note to this milestone"
+              >
+                + Note
+              </button>
+
+              {shipment.currentMilestone === "Delivered" && request.status !== "Completed" && (
+                <button
+                  type="button"
+                  onClick={() => completeRequest(request.id)}
+                  className="ml-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs flex items-center gap-1"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Complete Request
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {!shipment ? (
+        <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center shadow-xs">
+          <Truck className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+          <h4 className="text-sm font-bold text-slate-700">No Shipment Record Created</h4>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto mt-1 mb-4">
+            Once the overseas supplier dispatches the consignment, create the shipment and assign carrier tracking details.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-[#FE0000] text-white rounded-xl text-xs font-semibold shadow-xs"
+          >
+            Create Consignment Shipment
+          </button>
+        </div>
+      ) : (
+        <>
+          {/* Shipment Key Metrics */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span className="text-slate-400 block text-[11px]">Freight Carrier</span>
+              <span className="font-bold text-slate-900 text-sm">{shipment.carrier}</span>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span className="text-slate-400 block text-[11px]">Origin & Transit</span>
+              <span className="font-medium text-slate-800 line-clamp-1">{shipment.origin}</span>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span className="text-slate-400 block text-[11px]">Estimated Delivery</span>
+              <span className="font-bold text-slate-900 text-sm">
+                {shipment.estimatedDelivery}
+              </span>
+            </div>
+          </div>
+
+          {/* Internal Shipping Milestones Stepper (Section 23) */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+              <div>
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Internal Shipping Milestones (Inside &quot;SHIPPED&quot;)
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  The Customer Portal automatically displays the latest achieved milestone.
+                </p>
+              </div>
+              <span className="text-xs  font-bold text-cyan-800 bg-cyan-50 px-2.5 py-1 rounded-lg border border-cyan-200">
+                Step {currentMilestoneIndex + 1} of {MILESTONES.length}
+              </span>
+            </div>
+
+            <div className="relative pl-6 space-y-8 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+              {MILESTONES.map((m, idx) => {
+                const isPassed = idx < currentMilestoneIndex;
+                const isCurrent = idx === currentMilestoneIndex;
+                const isFuture = idx > currentMilestoneIndex;
+
+                const matchingLog = shipment.milestonesHistory?.find(
+                  (log) => log.milestone === m.name
+                );
+
+                return (
+                  <div key={m.name} className="relative flex items-start gap-4">
+                    {/* Circle marker */}
+                    <div
+                      className={`absolute -left-6 mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-10 transition-all ${isPassed
+                        ? "bg-emerald-500 text-white ring-4 ring-emerald-50"
+                        : isCurrent
+                          ? "bg-[#2B4499] text-white ring-4 ring-blue-100 animate-pulse"
+                          : "bg-slate-200 text-slate-500"
+                        }`}
+                    >
+                      {isPassed ? <CheckCircle2 className="w-3.5 h-3.5" /> : idx + 1}
+                    </div>
+
+                    <div className="flex-1 bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                        <div className="flex items-center gap-2">
+                          <h5
+                            className={`text-xs font-bold ${isCurrent ? "text-[#2B4499]" : "text-slate-900"
+                              }`}
+                          >
+                            {m.label}
+                          </h5>
+                          {isCurrent && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#2B4499]">
+                              Current Milestone
+                            </span>
+                          )}
+                        </div>
+                        {matchingLog?.timestamp && (
+                          <span className="text-[11px] text-slate-400 ">
+                            {matchingLog.timestamp}
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-xs text-slate-600 mt-1">
+                        {matchingLog?.description || m.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* MODAL: Create Shipment */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-100 animate-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FE0000]/10 to-[#FE0000]/5 border border-[#FE0000]/20 flex items-center justify-center shrink-0 shadow-inner">
+                <Truck className="w-5 h-5 text-[#FE0000]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 tracking-tight">Create Consignment Shipment</h3>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Initialize logistics tracking for {request.requestNumber}.
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCreateShipment} className="space-y-4">
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5 flex items-center gap-2">
+                    Carrier Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Building className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <select
+                      value={carrier}
+                      onChange={(e) => setCarrier(e.target.value)}
+                      className="w-full text-sm pl-10 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] transition-all appearance-none"
+                    >
+                      <option value="DHL Global Forwarding">DHL Global Forwarding</option>
+                      <option value="Mainfreight Air & Ocean">Mainfreight Air & Ocean</option>
+                      <option value="FedEx Express International">FedEx Express International</option>
+                      <option value="Japan Post EMS">Japan Post EMS</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5 flex items-center gap-2">
+                    Tracking Number <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Package className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={trackingNumber}
+                      onChange={(e) => setTrackingNumber(e.target.value)}
+                      required
+                      placeholder="e.g. AWB-9988776655"
+                      className="w-full text-sm pl-10 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5 flex items-center gap-2">
+                    Origin Facility <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <MapPin className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={origin}
+                      onChange={(e) => setOrigin(e.target.value)}
+                      required
+                      placeholder="e.g. Nagoya Consolidation Hub"
+                      className="w-full text-sm pl-10 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5 flex items-center gap-2">
+                    Estimated Delivery <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Calendar className="h-4 w-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="date"
+                      value={estimatedDelivery}
+                      onChange={(e) => setEstimatedDelivery(e.target.value)}
+                      required
+                      className="w-full text-sm pl-10 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FE0000]/20 focus:border-[#FE0000] transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-5 py-2.5 text-sm font-bold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-all shadow-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 text-sm font-bold bg-[#FE0000] hover:bg-[#C8101E] text-white rounded-xl shadow-md shadow-red-500/20 transition-all flex items-center gap-2"
+                >
+                  <Truck className="w-4 h-4" />
+                  Save Shipment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Advance Milestone */}
+      {showAdvanceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95">
+            <h3 className="text-base font-bold text-slate-900 mb-1">Update Shipment Status</h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Select any milestone to advance or reverse the shipment status.
+            </p>
+
+            <form onSubmit={handleAdvanceMilestone} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Select Milestone (Advance or Reverse)
+                </label>
+                <select
+                  value={selectedMilestone}
+                  onChange={(e) => setSelectedMilestone(e.target.value as ShipmentMilestone)}
+                  className="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2B4499]/30 focus:border-[#2B4499]"
+                >
+                  {MILESTONES.map((m) => (
+                    <option key={m.name} value={m.name}>
+                      {m.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Milestone Note / Flight / Dispatch Details
+                </label>
+                <textarea
+                  value={milestoneNote}
+                  onChange={(e) => setMilestoneNote(e.target.value)}
+                  placeholder="e.g. Flight touched down at AKL cargo terminal. In customs inspection."
+                  rows={3}
+                  className="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2B4499]/30 focus:border-[#2B4499]"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowAdvanceModal(false)}
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-xs font-bold bg-[#2B4499] hover:bg-[#1E3270] text-white rounded-xl shadow-xs"
+                >
+                  Update Milestone
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
