@@ -115,7 +115,7 @@ export function GlobalSearchModal() {
       // Any request with an invoice, payment record, or invoicing status
       const generatedInvoiceNumber = `INV-2026-${r.requestNumber.replace(/[^0-9]/g, "").padStart(4, "0")}`;
       const invoiceNumber = r.payment?.invoiceNumber || (
-        ["Invoicing", "Awaiting Payment", "Ordered", "Subadmin Pending", "Subadmin Review", "Subadmin Hold", "Subadmin Approved", "Ready for Dispatch", "Shipped", "Delivered", "Completed"].includes(r.status) ||
+        ["Invoicing", "Awaiting Payment", "Ordered", "Ready for Dispatch", "Shipped", "Delivered", "Completed"].includes(r.status) ||
           r.customerQuote ||
           r.quotation ||
           r.payment
@@ -449,7 +449,6 @@ export function GlobalSearchModal() {
       closeSearch();
 
       const isCustomerContext = pathname.startsWith("/customer");
-      const isSubadminContext = pathname.startsWith("/subadmin");
 
       if (isCustomerContext && item.requestId) {
         if (item.category === "invoices") {
@@ -469,10 +468,6 @@ export function GlobalSearchModal() {
         return;
       }
 
-      if (isSubadminContext && item.requestId) {
-        router.push(`/subadmin/dashboard?id=${item.requestId}`);
-        return;
-      }
 
       // Default Admin context handling
       if (item.category === "invoices" && item.requestId) {

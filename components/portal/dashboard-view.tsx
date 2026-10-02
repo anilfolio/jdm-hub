@@ -47,7 +47,7 @@ export function DashboardView() {
     (r) =>
       r.actionType === "review_quote" ||
       r.actionType === "pay_now" ||
-      (r.actionType === "view_details" && !r.status.startsWith("Subadmin")) ||
+      r.actionType === "view_details" ||
       r.status === "Quoted" ||
       (r.status === "Awaiting Payment" && r.payment?.status !== "Paid")
   );

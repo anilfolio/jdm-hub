@@ -27,7 +27,7 @@ export default function TermsOfTradePage() {
                 A
               </div>
               <span className="font-black italic text-lg tracking-tight text-slate-900 uppercase ">
-                JDMspan className="not-italic font-bold text-slate-700"HUB/span>
+                JDM<span className="not-italic font-bold text-slate-700">HUB</span>
               </span>
             </div>
           </div>

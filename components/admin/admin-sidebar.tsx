@@ -163,7 +163,7 @@ export function AdminSidebar({
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-black italic text-white uppercase text-lg tracking-tight leading-none ">
-                  JDMspan className="not-italic text-white"HUB/span>
+                  JDM<span className="not-italic text-white">HUB</span>
                 </span>
               </div>
               <span className="text-[11px] font-bold text-white/70 uppercase block">

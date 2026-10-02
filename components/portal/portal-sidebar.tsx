@@ -151,7 +151,7 @@ export function PortalSidebar({
               </div>
               <div className="flex flex-col">
                 <span className="font-black italic text-white uppercase text-lg tracking-tight leading-none ">
-                  JDMspan className="not-italic text-white"HUB/span>
+                  JDM<span className="not-italic text-white">HUB</span>
                 </span>
                 <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider mt-1">
                   Customer Portal

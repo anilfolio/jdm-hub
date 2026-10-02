@@ -659,7 +659,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                 {/* Email Header */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-black italic text-[#e20c0c] text-sm tracking-tight">JDMspan className="not-italic text-slate-900"HUB/span></span>
+                    <span className="font-black italic text-[#e20c0c] text-sm tracking-tight">JDM<span className="not-italic text-slate-900">HUB</span></span>
                     <span className="text-[10px] text-slate-400 ml-1">|</span>
                     <span className="text-[10px] text-slate-500 font-medium">Automotive B2B Procurement</span>
                   </div>

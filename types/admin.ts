@@ -18,7 +18,6 @@ export type RequestDetailTab =
   | "payment"
   | "shipment"
   | "documents"
-  | "subadmin"
   | "activity";
 
 export interface RequestFilterOptions {

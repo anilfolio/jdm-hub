@@ -50,9 +50,7 @@ export function AdminDashboardView() {
           r.status === "Awaiting Payment" ||
           r.status === "Invoicing" ||
           r.payment?.status === "Unpaid" ||
-          (r.status === "Ordered" && !r.shipment) ||
-          r.status === "Subadmin Review" ||
-          r.status === "Subadmin Hold"
+          (r.status === "Ordered" && !r.shipment)
       ),
     [requests]
   );

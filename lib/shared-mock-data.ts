@@ -162,12 +162,12 @@ export const MOCK_STAFF_USERS: StaffUser[] = [
     id: "user-staff-05",
     name: "Akira Yamamoto",
     email: "akira.yamamoto@JDMHUB.io",
-    role: "Subadmin",
+    role: "Operations",
     status: "Active",
     lastLogin: "Today, 11:15 AM",
     avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
-    department: "Quality Assurance",
-    title: "Subadmin Inspector (Japan)",
+    department: "Operations & Logistics",
+    title: "Logistics Specialist (Japan)",
   },
 ];
 
@@ -1514,7 +1514,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionRequired: "Order successfully completed and archived",
     actionType: "none",
   },
-  // ── 7. Request: AutoHub-P-000188 (Status: Subadmin Pending) ──
+  // ── 7. Request: AutoHub-P-000188 (Status: Ordered) ──
   {
     id: "req-000188",
     requestNumber: "AutoHub-P-000188",
@@ -1549,18 +1549,14 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     deliveryAddress: SHARED_ADDRESSES[0],
     dateSubmitted: "2026-09-12",
     lastUpdated: "Today",
-    status: "Subadmin Pending",
-    SubadminDetails: {
-      status: "Pending",
-      photos: [],
-    },
+    status: "Ordered",
     assignedStaff: "Sarah Jenkins",
     assignedStaffRole: "Procurement",
     quotedValue: 620.0,
-    actionRequired: "Subadmin Verification Required",
+    actionRequired: "Awaiting supplier fulfillment",
     actionType: "view_details",
   },
-  // ── 8. Request: AutoHub-P-000199 (Status: Subadmin Review) ──
+  // ── 8. Request: AutoHub-P-000199 (Status: Ordered) ──
   {
     id: "req-000199",
     requestNumber: "AutoHub-P-000199",
@@ -1595,24 +1591,14 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     deliveryAddress: SHARED_ADDRESSES[1],
     dateSubmitted: "2026-09-13",
     lastUpdated: "Today",
-    status: "Subadmin Review",
-    SubadminDetails: {
-      status: "Review",
-      photos: [
-        "https://images.unsplash.com/photo-1599839619722-39751411ea63?w=600&auto=format&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1605333557550-96b6fbcf2b55?w=600&auto=format&fit=crop&q=80",
-      ],
-      notes: "Genuine Honda AC Compressor. Box opened for visual inspection. No physical damage. Clutch spins freely. Serial #H89123 confirmed.",
-      uploadedAt: "Today, 10:45 AM",
-      uploadedBy: "Akira Yamamoto",
-    },
+    status: "Ordered",
     assignedStaff: "Sarah Jenkins",
     assignedStaffRole: "Procurement",
     quotedValue: 1250.0,
-    actionRequired: "Review Subadmin Media",
+    actionRequired: "Supplier order confirmed",
     actionType: "view_details",
   },
-  // ── 9. Request: AutoHub-P-000200 (Status: Subadmin Hold) ──
+  // ── 9. Request: AutoHub-P-000200 (Status: Sourcing) ──
   {
     id: "req-000200",
     requestNumber: "AutoHub-P-000200",
@@ -1647,23 +1633,14 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     deliveryAddress: SHARED_ADDRESSES[2],
     dateSubmitted: "2026-09-15",
     lastUpdated: "Today",
-    status: "Subadmin Hold",
-    SubadminDetails: {
-      status: "Hold",
-      photos: [
-        "https://images.unsplash.com/photo-1599839619722-39751411ea63?w=600&auto=format&fit=crop&q=80",
-      ],
-      notes: "Deep scratch found on the left side of the bumper during inspection.",
-      uploadedAt: "Today, 09:15 AM",
-      uploadedBy: "Akira Yamamoto",
-    },
+    status: "Sourcing",
     assignedStaff: "Sarah Jenkins",
     assignedStaffRole: "Procurement",
     quotedValue: 850.0,
-    actionRequired: "Subadmin Issue Logged. Admin Resolution Required.",
+    actionRequired: "Sourcing replacement part",
     actionType: "view_details",
   },
-  // ── 10. Request: AutoHub-P-000201 (Status: Subadmin Approved) ──
+  // ── 10. Request: AutoHub-P-000201 (Status: Ready for Dispatch) ──
   {
     id: "req-000201",
     requestNumber: "AutoHub-P-000201",
@@ -1698,22 +1675,11 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     deliveryAddress: SHARED_ADDRESSES[1],
     dateSubmitted: "2026-09-10",
     lastUpdated: "Today",
-    status: "Subadmin Approved",
-    SubadminDetails: {
-      status: "Approved",
-      photos: [
-        "https://images.unsplash.com/photo-1605333557550-96b6fbcf2b55?w=600&auto=format&fit=crop&q=80",
-      ],
-      notes: "Perfect condition. Ready to ship.",
-      uploadedAt: "Yesterday, 04:30 PM",
-      uploadedBy: "Akira Yamamoto",
-      customerReviewedAt: "Today, 10:00 AM",
-      customerNotes: "Approved. Proceed with dispatch.",
-    },
+    status: "Ready for Dispatch",
     assignedStaff: "Sarah Jenkins",
     assignedStaffRole: "Procurement",
     quotedValue: 1050.0,
-    actionRequired: "Subadmin Approved. Ready for dispatch.",
+    actionRequired: "Ready for dispatch",
     actionType: "none",
   }
 ];

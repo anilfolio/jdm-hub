@@ -20,7 +20,7 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
           </div>
           <div className="flex flex-col">
             <span className="font-black italic text-lg tracking-tight text-white uppercase leading-none">
-              JDMspan className="not-italic font-bold text-white/95"HUB/span>
+              JDM<span className="not-italic font-bold text-white/95">HUB</span>
             </span>
             <div className="flex items-center gap-1 mt-0.5">
               <div className="w-4 h-0.5 rounded-full bg-white/80" />

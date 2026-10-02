@@ -50,7 +50,7 @@ export function AuthStateSimulator({
           aria-expanded={isExpanded}
         >
           <Sliders className="w-3.5 h-3.5 text-[#e20c0c]" />
-          <span>Test 10 Auth States (Subadmin Controls)</span>
+          <span>Test 10 Auth States (Dev Controls)</span>
           {isExpanded ? (
             <ChevronUp className="w-3.5 h-3.5 text-slate-400" />
           ) : (

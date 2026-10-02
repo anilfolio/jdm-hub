@@ -126,11 +126,6 @@ interface UnifiedDataContextType {
   recordDelivery: (requestId: string, confirmationNotes?: string) => void;
   completeRequest: (requestId: string) => void;
 
-  // Actions - Subadmin Verification
-  submitSubadminMedia: (requestId: string, SubadminData: { photos: string[]; videos?: string[]; notes: string }, isIssueLogged?: boolean) => void;
-  approveSubadmin: (requestId: string, adminNotes?: string) => void;
-  rejectSubadmin: (requestId: string, adminNotes: string) => void;
-  resolveSubadminHold: (requestId: string, resolution: "Ship Replacement" | "Issue Refund" | "Return Shipment to Origin") => void;
 
   // Actions - Notes & Documents
   addInternalNote: (requestId: string, text: string, isCustomerVisible?: boolean) => void;
@@ -673,18 +668,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
             } else if (status === "Completed") {
               actionRequired = "Request completed & archived";
               actionType = "none";
-            } else if (status === "Subadmin Pending") {
-              actionRequired = "Subadmin Verification Required";
-              actionType = "view_details";
-            } else if (status === "Subadmin Review") {
-              actionRequired = "Review Subadmin Media";
-              actionType = "view_details";
-            } else if (status === "Subadmin Hold") {
-              actionRequired = "Subadmin Issue Logged. Admin Resolution Required.";
-              actionType = "view_details";
-            } else if (status === "Subadmin Approved") {
-              actionRequired = "Subadmin Approved. Ready for dispatch.";
-              actionType = "none";
+
             } else if (status === "Ready for Dispatch") {
               actionRequired = "Awaiting shipment";
               actionType = "none";
@@ -735,204 +719,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
     [currentStaffUser]
   );
 
-  const submitSubadminMedia = useCallback(
-    (requestId: string, SubadminData: { photos: string[]; videos?: string[]; notes: string }, isIssueLogged?: boolean) => {
-      setRequests((prev) =>
-        prev.map((r) => {
-          if (r.id === requestId || r.requestNumber === requestId) {
-            const nextStatus = isIssueLogged ? "Subadmin Hold" : "Subadmin Review";
-            const nextAction = isIssueLogged ? "Subadmin Issue Logged. Admin Resolution Required." : "Review Subadmin Media";
-            const nextSubadminStatus = isIssueLogged ? "Hold" : "Review";
 
-            return {
-              ...r,
-              status: nextStatus,
-              actionRequired: nextAction,
-              actionType: "view_details",
-              SubadminDetails: {
-                status: nextSubadminStatus,
-                photos: SubadminData.photos,
-                videos: SubadminData.videos,
-                notes: SubadminData.notes,
-                uploadedAt: "Just now",
-                uploadedBy: currentStaffUser.name,
-              },
-              lastUpdated: "Just now",
-              activity: [
-                {
-                  id: `act-${Date.now()}`,
-                  timestamp: new Date().toISOString(),
-                  timeLabel: "Just now",
-                  title: isIssueLogged ? "Subadmin Issue Logged" : "Subadmin Media Uploaded",
-                  description: isIssueLogged
-                    ? "Quality assurance issue logged. Order placed on hold."
-                    : "Quality assurance media and notes submitted for admin review.",
-                  actor: currentStaffUser.name,
-                  type: "status",
-                },
-                ...(r.activity || []),
-              ],
-            };
-          }
-          return r;
-        })
-      );
-
-      // Notify Admin
-      setNotifications((prev) => [
-        {
-          id: `notif-${Date.now()}`,
-          type: "Subadmin Review Required",
-          title: isIssueLogged ? "Subadmin Hold Alert" : "Subadmin Review Required",
-          description: isIssueLogged
-            ? `An issue was logged for ${requestId}. Order placed on hold.`
-            : `Subadmin media uploaded for ${requestId}. Please review and approve.`,
-          timestamp: "Just now",
-          read: false,
-          requestId,
-        },
-        ...prev,
-      ]);
-    },
-    [currentStaffUser]
-  );
-
-  const approveSubadmin = useCallback(
-    (requestId: string, adminNotes?: string) => {
-      setRequests((prev) =>
-        prev.map((r) => {
-          if (r.id === requestId || r.requestNumber === requestId) {
-            return {
-              ...r,
-              status: "Subadmin Approved",
-              actionRequired: "Subadmin Approved. Ready for dispatch.",
-              actionType: "none",
-              SubadminDetails: {
-                ...r.SubadminDetails!,
-                status: "Approved",
-                customerReviewedAt: "Just now",
-                customerNotes: adminNotes,
-              },
-              lastUpdated: "Just now",
-              activity: [
-                {
-                  id: `act-${Date.now()}`,
-                  timestamp: new Date().toISOString(),
-                  timeLabel: "Just now",
-                  title: "Subadmin Approved",
-                  description: "Subadmin was approved by Admin. Cleared for final dispatch.",
-                  actor: currentStaffUser.name,
-                  type: "status",
-                },
-                ...(r.activity || []),
-              ],
-            };
-          }
-          return r;
-        })
-      );
-
-      // Real-time status notification for the customer
-      setNotifications((prev) => [
-        {
-          id: `notif-${Date.now()}`,
-          type: "Status Update",
-          title: "Order Cleared for Dispatch",
-          description: `Your order ${requestId} has passed Subadmin review and is ready for final delivery.`,
-          timestamp: "Just now",
-          read: false,
-          requestId,
-        },
-        ...prev,
-      ]);
-    },
-    [currentStaffUser]
-  );
-
-  const rejectSubadmin = useCallback(
-    (requestId: string, adminNotes: string) => {
-      setRequests((prev) =>
-        prev.map((r) => {
-          if (r.id === requestId || r.requestNumber === requestId) {
-            return {
-              ...r,
-              status: "Subadmin Hold",
-              actionRequired: "Subadmin Issue Confirmed by Admin",
-              actionType: "view_details",
-              SubadminDetails: {
-                ...r.SubadminDetails!,
-                status: "Rejected",
-                customerReviewedAt: "Just now",
-                customerNotes: adminNotes,
-              },
-              lastUpdated: "Just now",
-              activity: [
-                {
-                  id: `act-${Date.now()}`,
-                  timestamp: new Date().toISOString(),
-                  timeLabel: "Just now",
-                  title: "Subadmin Rejected",
-                  description: `Subadmin rejected by Admin: ${adminNotes}`,
-                  actor: currentStaffUser.name,
-                  type: "status",
-                },
-                ...(r.activity || []),
-              ],
-            };
-          }
-          return r;
-        })
-      );
-    },
-    [currentStaffUser]
-  );
-
-  const resolveSubadminHold = useCallback(
-    (requestId: string, resolution: "Ship Replacement" | "Issue Refund" | "Return Shipment to Origin") => {
-      setRequests((prev) =>
-        prev.map((r) => {
-          if (r.id === requestId || r.requestNumber === requestId) {
-            return {
-              ...r,
-              SubadminDetails: {
-                ...r.SubadminDetails!,
-                resolution,
-              },
-              lastUpdated: "Just now",
-              activity: [
-                {
-                  id: `act-${Date.now()}`,
-                  timestamp: new Date().toISOString(),
-                  timeLabel: "Just now",
-                  title: "Subadmin Resolution Selected",
-                  description: `Admin selected resolution: ${resolution}`,
-                  actor: currentStaffUser.name,
-                  type: "status",
-                },
-                ...(r.activity || []),
-              ],
-            };
-          }
-          return r;
-        })
-      );
-
-      // Notify Customer
-      setNotifications((prev) => [
-        {
-          id: `notif-${Date.now()}`,
-          type: "Status Update",
-          title: "Subadmin Issue Resolution",
-          description: `An issue was found during Subadmin for ${requestId}. Resolution: ${resolution}.`,
-          timestamp: "Just now",
-          read: false,
-          requestId,
-        },
-        ...prev,
-      ]);
-    },
-    [currentStaffUser]
-  );
 
   const assignStaff = useCallback(
     (requestId: string, staffName: string, staffRole: string) => {
@@ -2074,10 +1861,6 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
         updateShipmentMilestone,
         recordDelivery,
         completeRequest,
-        submitSubadminMedia,
-        approveSubadmin,
-        rejectSubadmin,
-        resolveSubadminHold,
         addInternalNote,
         addDocument,
         addCustomer,

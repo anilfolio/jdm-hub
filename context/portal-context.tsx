@@ -60,8 +60,6 @@ interface PortalContextType {
     reference?: string
   ) => void;
   sendMessage: (requestId: string, text: string) => void;
-  approveSubadmin: (requestId: string, notes?: string) => void;
-  rejectSubadmin: (requestId: string, reason: string) => void;
   activeCustomer: CustomerRecord;
   setActiveCustomerId: (id: string) => void;
   availableCustomers: CustomerRecord[];
@@ -90,8 +88,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     markPaymentPaid,
     markNotificationAsRead: sharedMarkRead,
     markAllNotificationsAsRead: sharedMarkAllRead,
-    approveSubadmin: sharedApproveSubadmin,
-    rejectSubadmin: sharedRejectSubadmin,
   } = useUnifiedData();
 
   // Active customer management (default SP Motors Ltd, customizable for testing)
@@ -113,8 +109,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       if (q) {
         const photos = (
           (q.quotePhotos && q.quotePhotos.length > 0) ? q.quotePhotos :
-          (r.customerQuoteVersions?.find((v: any) => v.quotePhotos && v.quotePhotos.length > 0)?.quotePhotos) ||
-          (r.SubadminDetails?.photos && r.SubadminDetails.photos.length > 0 ? r.SubadminDetails.photos : undefined)
+          (r.customerQuoteVersions?.find((v: any) => v.quotePhotos && v.quotePhotos.length > 0)?.quotePhotos)
         );
         q = {
           ...q,
@@ -401,8 +396,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         rejectQuote,
         submitPayment,
         sendMessage,
-        approveSubadmin: sharedApproveSubadmin,
-        rejectSubadmin: sharedRejectSubadmin,
         activeCustomer,
         setActiveCustomerId,
         availableCustomers: customers,

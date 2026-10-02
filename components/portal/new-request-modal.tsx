@@ -46,7 +46,7 @@ const POPULAR_MAKES_AND_MODELS: Record<string, string[]> = {
   Nissan: [
     "Navara",
     "X-Trail",
-    "SubadminshSubadmini",
+    "Qashqai",
     "Patrol",
     "Leaf",
     "Juke",

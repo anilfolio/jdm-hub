@@ -6,7 +6,7 @@ import {
 } from "@/types/shared";
 
 /**
- * Standardized status color mapping across all portals (Admin, Subadmin, Customer Portal).
+ * Standardized status color mapping across all portals (Admin, Customer Portal).
  * Establishes consistent visual hierarchy:
  * - Informational / New: Sky
  * - Research / Sourcing: Amber
@@ -15,7 +15,6 @@ import {
  * - Financial Invoicing: Indigo
  * - Financial Action Required: Brand Red (#e20c0c)
  * - Purchase Order Released: Brand Navy (#2B4499)
- * - Quality / Inspection: Rose / Amber
  * - Transit / Logistics: Cyan
  * - Final Landed: Teal
  * - Finalized Archive: Slate
@@ -36,13 +35,6 @@ export function getStatusBadgeClasses(status: RequestStatus | string): string {
       return "bg-red-50 text-[#e20c0c] border-red-200 ring-red-600/10";
     case "Ordered":
       return "bg-blue-50 text-[#2B4499] border-blue-200 ring-blue-600/10";
-    case "Subadmin Pending":
-      return "bg-rose-50 text-rose-700 border-rose-200 ring-rose-600/10";
-    case "Subadmin Review":
-      return "bg-amber-50 text-amber-700 border-amber-200 ring-amber-600/10";
-    case "Subadmin Hold":
-      return "bg-rose-50 text-rose-800 border-rose-200 ring-rose-600/10";
-    case "Subadmin Approved":
     case "Ready for Dispatch":
       return "bg-emerald-50 text-emerald-700 border-emerald-200 ring-emerald-600/10";
     case "Shipped":

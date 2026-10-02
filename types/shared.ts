@@ -8,10 +8,6 @@ export type RequestStatus =
   | "Invoicing"
   | "Awaiting Payment"
   | "Ordered"
-  | "Subadmin Pending"
-  | "Subadmin Review"
-  | "Subadmin Hold"
-  | "Subadmin Approved"
   | "Ready for Dispatch"
   | "Shipped"
   | "Delivered"
@@ -26,7 +22,7 @@ export type ShipmentMilestone =
   | "Out For Delivery"
   | "Delivered";
 
-export type StaffRole = "Administrator" | "Procurement" | "Operations" | "Finance" | "Subadmin";
+export type StaffRole = "Administrator" | "Procurement" | "Operations" | "Finance";
 
 export type CustomerStatus = "Pending Approval" | "Active" | "Suspended";
 
@@ -264,19 +260,6 @@ export interface SupplierOrder {
   handoverMode?: string;
 }
 
-// ─── Subadmin Verification ─────────────────────────────────────────
-
-export interface SubadminDetails {
-  status: "Pending" | "Review" | "Approved" | "Rejected" | "Hold";
-  photos: string[];
-  videos?: string[];
-  notes?: string;
-  uploadedAt?: string;
-  uploadedBy?: string;
-  customerReviewedAt?: string;
-  customerNotes?: string;
-  resolution?: "Ship Replacement" | "Issue Refund" | "Return Shipment to Origin";
-}
 
 // ─── Shipment ──────────────────────────────────────────────
 
@@ -415,8 +398,6 @@ export interface PartRequest {
   // Supplier Order
   supplierOrder?: SupplierOrder;
 
-  // Subadmin Verification
-  SubadminDetails?: SubadminDetails;
 
   // Shipment & Delivery
   shipment?: ShipmentDetails;
@@ -446,8 +427,6 @@ export type NotificationType =
   | "Payment Received"
   | "Payment Updated"
   | "Order Placed"
-  | "Subadmin Review Required"
-  | "Subadmin Approved"
   | "Invoice Issued"
   | "Shipment Dispatched"
   | "Shipment Arrived"

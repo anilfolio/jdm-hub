@@ -120,10 +120,6 @@ export function RequestsView() {
               "Shipped",
               "Delivered",
               "Completed",
-              "Subadmin Pending",
-              "Subadmin Review",
-              "Subadmin Hold",
-              "Subadmin Approved",
               "Ready for Dispatch",
             ].map((tab) => (
               <option key={tab} value={tab}>

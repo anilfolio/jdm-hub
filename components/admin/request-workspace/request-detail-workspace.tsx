@@ -32,7 +32,6 @@ import { PaymentTab } from "./tabs/payment-tab";
 import { ShipmentTab } from "./tabs/shipment-tab";
 import { DocumentsTab } from "./tabs/documents-tab";
 import { ActivityTab } from "./tabs/activity-tab";
-import { SubadminMediaTab } from "./tabs/subadmin-media-tab";
 
 import { useUnifiedData } from "@/context/unified-data-context";
 
@@ -52,7 +51,7 @@ export function RequestDetailWorkspace({
   const [activeTab, setActiveTab] = useState<RequestDetailTab>(initialTab || "overview");
 
   React.useEffect(() => {
-    if (initialTab && ["overview", "sourcing", "quote", "invoice", "payment", "shipment", "documents", "subadmin", "activity"].includes(initialTab)) {
+    if (initialTab && ["overview", "sourcing", "quote", "invoice", "payment", "shipment", "documents", "activity"].includes(initialTab)) {
       setActiveTab(initialTab);
     }
   }, [initialTab]);
@@ -109,7 +108,7 @@ export function RequestDetailWorkspace({
     const idx = LIFECYCLE_STAGES.indexOf(request.status);
     if (idx !== -1) return idx;
     if (request.status === "Approved") return LIFECYCLE_STAGES.indexOf("Invoicing");
-    if (["Subadmin Pending", "Subadmin Review", "Subadmin Hold", "Subadmin Approved", "Ready for Dispatch"].includes(request.status)) {
+    if (request.status === "Ready for Dispatch") {
       return LIFECYCLE_STAGES.indexOf("Ordered");
     }
     return -1;
@@ -151,8 +150,6 @@ export function RequestDetailWorkspace({
         return <ShipmentTab request={request} />;
       case "documents":
         return <DocumentsTab request={request} />;
-      case "subadmin":
-        return <SubadminMediaTab request={request} />;
       case "activity":
         return <ActivityTab request={request} />;
       default:
@@ -191,10 +188,6 @@ export function RequestDetailWorkspace({
       id: "documents",
       label: "Documents",
       badge: ((request.documents?.length || 0) + (request.supporting.photos?.length || 0)) || undefined,
-    },
-    {
-      id: "subadmin",
-      label: "Subadmin Media",
     },
     {
       id: "activity",

@@ -54,15 +54,13 @@ export function RequestDetailsModal() {
     setPaymentRequest,
     setActiveTab: setPortalTab,
     activeCustomer,
-    approveSubadmin,
-    rejectSubadmin,
     openInvoiceModal,
     selectedRequestDetailsTab,
     setSelectedRequestDetailsTab,
   } = usePortal();
 
-  // Navigation tabs: overview | quote | shipment | Subadmin | invoice
-  const [activeTab, setActiveTab] = useState<"overview" | "quote" | "shipment" | "Subadmin" | "invoice">(
+  // Navigation tabs: overview | quote | shipment | invoice
+  const [activeTab, setActiveTab] = useState<"overview" | "quote" | "shipment" | "invoice">(
     (selectedRequestDetailsTab as any) || "overview"
   );
   const [showDirectContactModal, setShowDirectContactModal] = useState(false);
@@ -95,7 +93,7 @@ export function RequestDetailsModal() {
 
   // Sync active tab based on selected request status
   React.useEffect(() => {
-    if (selectedRequestDetailsTab && ["overview", "quote", "shipment", "Subadmin", "invoice"].includes(selectedRequestDetailsTab)) {
+    if (selectedRequestDetailsTab && ["overview", "quote", "shipment", "invoice"].includes(selectedRequestDetailsTab)) {
       setActiveTab(selectedRequestDetailsTab as any);
       return;
     }
@@ -105,8 +103,6 @@ export function RequestDetailsModal() {
       setActiveTab("quote");
     } else if ((req.status === "Shipped" || req.status === "Delivered") && req.shipment) {
       setActiveTab("shipment");
-    } else if (req.status === "Subadmin Review" && req.SubadminDetails) {
-      setActiveTab("Subadmin");
     } else {
       setActiveTab("overview");
     }
@@ -141,7 +137,7 @@ export function RequestDetailsModal() {
     const idx = LIFECYCLE_STAGES.indexOf(req.status);
     if (idx !== -1) return idx;
     if (req.status === "Approved") return LIFECYCLE_STAGES.indexOf("Invoicing");
-    if (["Subadmin Pending", "Subadmin Review", "Subadmin Hold", "Subadmin Approved", "Ready for Dispatch"].includes(req.status)) {
+    if (req.status === "Ready for Dispatch") {
       return LIFECYCLE_STAGES.indexOf("Ordered");
     }
     return -1;
@@ -329,22 +325,6 @@ export function RequestDetailsModal() {
             </button>
           )}
 
-          {req.SubadminDetails && (
-            <button
-              onClick={() => setActiveTab("Subadmin")}
-              className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "Subadmin"
-                ? "border-[#e20c0c] text-[#e20c0c]"
-                : "border-transparent hover:text-slate-900"
-                }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Subadmin Review</span>
-              {req.status === "Subadmin Review" && (
-                <span className="w-2 h-2 rounded-full bg-[#e20c0c]" />
-              )}
-            </button>
-          )}
-
           {(req.payment || req.quoteAcceptance || ["Invoicing", "Awaiting Payment", "Ordered", "Shipped", "Delivered", "Completed"].includes(req.status)) && (
             <button
               onClick={() => {
@@ -471,7 +451,7 @@ export function RequestDetailsModal() {
                   <div className="flex flex-wrap items-center gap-3 shrink-0">
                     {/* Thumbnail previews */}
                     {(() => {
-                      const qPhotos = (req.quotation?.quotePhotos || req.customerQuote?.quotePhotos || req.customerQuoteVersions?.[0]?.quotePhotos || req.SubadminDetails?.photos || []);
+                      const qPhotos = (req.quotation?.quotePhotos || req.customerQuote?.quotePhotos || req.customerQuoteVersions?.[0]?.quotePhotos || []);
                       if (qPhotos.length === 0) return null;
                       return (
                         <div className="flex -space-x-2 overflow-hidden items-center py-1">
@@ -642,8 +622,7 @@ export function RequestDetailsModal() {
             const adminPhotos: string[] = (
               (quote.quotePhotos && quote.quotePhotos.length > 0) ? quote.quotePhotos :
                 (req.customerQuote?.quotePhotos && req.customerQuote.quotePhotos.length > 0) ? req.customerQuote.quotePhotos :
-                  (req.customerQuoteVersions?.find((v: any) => v.quotePhotos && v.quotePhotos.length > 0)?.quotePhotos) ||
-                  (req.SubadminDetails?.photos && req.SubadminDetails.photos.length > 0 ? req.SubadminDetails.photos : [])
+                  (req.customerQuoteVersions?.find((v: any) => v.quotePhotos && v.quotePhotos.length > 0)?.quotePhotos) || []
             );
             const customerPhotos: string[] = req.supporting?.photos || [];
             const specialistNote: string = quote.notes || req.customerQuote?.notes || "";
@@ -1421,14 +1400,14 @@ export function RequestDetailsModal() {
                 </div>
               </div>
 
-              {/* Subadmin Media Block */}
+              {/* Evidence Media Block */}
               {(req.supporting.photos || []).length > 0 && (
                 <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-4">
                   <div className="flex items-center gap-2 mb-2">
                     <ShieldCheck className="w-5 h-5 text-emerald-600" />
                     <div>
                       <h4 className="text-sm font-bold text-emerald-900 uppercase tracking-wider">
-                        Supplier Subadmin Verified
+                        Supplier Verified Evidence
                       </h4>
                       <p className="text-[11px] text-emerald-700">
                         Visual evidence verified by Autohub before dispatch
@@ -1440,7 +1419,7 @@ export function RequestDetailsModal() {
                       <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-emerald-200">
                         <img
                           src={url}
-                          alt={`Subadmin Media ${idx + 1}`}
+                          alt={`Evidence Media ${idx + 1}`}
                           className="w-full h-full object-cover"
                           onError={handleImageError}
                         />
@@ -1524,104 +1503,7 @@ export function RequestDetailsModal() {
             </div>
           )}
 
-          {/* TAB 4: Subadmin REVIEW */}
-          {activeTab === "Subadmin" && req.SubadminDetails && (
-            <div className="space-y-6">
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                      <ShieldCheck className="w-5 h-5 text-[#e20c0c]" />
-                      Quality Assurance Review
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Uploaded by {req.SubadminDetails.uploadedBy} on {req.SubadminDetails.uploadedAt}
-                    </p>
-                  </div>
-                  {req.SubadminDetails.status === "Review" && (
-                    <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
-                      Pending Your Approval
-                    </span>
-                  )}
-                  {req.SubadminDetails.status === "Approved" && (
-                    <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
-                      Approved
-                    </span>
-                  )}
-                  {req.SubadminDetails.status === "Rejected" && (
-                    <span className="px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-bold border border-red-200">
-                      Rejected
-                    </span>
-                  )}
-                </div>
 
-                <div className="mb-6">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
-                    Inspection Photos / Videos
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {req.SubadminDetails.photos?.map((photo, i) => (
-                      <div key={i} className="aspect-video bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
-                        <img
-                          src={photo}
-                          alt={`Subadmin Photo ${i + 1}`}
-                          className="w-full h-full object-cover"
-                          onError={handleImageError}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Subadmin Operator Notes
-                  </h4>
-                  <p className="text-sm text-slate-800 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    {req.SubadminDetails.notes}
-                  </p>
-                </div>
-
-                {req.SubadminDetails.status === "Review" ? (
-                  <div className="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
-                    <button
-                      onClick={() => {
-                        const reason = window.prompt("Reason for rejecting part:");
-                        if (reason) {
-                          rejectSubadmin(req.id, reason);
-                          setSelectedRequest(null);
-                        }
-                      }}
-                      className="px-5 py-2.5 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
-                    >
-                      Reject Part
-                    </button>
-                    <button
-                      onClick={() => {
-                        approveSubadmin(req.id);
-                        setActiveTab("overview");
-                      }}
-                      className="px-6 py-2.5 text-sm font-bold text-white bg-[#e20c0c] hover:bg-[#9B0A0F] rounded-xl shadow-md transition-colors flex items-center gap-2"
-                    >
-                      <CheckCircle2 className="w-4 h-4" />
-                      Approve & Dispatch
-                    </button>
-                  </div>
-                ) : (
-                  req.SubadminDetails.customerNotes && (
-                    <div className="mt-4 pt-4 border-t border-slate-100">
-                      <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                        Your Notes
-                      </h4>
-                      <p className="text-sm text-slate-800 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                        {req.SubadminDetails.customerNotes}
-                      </p>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          )}
 
           {/* TAB 5: TAX INVOICE (Within the tab, NOT modal) */}
           {activeTab === "invoice" && (

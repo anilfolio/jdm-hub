@@ -43,9 +43,6 @@ export type AuthMode = "login" | "register" | "mfa" | "forgot_password" | "chang
  */
 export function getPortalRoute(targetEmail: string): string {
   const normalized = (targetEmail || "").toLowerCase().trim();
-  if (normalized.includes("subadmin")) {
-    return "/subadmin/dashboard";
-  }
   if (
     normalized.includes("JDMHUB.io") ||
     normalized.includes("sarah") ||
@@ -64,14 +61,12 @@ export function getPortalRoute(targetEmail: string): string {
 
 export function getPortalName(targetEmail: string): string {
   const route = getPortalRoute(targetEmail);
-  if (route.includes("subadmin")) return "Subadmin Portal";
   if (route.includes("admin")) return "Unified Admin Portal";
   return "Customer Portal";
 }
 
 export function getShortPortalName(targetEmail: string): string {
   const route = getPortalRoute(targetEmail);
-  if (route.includes("subadmin")) return "Subadmin";
   if (route.includes("admin")) return "Admin";
   return "Customer";
 }
@@ -485,7 +480,7 @@ export function LoginView() {
                   Tap to prefill credentials
                 </span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 {/* 1. Customer Portal: James Wilson */}
                 <div
                   onClick={() =>
@@ -558,45 +553,6 @@ export function LoginView() {
                       </span>
                     ) : (
                       <span className="text-[10px] font-bold text-slate-400 group-hover:text-[#e20c0c] px-2 py-0.5 rounded bg-slate-100">
-                        Select
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* 3. Subadmin Portal: Subadmin Tester */}
-                <div
-                  onClick={() =>
-                    handleSelectDemoUser(
-                      "Subadmin@JDMHUB.io",
-                      "SubadminTesting2026!"
-                    )
-                  }
-                  className={`group relative p-2.5 sm:p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 sm:block ${email === "Subadmin@JDMHUB.io"
-                    ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500/30 shadow-xs"
-                    : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50"
-                    }`}
-                >
-                  <div className="flex items-center gap-2.5 min-w-0 sm:block">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0 sm:inline-block sm:mb-1.5">
-                      Subadmin
-                    </span>
-                    <div className="min-w-0 text-left">
-                      <p className="font-bold text-slate-900 truncate">
-                        Subadmin Tester
-                      </p>
-                      <p className="text-[10px] text-slate-500 truncate">
-                        Subadmin@JDMHUB.io
-                      </p>
-                    </div>
-                  </div>
-                  <div className="sm:hidden shrink-0 flex items-center">
-                    {email === "Subadmin@JDMHUB.io" ? (
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
-                        <Check className="w-3 h-3" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-emerald-700 px-2 py-0.5 rounded bg-slate-100">
                         Select
                       </span>
                     )}
