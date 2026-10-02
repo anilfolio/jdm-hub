@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BrandPanel } from "@/components/auth/brand-panel";
-import { PoweredByAutohub } from "@/components/auth/powered-by-autohub";
+import { PoweredByJdmhub } from "@/components/auth/powered-by-jdmhub";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -47,11 +47,11 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
           {children}
         </div>
 
-        {/* Bottom of Page Footer with Subtle Powered by AutoHub Signature & Legal Links */}
+        {/* Bottom of Page Footer with Subtle Powered by JDMHUB Signature & Legal Links */}
         <footer className={`w-full ${maxWidth} pt-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center flex flex-col items-center gap-2.5 select-none`}>
-          {/* Mobile view subtle Powered by AutoHub mark */}
+          {/* Mobile view subtle Powered by JDMHUB mark */}
           <div className="lg:hidden w-full flex justify-center py-1">
-            <PoweredByAutohub variant="light" />
+            <PoweredByJdmhub variant="light" />
           </div>
 
           {/* Desktop subtle co-branding signature */}
@@ -77,7 +77,7 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
             </a>
             <span className="hidden sm:inline text-slate-300">•</span>
             <div className="hidden lg:inline-flex">
-              <PoweredByAutohub variant="minimal" />
+              <PoweredByJdmhub variant="minimal" />
             </div>
           </div>
         </footer>

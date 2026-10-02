@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { PoweredByAutohub } from "@/components/auth/powered-by-autohub";
+import { PoweredByJdmhub } from "@/components/auth/powered-by-jdmhub";
 
 export function BrandPanel() {
   return (
@@ -122,10 +122,10 @@ export function BrandPanel() {
         </div>
       </div >
 
-      {/* Bottom of Page: Subtle, Professional "Powered by AutoHub" Signature Treatment */}
-      < div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between" >
-        <PoweredByAutohub variant="dark" />
-      </div >
+      {/* Bottom of Page: Subtle, Professional "Powered by JDMHUB" Signature Treatment */}
+      <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between">
+        <PoweredByJdmhub variant="dark" />
+      </div>
     </aside >
   );
 }

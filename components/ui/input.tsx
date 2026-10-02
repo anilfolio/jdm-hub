@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label?: React.ReactNode;
   error?: string;
   helperText?: string;
   leftIcon?: React.ReactNode;
@@ -28,7 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
+    const inputId = id || (typeof label === "string" ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
     return (
       <div className="w-full space-y-1.5">

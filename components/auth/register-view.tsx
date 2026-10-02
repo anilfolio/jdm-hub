@@ -28,7 +28,12 @@ import {
   Globe,
   Sparkles,
   ChevronRight,
+  ChevronDown,
+  Warehouse,
+  Compass,
+  Hash,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { AuthLayout } from "@/components/auth/auth-layout";
 import { LegalModal, LegalDocType } from "@/components/auth/legal-modal";
 import { useUnifiedData } from "@/context/unified-data-context";
@@ -712,34 +717,33 @@ export function RegisterView() {
                     <div className="space-y-4 sm:space-y-5">
                       {/* Business Legal Name */}
                       <div>
-                        <label
-                          htmlFor="reg-business-name"
-                          className="block text-xs font-bold text-slate-700 mb-1"
-                        >
-                          Company / Business Legal Name <span className="text-rose-500">*</span>
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="reg-business-name"
-                            type="text"
-                            value={businessName}
-                            onChange={(e) => {
-                              setBusinessName(e.target.value);
-                              setGeneralError(null);
-                            }}
-                            placeholder="e.g. SP Motors Ltd"
-                            required
-                            className={`w-full h-12 px-3.5 rounded-xl border text-base sm:text-sm font-medium transition-all focus:outline-none focus:ring-2 ${duplicateCompany
+                        <Input
+                          id="reg-business-name"
+                          label={
+                            <>
+                              Company / Business Legal Name <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="text"
+                          value={businessName}
+                          onChange={(e) => {
+                            setBusinessName(e.target.value);
+                            setGeneralError(null);
+                          }}
+                          placeholder="e.g. SP Motors Ltd"
+                          required
+                          leftIcon={<Building2 className="w-4 h-4" />}
+                          rightIcon={
+                            businessName && !duplicateCompany ? (
+                              <Check className="w-4 h-4 text-emerald-600" />
+                            ) : undefined
+                          }
+                          className={
+                            duplicateCompany
                               ? "border-rose-400 bg-rose-50/40 focus:ring-rose-200 text-rose-900"
-                              : "border-slate-300 bg-white focus:border-[#e20c0c] focus:ring-[#e20c0c]/15 text-slate-900"
-                              }`}
-                          />
-                          {businessName && !duplicateCompany && (
-                            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-600">
-                              <Check className="w-4 h-4" />
-                            </div>
-                          )}
-                        </div>
+                              : ""
+                          }
+                        />
 
                         {/* Duplicate Company Warning */}
                         {duplicateCompany && (
@@ -768,91 +772,76 @@ export function RegisterView() {
                       {/* Trading Name & NZBN Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {/* Trading Name */}
-                        <div>
-                          <label
-                            htmlFor="reg-trading-name"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Trading Name / DBA <span className="text-slate-400 font-normal">(Optional)</span>
-                          </label>
-                          <input
-                            id="reg-trading-name"
-                            type="text"
-                            value={tradingName}
-                            onChange={(e) => setTradingName(e.target.value)}
-                            placeholder="e.g. SP Performance & Dyno"
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-trading-name"
+                          label="Trading Name / DBA (Optional)"
+                          type="text"
+                          value={tradingName}
+                          onChange={(e) => setTradingName(e.target.value)}
+                          placeholder="e.g. SP Performance & Dyno"
+                          leftIcon={<Briefcase className="w-4 h-4" />}
+                        />
 
                         {/* NZBN */}
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <label
-                              htmlFor="reg-nzbn"
-                              className="block text-xs font-bold text-slate-700"
-                            >
-                              NZBN / Company Number
-                            </label>
-                            <span className="text-[10px] text-slate-400">13 digits</span>
-                          </div>
-                          <input
-                            id="reg-nzbn"
-                            type="text"
-                            value={nzbn}
-                            onChange={(e) => setNzbn(e.target.value)}
-                            placeholder="e.g. 9429041234567"
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-nzbn"
+                          label="NZBN / Company Number (13 digits)"
+                          type="text"
+                          value={nzbn}
+                          onChange={(e) => setNzbn(e.target.value)}
+                          placeholder="e.g. 9429041234567"
+                          leftIcon={<FileText className="w-4 h-4" />}
+                        />
                       </div>
 
                       {/* Business Category & Website */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {/* Category */}
-                        <div>
+                        <div className="w-full space-y-1.5">
                           <label
                             htmlFor="reg-category"
-                            className="block text-xs font-bold text-slate-700 mb-1"
+                            className="block text-xs font-bold uppercase tracking-wider text-slate-700 select-none"
                           >
-                            Company Type <span className="text-rose-500">*</span>
+                            Company Type <span className="text-[#e20c0c]">*</span>
                           </label>
-                          <select
-                            id="reg-category"
-                            value={businessType}
-                            onChange={(e) => setBusinessType(e.target.value)}
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          >
-                            {BUSINESS_CATEGORIES.map((cat) => (
-                              <option key={cat} value={cat}>
-                                {cat}
-                              </option>
-                            ))}
-                          </select>
+                          <div className="relative flex items-center">
+                            <div className="absolute left-3.5 flex items-center pointer-events-none text-slate-400">
+                              <Building className="w-4 h-4" />
+                            </div>
+                            <select
+                              id="reg-category"
+                              value={businessType}
+                              onChange={(e) => setBusinessType(e.target.value)}
+                              className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-10 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20 transition-all duration-150 ease-in-out cursor-pointer appearance-none"
+                            >
+                              {BUSINESS_CATEGORIES.map((cat) => (
+                                <option key={cat} value={cat}>
+                                  {cat}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="absolute right-3.5 flex items-center pointer-events-none text-slate-400">
+                              <ChevronDown className="w-4 h-4" />
+                            </div>
+                          </div>
                         </div>
 
                         {/* Website */}
-                        <div>
-                          <label
-                            htmlFor="reg-website"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Website <span className="text-slate-400 font-normal">(Optional)</span>
-                          </label>
-                          <input
-                            id="reg-website"
-                            type="url"
-                            value={website}
-                            onChange={(e) => setWebsite(e.target.value)}
-                            placeholder="https://spmotors.co.nz"
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-website"
+                          label="Website (Optional)"
+                          type="url"
+                          value={website}
+                          onChange={(e) => setWebsite(e.target.value)}
+                          placeholder="https://spmotors.co.nz"
+                          leftIcon={<Globe className="w-4 h-4" />}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               )}
+
 
               {/* ──────────────────────────────────────────────────────── */}
               {/* STEP 2: PRIMARY CONTACT PERSON & CREDENTIALS             */}
@@ -874,78 +863,71 @@ export function RegisterView() {
                     <div className="space-y-4 sm:space-y-5">
                       {/* Contact Name & Role */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <div>
-                          <label
-                            htmlFor="reg-contact-name"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Contact Full Name <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-contact-name"
-                            type="text"
-                            value={contactName}
-                            onChange={(e) => {
-                              setContactName(e.target.value);
-                              if (!deliveryRecipient) setDeliveryRecipient(e.target.value);
-                            }}
-                            placeholder="e.g. James Wilson"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-contact-name"
+                          label={
+                            <>
+                              Primary Contact Name <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="text"
+                          value={contactName}
+                          onChange={(e) => {
+                            setContactName(e.target.value);
+                            if (!deliveryRecipient) setDeliveryRecipient(e.target.value);
+                          }}
+                          placeholder="e.g. James Wilson"
+                          required
+                          leftIcon={<User className="w-4 h-4" />}
+                        />
 
-                        <div>
-                          <label
-                            htmlFor="reg-contact-role"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Job Title / Position <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-contact-role"
-                            type="text"
-                            value={contactRole}
-                            onChange={(e) => setContactRole(e.target.value)}
-                            placeholder="e.g. Workshop Director / Lead Tech"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-contact-role"
+                          label={
+                            <>
+                              Job Title / Position <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="text"
+                          value={contactRole}
+                          onChange={(e) => setContactRole(e.target.value)}
+                          placeholder="e.g. Workshop Director / Lead Tech"
+                          required
+                          leftIcon={<Briefcase className="w-4 h-4" />}
+                        />
                       </div>
 
                       {/* Email & Phone */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {/* Email */}
                         <div>
-                          <label
-                            htmlFor="reg-email"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Business Email Address <span className="text-rose-500">*</span>
-                          </label>
-                          <div className="relative">
-                            <input
-                              id="reg-email"
-                              type="email"
-                              value={email}
-                              onChange={(e) => {
-                                setEmail(e.target.value);
-                                setGeneralError(null);
-                              }}
-                              placeholder="james@spmotors.co.nz"
-                              required
-                              className={`w-full h-12 px-3.5 rounded-xl border text-base sm:text-sm font-medium transition-all focus:outline-none focus:ring-2 ${duplicateEmail
+                          <Input
+                            id="reg-email"
+                            label={
+                              <>
+                                Business Email Address <span className="text-[#e20c0c]">*</span>
+                              </>
+                            }
+                            type="email"
+                            value={email}
+                            onChange={(e) => {
+                              setEmail(e.target.value);
+                              setGeneralError(null);
+                            }}
+                            placeholder="james@spmotors.co.nz"
+                            required
+                            leftIcon={<Mail className="w-4 h-4" />}
+                            rightIcon={
+                              email && !duplicateEmail && email.includes("@") ? (
+                                <Check className="w-4 h-4 text-emerald-600" />
+                              ) : undefined
+                            }
+                            className={
+                              duplicateEmail
                                 ? "border-rose-400 bg-rose-50/40 focus:ring-rose-200 text-rose-900"
-                                : "border-slate-300 bg-white focus:border-[#e20c0c] focus:ring-[#e20c0c]/15 text-slate-900"
-                                }`}
-                            />
-                            {email && !duplicateEmail && email.includes("@") && (
-                              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-600">
-                                <Check className="w-4 h-4" />
-                              </div>
-                            )}
-                          </div>
+                                : ""
+                            }
+                          />
 
                           {/* Duplicate Email Warning */}
                           {duplicateEmail && (
@@ -970,39 +952,39 @@ export function RegisterView() {
                         </div>
 
                         {/* Phone */}
-                        <div>
-                          <label
-                            htmlFor="reg-phone"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Direct Phone / Mobile <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-phone"
-                            type="tel"
-                            value={phone}
-                            onChange={(e) => {
-                              setPhone(e.target.value);
-                              if (!deliveryPhone) setDeliveryPhone(e.target.value);
-                            }}
-                            placeholder="+64 21 555 0192"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-phone"
+                          label={
+                            <>
+                              Phone Number <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                            if (!deliveryPhone) setDeliveryPhone(e.target.value);
+                          }}
+                          placeholder="+64 21 555 0192"
+                          required
+                          leftIcon={<Phone className="w-4 h-4" />}
+                        />
                       </div>
 
                       {/* Password & Confirm Password */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {/* Password */}
-                        <div>
+                        <div className="w-full space-y-1.5">
                           <label
                             htmlFor="reg-password"
-                            className="block text-xs font-bold text-slate-700 mb-1"
+                            className="block text-xs font-bold uppercase tracking-wider text-slate-700 select-none"
                           >
-                            Account Password <span className="text-rose-500">*</span>
+                            Account Password <span className="text-[#e20c0c]">*</span>
                           </label>
-                          <div className="relative">
+                          <div className="relative flex items-center">
+                            <div className="absolute left-3.5 flex items-center pointer-events-none text-slate-400">
+                              <Lock className="w-4 h-4" />
+                            </div>
                             <input
                               id="reg-password"
                               type={showPassword ? "text" : "password"}
@@ -1010,12 +992,12 @@ export function RegisterView() {
                               onChange={(e) => setPassword(e.target.value)}
                               placeholder="Min. 6 characters"
                               required
-                              className="w-full h-12 pl-3.5 pr-11 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
+                              className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400 border border-slate-300 rounded-lg transition-all pl-11 pr-12 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20"
                             />
                             <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
-                              className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-600"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-600 active:scale-95"
                               title={showPassword ? "Hide password" : "Show password"}
                             >
                               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -1024,32 +1006,35 @@ export function RegisterView() {
                         </div>
 
                         {/* Confirm Password */}
-                        <div>
+                        <div className="w-full space-y-1.5">
                           <label
                             htmlFor="reg-confirm-password"
-                            className="block text-xs font-bold text-slate-700 mb-1"
+                            className="block text-xs font-bold uppercase tracking-wider text-slate-700 select-none"
                           >
-                            Confirm Password <span className="text-rose-500">*</span>
+                            Confirm Password <span className="text-[#e20c0c]">*</span>
                           </label>
-                          <div className="relative">
+                          <div className="relative flex items-center">
+                            <div className="absolute left-3.5 flex items-center pointer-events-none text-slate-400">
+                              <Lock className="w-4 h-4" />
+                            </div>
                             <input
                               id="reg-confirm-password"
                               type={showConfirmPassword ? "text" : "password"}
                               value={confirmPassword}
                               onChange={(e) => setConfirmPassword(e.target.value)}
-                              placeholder="Re-enter password"
+                              placeholder="Re-enter your password"
                               required
-                              className={`w-full h-12 pl-3.5 pr-11 rounded-xl border text-base sm:text-sm font-medium focus:outline-none focus:ring-2 ${confirmPassword && password !== confirmPassword
+                              className={`w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium placeholder:text-slate-400 border rounded-lg transition-all pl-11 pr-12 focus:outline-none focus:ring-2 ${confirmPassword && password !== confirmPassword
                                 ? "border-rose-400 bg-rose-50/30 focus:ring-rose-200"
                                 : confirmPassword && password === confirmPassword
                                   ? "border-emerald-500 bg-emerald-50/20 focus:ring-emerald-200"
-                                  : "border-slate-300 bg-white focus:border-[#e20c0c] focus:ring-[#e20c0c]/15"
+                                  : "border-slate-300 focus:border-[#e20c0c] focus:ring-[#e20c0c]/20"
                                 }`}
                             />
                             <button
                               type="button"
                               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                              className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-600"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-600 active:scale-95"
                               title={showConfirmPassword ? "Hide password" : "Show password"}
                             >
                               {showConfirmPassword ? (
@@ -1060,7 +1045,9 @@ export function RegisterView() {
                             </button>
                           </div>
                           {confirmPassword && password !== confirmPassword && (
-                            <p className="text-[11px] text-rose-600 mt-1">Passwords do not match.</p>
+                            <p className="text-xs font-medium text-rose-600 flex items-center gap-1 mt-1">
+                              Passwords do not match.
+                            </p>
                           )}
                         </div>
                       </div>
@@ -1068,6 +1055,7 @@ export function RegisterView() {
                   </div>
                 </div>
               )}
+
 
               {/* ──────────────────────────────────────────────────────── */}
               {/* STEP 3: WORKSHOP DELIVERY BAY ADDRESS                    */}
@@ -1099,175 +1087,160 @@ export function RegisterView() {
                     <div className="space-y-4 sm:space-y-5">
                       {/* Bay Label & Delivery Recipient */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <div>
-                          <label
-                            htmlFor="reg-bay-label"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Bay / Facility Label <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-bay-label"
-                            type="text"
-                            value={deliveryBayLabel}
-                            onChange={(e) => setDeliveryBayLabel(e.target.value)}
-                            placeholder="e.g. Main Workshop Bay 1"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
-
-                        <div>
-                          <label
-                            htmlFor="reg-recipient"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Goods Receiver Name <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-recipient"
-                            type="text"
-                            value={deliveryRecipient}
-                            onChange={(e) => setDeliveryRecipient(e.target.value)}
-                            placeholder="e.g. James Wilson or Workshop Foreman"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Street Address */}
-                      <div>
-                        <label
-                          htmlFor="reg-street"
-                          className="block text-xs font-bold text-slate-700 mb-1"
-                        >
-                          Street Address <span className="text-rose-500">*</span>
-                        </label>
-                        <input
-                          id="reg-street"
+                        <Input
+                          id="reg-bay-label"
+                          label={
+                            <>
+                              Bay / Facility Label <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
                           type="text"
-                          value={streetAddress}
-                          onChange={(e) => setStreetAddress(e.target.value)}
-                          placeholder="e.g. 14 Neilson Street"
+                          value={deliveryBayLabel}
+                          onChange={(e) => setDeliveryBayLabel(e.target.value)}
+                          placeholder="e.g. Main Workshop Bay 1"
                           required
-                          className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
+                          leftIcon={<Warehouse className="w-4 h-4" />}
+                        />
+
+                        <Input
+                          id="reg-recipient"
+                          label={
+                            <>
+                              Goods Receiver Name <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="text"
+                          value={deliveryRecipient}
+                          onChange={(e) => setDeliveryRecipient(e.target.value)}
+                          placeholder="e.g. James Wilson or Workshop Foreman"
+                          required
+                          leftIcon={<User className="w-4 h-4" />}
                         />
                       </div>
 
+                      {/* Street Address */}
+                      <Input
+                        id="reg-street"
+                        label={
+                          <>
+                            Street Address <span className="text-[#e20c0c]">*</span>
+                          </>
+                        }
+                        type="text"
+                        value={streetAddress}
+                        onChange={(e) => setStreetAddress(e.target.value)}
+                        placeholder="e.g. 14 Neilson Street"
+                        required
+                        leftIcon={<MapPin className="w-4 h-4" />}
+                      />
+
                       {/* Suburb, City, Postcode */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                        <div>
-                          <label
-                            htmlFor="reg-suburb"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Suburb / District <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-suburb"
-                            type="text"
-                            value={suburb}
-                            onChange={(e) => setSuburb(e.target.value)}
-                            placeholder="e.g. Onehunga"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-suburb"
+                          label={
+                            <>
+                              Suburb / District <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="text"
+                          value={suburb}
+                          onChange={(e) => setSuburb(e.target.value)}
+                          placeholder="e.g. Onehunga"
+                          required
+                          leftIcon={<MapPin className="w-4 h-4" />}
+                        />
 
-                        <div>
+                        {/* City / Region */}
+                        <div className="w-full space-y-1.5">
                           <label
                             htmlFor="reg-city"
-                            className="block text-xs font-bold text-slate-700 mb-1"
+                            className="block text-xs font-bold uppercase tracking-wider text-slate-700 select-none"
                           >
-                            City / Region <span className="text-rose-500">*</span>
+                            City / Region <span className="text-[#e20c0c]">*</span>
                           </label>
-                          <select
-                            id="reg-city"
-                            value={city}
-                            onChange={(e) => setCity(e.target.value)}
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          >
-                            {NZ_REGIONS.map((region) => (
-                              <option key={region} value={region}>
-                                {region}
-                              </option>
-                            ))}
-                          </select>
+                          <div className="relative flex items-center">
+                            <div className="absolute left-3.5 flex items-center pointer-events-none text-slate-400">
+                              <Compass className="w-4 h-4" />
+                            </div>
+                            <select
+                              id="reg-city"
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
+                              required
+                              className="w-full h-12 bg-white text-slate-900 text-base sm:text-sm font-medium border border-slate-300 rounded-lg pl-11 pr-10 focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/20 transition-all duration-150 ease-in-out cursor-pointer appearance-none"
+                            >
+                              {NZ_REGIONS.map((region) => (
+                                <option key={region} value={region}>
+                                  {region}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="absolute right-3.5 flex items-center pointer-events-none text-slate-400">
+                              <ChevronDown className="w-4 h-4" />
+                            </div>
+                          </div>
                         </div>
 
-                        <div>
-                          <label
-                            htmlFor="reg-postcode"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Postcode <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-postcode"
-                            type="text"
-                            value={postalCode}
-                            onChange={(e) => setPostalCode(e.target.value)}
-                            placeholder="e.g. 1061"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-postcode"
+                          label={
+                            <>
+                              Postcode <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="text"
+                          value={postalCode}
+                          onChange={(e) => setPostalCode(e.target.value)}
+                          placeholder="e.g. 1061"
+                          required
+                          leftIcon={<Hash className="w-4 h-4" />}
+                        />
                       </div>
 
                       {/* Delivery Contact Phone & Access Notes */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <div>
-                          <label
-                            htmlFor="reg-delivery-phone"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Delivery Contact Phone <span className="text-rose-500">*</span>
-                          </label>
-                          <input
-                            id="reg-delivery-phone"
-                            type="tel"
-                            value={deliveryPhone}
-                            onChange={(e) => setDeliveryPhone(e.target.value)}
-                            placeholder="e.g. +64 9 525 1122"
-                            required
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-delivery-phone"
+                          label={
+                            <>
+                              Delivery Contact Phone <span className="text-[#e20c0c]">*</span>
+                            </>
+                          }
+                          type="tel"
+                          value={deliveryPhone}
+                          onChange={(e) => setDeliveryPhone(e.target.value)}
+                          placeholder="e.g. +64 9 525 1122"
+                          required
+                          leftIcon={<Phone className="w-4 h-4" />}
+                        />
 
-                        <div>
-                          <label
-                            htmlFor="reg-instructions"
-                            className="block text-xs font-bold text-slate-700 mb-1"
-                          >
-                            Bay Delivery Instructions <span className="text-slate-400 font-normal">(Optional)</span>
-                          </label>
-                          <input
-                            id="reg-instructions"
-                            type="text"
-                            value={deliveryInstructions}
-                            onChange={(e) => setDeliveryInstructions(e.target.value)}
-                            placeholder="Forklift on site, entry via Gate 2"
-                            className="w-full h-12 px-3.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium focus:outline-none focus:border-[#e20c0c] focus:ring-2 focus:ring-[#e20c0c]/15"
-                          />
-                        </div>
+                        <Input
+                          id="reg-instructions"
+                          label="Bay Delivery Instructions (Optional)"
+                          type="text"
+                          value={deliveryInstructions}
+                          onChange={(e) => setDeliveryInstructions(e.target.value)}
+                          placeholder="Forklift on site, entry via Gate 2"
+                          leftIcon={<FileText className="w-4 h-4" />}
+                        />
                       </div>
 
                       {/* Default delivery bay checkbox */}
-                      <label className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition-colors text-xs text-slate-700 cursor-pointer">
+                      <label className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition-colors text-xs text-slate-700 cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={isDefaultDelivery}
                           onChange={(e) => setIsDefaultDelivery(e.target.checked)}
                           className="w-4 h-4 rounded text-[#e20c0c] accent-[#e20c0c] focus:ring-0 cursor-pointer shrink-0"
                         />
-                        <span className="leading-snug">Designate this workshop bay as your primary delivery address</span>
+                        <span className="leading-snug font-medium">Designate this workshop bay as your primary delivery address</span>
                       </label>
                     </div>
                   </div>
                 </div>
               )}
+
 
               {/* ──────────────────────────────────────────────────────── */}
               {/* STEP 4: REVIEW & TERMS ACKNOWLEDGEMENT                   */}
