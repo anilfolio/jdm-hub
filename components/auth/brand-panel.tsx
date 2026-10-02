@@ -52,13 +52,20 @@ export function BrandPanel() {
             opacity="0.04"
           />
 
-          {/* Translucent Giant Watermark 'A' in bottom-right corner */}
-          <g transform="translate(680, 640) scale(4.2)" opacity="0.12">
-            <path
-              d="M 50 5 L 88 95 L 68 95 L 50 48 L 32 95 L 12 95 Z M 50 63 L 59 86 L 41 86 Z"
-              fill="#2b0001ff"
-            />
+          {/* Translucent Giant Watermark 'JD' in bottom-right corner */}
+          <g transform="translate(540, 1000)" opacity="0.12">
+            <text
+              fontFamily="'Inter', system-ui, -apple-system, sans-serif"
+              fontWeight="900"
+              fontStyle="italic"
+              fontSize="380"
+              letterSpacing="-20"
+              fill="#2b0001"
+            >
+              JD
+            </text>
           </g>
+
 
           <defs>
             <linearGradient id="base-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -80,7 +87,7 @@ export function BrandPanel() {
         </svg>
       </div>
 
-      {/* Top Platform Identity with Approved AutoHub 'A' Logo Badge */}
+      {/* Top Platform Identity with JDMHUB 'JD' Logo Badge */}
       <div className="relative z-10 flex items-center gap-3 select-none">
         <div className="w-10 h-10 rounded-xl border-2 border-white bg-[#e20c0c] shadow-md flex items-center justify-center font-black text-xl text-white tracking-tighter leading-none shrink-0 transition-transform duration-200 hover:scale-105">
           JD

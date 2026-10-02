@@ -64,11 +64,12 @@ const BUSINESS_CATEGORIES = [
 
 // ─── Wizard step definitions ─────────────────────────────────
 const STEPS = [
-  { id: 1, label: "Business", shortLabel: "Business", icon: Building2, description: "Company details" },
-  { id: 2, label: "Contact", shortLabel: "Contact", icon: User, description: "Your credentials" },
-  { id: 3, label: "Delivery", shortLabel: "Delivery", icon: Truck, description: "Workshop address" },
-  { id: 4, label: "Review", shortLabel: "Review", icon: FileText, description: "Confirm & submit" },
+  { id: 1, label: "Business", shortLabel: "Business", icon: Building2 },
+  { id: 2, label: "Contact", shortLabel: "Contact", icon: User },
+  { id: 3, label: "Delivery", shortLabel: "Delivery", icon: Truck },
+  { id: 4, label: "Review", shortLabel: "Review", icon: FileText },
 ] as const;
+
 
 
 export function RegisterView() {
@@ -394,15 +395,11 @@ export function RegisterView() {
 
         {/* Heading */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
             Register your business
           </h1>
-          {!isRegisteredSuccess && (
-            <p className="text-xs text-slate-500 mt-1">
-              Complete each step below to apply for a JDMHUB trade account.
-            </p>
-          )}
         </div>
+
 
 
         {/* ═══════════════════════════════════════════════════════════════════ */}
@@ -616,7 +613,7 @@ export function RegisterView() {
                       {/* Label */}
                       <div className="text-center">
                         <span
-                          className={`block text-[11px] font-bold transition-colors ${status === "active"
+                          className={`block text-[13px] font-bold transition-colors ${status === "active"
                             ? "text-[#e20c0c]"
                             : status === "completed"
                               ? "text-emerald-700"
@@ -624,9 +621,6 @@ export function RegisterView() {
                             }`}
                         >
                           {step.label}
-                        </span>
-                        <span className="block text-[10px] text-slate-400 font-medium">
-                          {step.description}
                         </span>
                       </div>
                     </button>
