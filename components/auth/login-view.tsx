@@ -347,7 +347,7 @@ export function LoginView() {
 
             {/* Heading */}
             <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#0F172A] tracking-tight leading-[1.2] mb-1.5">
+              <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-[#0F172A] tracking-tight leading-[1.2] mb-1.5">
                 Sign in to your account
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">

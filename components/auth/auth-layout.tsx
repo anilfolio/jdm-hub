@@ -2,7 +2,6 @@
 
 import React from "react";
 import { BrandPanel } from "@/components/auth/brand-panel";
-import { PoweredByJdmhub } from "@/components/auth/powered-by-jdmhub";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -47,14 +46,8 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
           {children}
         </div>
 
-        {/* Bottom of Page Footer with Subtle Powered by JDMHUB Signature & Legal Links */}
-        <footer className={`w-full ${maxWidth} pt-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center flex flex-col items-center gap-2.5 select-none`}>
-          {/* Mobile view subtle Powered by JDMHUB mark */}
-          <div className="lg:hidden w-full flex justify-center py-1">
-            <PoweredByJdmhub variant="light" />
-          </div>
-
-          {/* Desktop subtle co-branding signature */}
+        {/* Bottom of Page Footer with Legal Links */}
+        <footer className={`w-full ${maxWidth} pt-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center flex flex-col items-center select-none`}>
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[11px] text-slate-500 font-medium">
             <span>© 2026 JDMHUB Ltd.</span>
             <span className="text-slate-300">•</span>
@@ -75,10 +68,6 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
             >
               Privacy Policy
             </a>
-            <span className="hidden sm:inline text-slate-300">•</span>
-            <div className="hidden lg:inline-flex">
-              <PoweredByJdmhub variant="minimal" />
-            </div>
           </div>
         </footer>
       </section>

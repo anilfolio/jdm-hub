@@ -31,11 +31,11 @@ export function PoweredByJdmhub({
           POWERED BY
         </span>
         <span className="inline-flex items-baseline">
-          <span className="font-black italic tracking-tight text-[#e20c0c] text-[12px] leading-none uppercase">
+          <span className="font-black italic tracking-tight text-[#e20c0c] text-[14px] leading-none uppercase">
             {prefix}
             <span className="not-italic font-black text-[#e20c0c]">{suffix}</span>
           </span>
-          <span className="text-[7px] font-bold text-[#e20c0c] ml-0.5 leading-none">
+          <span className="text-[12px] sm:text-[13px] font-bold text-[#e20c0c] ml-1 leading-none select-none">
             ™
           </span>
         </span>
@@ -62,7 +62,7 @@ export function PoweredByJdmhub({
               {prefix}
               <span className="not-italic font-black text-[#e20c0c]">{suffix}</span>
             </span>
-            <span className="text-[7px] font-black text-[#e20c0c] ml-0.5 leading-none">
+            <span className="text-[12px] sm:text-[13px] font-black text-[#e20c0c] ml-1 leading-none select-none">
               ™
             </span>
           </div>
@@ -92,11 +92,11 @@ export function PoweredByJdmhub({
         <div className="w-9 sm:w-10 h-[2.5px] bg-[#e20c0c] rounded-full mb-[2px]" />
 
         <div className="inline-flex items-start leading-none">
-          <span className="font-black italic tracking-tight text-[#e20c0c] text-base sm:text-[17px] leading-none uppercase">
+          <span className="font-black italic tracking-tight text-[#e20c0c] text-base sm:text-[18px] leading-none uppercase">
             {prefix}
             <span className="not-italic font-black text-[#e20c0c]">{suffix}</span>
           </span>
-          <span className="text-[8px] font-black text-[#e20c0c] ml-0.5 leading-none">
+          <span className="text-[14px] sm:text-[18px] font-black text-[#e20c0c] ml-1 leading-none select-none">
             ™
           </span>
         </div>
