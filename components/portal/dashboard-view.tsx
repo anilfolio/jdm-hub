@@ -132,7 +132,7 @@ export function DashboardView() {
                 </svg>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-16 relative z-10">
                 {/* Step 1 */}
                 <div className="flex flex-col items-center text-center group">
                   <div className="relative z-10 mb-3">
