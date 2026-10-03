@@ -102,7 +102,7 @@ export function SettingsView() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-6 sm:p-8 max-w-7xl mx-auto w-full">
+    <div className="space-y-6 w-full min-w-0">
       {/* Toast Feedback */}
       {toastMessage && (
         <div className="fixed top-5 right-5 z-50 flex items-center gap-2 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-xl font-bold text-xs animate-in slide-in-from-top-3 fade-in duration-200">
@@ -111,38 +111,38 @@ export function SettingsView() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6">
         <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
-          <Settings className="w-4 h-4" />
+          <Settings className="w-4 h-4 text-[#e20c0c]" />
           <span>Trade Account Management</span>
         </div>
-        <h2 className="text-xl font-bold text-slate-900">Account & Preferences</h2>
-        <p className="text-xs text-slate-500">
+        <h2 className="text-lg sm:text-xl font-bold text-slate-900">Account & Preferences</h2>
+        <p className="text-xs text-slate-500 mt-0.5">
           Manage your trade credentials, delivery depots, team contacts, and notifications
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {/* Trade Profile Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4 text-xs">
-          <div className="flex items-center justify-between border-b pb-3">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6 space-y-4 text-xs">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
               <Building2 className="w-4 h-4 text-[#e20c0c]" />
-              <h3 className="font-bold text-slate-900">Trade Profile</h3>
+              <h3 className="font-bold text-slate-900 text-sm">Trade Profile</h3>
             </div>
             <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">
               APPROVED TIER 1
             </span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             <div className="flex justify-between py-1 border-b border-slate-100">
               <span className="text-slate-500">Trading Name:</span>
               <span className="font-bold text-slate-900">SP Motors Ltd</span>
             </div>
             <div className="flex justify-between py-1 border-b border-slate-100">
               <span className="text-slate-500">NZBN Number:</span>
-              <span className=" font-bold text-slate-900">
+              <span className="font-bold text-slate-900">
                 9429049988776
               </span>
             </div>
@@ -155,7 +155,7 @@ export function SettingsView() {
             <div className="flex justify-between py-1 border-b border-slate-100">
               <span className="text-slate-500">Account Manager:</span>
               <span className="font-semibold text-slate-800">
-                Marcus Chen (Autohub NZ)
+                Marcus Chen (JDMHUB Operations)
               </span>
             </div>
             <div className="flex items-center justify-between py-1">
@@ -252,7 +252,7 @@ export function SettingsView() {
               <span className="font-bold text-slate-900">Password & Authentication</span>
               <Link
                 href="/login?mode=change_password"
-                className="px-3 py-1 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center gap-1"
+                className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-xs active:scale-[0.98]"
               >
                 <span>Change Password →</span>
               </Link>
@@ -285,8 +285,8 @@ export function SettingsView() {
       </div>
 
       {/* Saved Delivery Addresses Section */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4 text-xs">
-        <div className="flex items-center justify-between border-b pb-3">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6 space-y-4 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
           <div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#e20c0c]" />
@@ -298,10 +298,10 @@ export function SettingsView() {
           </div>
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors shadow-xs"
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs rounded-xl shadow-xs transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
           >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Depot Address</span>
+            <Plus className="w-4 h-4" />
+            <span>Add Delivery Depot</span>
           </button>
         </div>
 

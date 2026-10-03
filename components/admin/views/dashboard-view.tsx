@@ -126,7 +126,7 @@ export function AdminDashboardView() {
           <Link
             key={idx}
             href={stat.link}
-            className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all flex flex-col justify-between gap-3 group"
+            className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-4 shadow-xs hover:border-slate-300 hover:shadow-sm active:scale-[0.98] transition-all flex flex-col justify-between gap-3 group"
           >
             <div className="flex items-start justify-between gap-2">
               <span className="text-[10px] font-bold text-slate-500 group-hover:text-slate-700 transition-colors tracking-wider uppercase leading-tight">
@@ -142,8 +142,8 @@ export function AdminDashboardView() {
       </div>
 
       {/* Main Section: ACTIVE & OPEN ORDERS (Default) */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-3 md:p-4 border-b border-slate-100 flex flex-col gap-4">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <div className="p-3.5 sm:p-5 border-b border-slate-100 flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
@@ -174,7 +174,7 @@ export function AdminDashboardView() {
 
             <Link
               href="/admin/requests"
-              className="text-xs font-bold text-[#e20c0c] hover:text-[#C8101E] transition-colors flex items-center gap-1 self-start sm:self-auto"
+              className="text-xs font-bold text-[#e20c0c] hover:text-[#D81419] transition-colors flex items-center gap-1 self-start sm:self-auto"
             >
               View Full Register ({requests.length})
               <ChevronRight className="w-3.5 h-3.5" />
@@ -183,11 +183,11 @@ export function AdminDashboardView() {
 
           {/* Tab navigation pills & Quick search */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5 overflow-x-auto bg-slate-100 p-2 rounded-xl">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-slate-100 p-1.5 sm:p-2 rounded-xl min-w-0">
               <button
                 type="button"
                 onClick={() => handleTabChange("active")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${currentTab === "active"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${currentTab === "active"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
                   }`}
@@ -202,7 +202,7 @@ export function AdminDashboardView() {
               <button
                 type="button"
                 onClick={() => handleTabChange("attention")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${currentTab === "attention"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${currentTab === "attention"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
                   }`}
@@ -217,7 +217,7 @@ export function AdminDashboardView() {
               <button
                 type="button"
                 onClick={() => handleTabChange("delivered_completed")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${currentTab === "delivered_completed"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${currentTab === "delivered_completed"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
                   }`}
@@ -232,7 +232,7 @@ export function AdminDashboardView() {
               <button
                 type="button"
                 onClick={() => handleTabChange("all")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${currentTab === "all"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${currentTab === "all"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
                   }`}
@@ -255,7 +255,7 @@ export function AdminDashboardView() {
                   setCurrentPage(1);
                 }}
                 placeholder="Search by Request #, Customer, Part..."
-                className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 hover:bg-slate-100 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#e20c0c] transition-all"
+                className="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] transition-all"
               />
             </div>
           </div>
@@ -274,17 +274,17 @@ export function AdminDashboardView() {
           </div>
         ) : (
           <div className="overflow-x-auto custom-scrollbar">
-            <table className="w-full min-w-[700px] text-left text-xs border-collapse">
+            <table className="w-full min-w-[760px] text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                  <th className="py-3 px-4">Request #</th>
-                  <th className="py-3 px-4">Customer</th>
-                  <th className="py-3 px-4">Vehicle</th>
-                  <th className="py-3 px-4">Part</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Payment</th>
-                  <th className="py-3 px-4">Last Updated</th>
-                  <th className="py-3 px-4 text-center">Action</th>
+                <tr className="bg-slate-50/80 border-b border-slate-200 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Request #</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Customer</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Vehicle</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Part</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Status</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Payment</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">Last Updated</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6 text-center">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -294,22 +294,22 @@ export function AdminDashboardView() {
                     onClick={() => router.push(`/admin/requests?id=${req.id}`)}
                     className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
                   >
-                    <td className="py-3.5 px-4  font-bold text-slate-700 hover:text-slate-800 hover:underline">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6 font-bold text-slate-700 hover:text-slate-800 hover:underline">
                       {req.requestNumber}
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">
                       <span className="font-bold text-slate-900 block">{req.customerName}</span>
                       <span className="text-[11px] text-slate-400">{req.contactName}</span>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-700">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6 text-slate-700">
                       <span className="font-semibold block">
                         {req.vehicle.year} {req.vehicle.make} {req.vehicle.model}
                       </span>
-                      <span className="text-[10px] text-slate-400 ">
+                      <span className="text-[10px] text-slate-400">
                         {req.vehicle.registration || req.vehicle.vin}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-800">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6 text-slate-800">
                       <span className="font-medium line-clamp-1">{req.part.name}</span>
                       <span className="text-[10px] text-slate-400">Qty: {req.part.quantity}</span>
                       {req.supporting?.freightPreference && (
@@ -318,17 +318,17 @@ export function AdminDashboardView() {
                         </span>
                       )}
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">
                       <StatusBadge status={req.status} size="sm" />
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">
                       <PaymentStatusBadge status={req.payment?.status || "Unpaid"} size="sm" />
                     </td>
-                    <td className="py-3.5 px-4 text-slate-500 text-[11px] whitespace-nowrap">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6 text-slate-500 text-[11px] whitespace-nowrap">
                       {req.lastUpdated}
                     </td>
-                    <td className="py-3.5 px-4 text-center">
-                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-white group-hover:bg-red-50 text-slate-700 group-hover:text-[#e20c0c] font-semibold text-xs rounded-xl border border-slate-200 group-hover:border-red-200 shadow-xs transition-colors">
+                    <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6 text-center">
+                      <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-white group-hover:bg-red-50 text-slate-700 group-hover:text-[#e20c0c] font-semibold text-xs rounded-xl border border-slate-200 group-hover:border-red-200 shadow-xs active:scale-[0.98] transition-all cursor-pointer">
                         View
                         <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                       </span>
@@ -342,8 +342,8 @@ export function AdminDashboardView() {
 
         {/* Pagination Footer */}
         {filteredRequests.length > 0 && (
-          <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/50 px-6 py-4">
-            <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 bg-slate-50/60 px-4 sm:px-6 py-3.5">
+            <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider text-center sm:text-left">
               Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, filteredRequests.length)} of {filteredRequests.length} orders
             </span>
             <div className="flex items-center gap-2">
@@ -351,18 +351,18 @@ export function AdminDashboardView() {
                 type="button"
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
               >
                 Previous
               </button>
-              <span className="text-[11px] font-bold text-slate-600 px-3 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-700 px-2 uppercase tracking-wider">
                 Page {currentPage} of {totalPages}
               </span>
               <button
                 type="button"
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
               >
                 Next
               </button>

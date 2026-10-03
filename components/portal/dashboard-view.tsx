@@ -471,23 +471,23 @@ export function DashboardView() {
                   <p className="text-xs text-slate-500 mt-1">Submit your first parts procurement request to get started.</p>
                   <Link
                     href="/customer/requests/new"
-                    className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-[#e20c0c] text-white rounded-xl text-xs font-bold shadow-sm hover:bg-[#9B0A0F] transition-all"
+                    className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-[#e20c0c] text-white rounded-xl text-xs font-bold shadow-xs hover:bg-[#D81419] transition-all active:scale-[0.98]"
                   >
                     <Plus className="w-4 h-4" />
                     <span>New Parts Request</span>
                   </Link>
                 </div>
               ) : (
-                <table className="w-full min-w-[650px] text-left border-collapse">
+                <table className="w-full min-w-[700px] text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                      <th className="py-3 px-5">Request</th>
-                      <th className="py-3 px-4">Vehicle</th>
-                      <th className="py-3 px-4">Part</th>
-                      <th className="py-3 px-4">Date</th>
-                      <th className="py-3 px-4">Status</th>
-                      <th className="py-3 px-5 text-right">Value</th>
-                      <th className="py-3 px-4 text-center">Action</th>
+                    <tr className="border-b border-slate-200 bg-slate-50/80 text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                      <th className="py-3 sm:py-3.5 px-4 sm:px-6">Request</th>
+                      <th className="py-3 sm:py-3.5 px-3 sm:px-4">Vehicle</th>
+                      <th className="py-3 sm:py-3.5 px-3 sm:px-4">Part</th>
+                      <th className="py-3 sm:py-3.5 px-3 sm:px-4">Date</th>
+                      <th className="py-3 sm:py-3.5 px-3 sm:px-4">Status</th>
+                      <th className="py-3 sm:py-3.5 px-3 sm:px-4 text-right">Value</th>
+                      <th className="py-3 sm:py-3.5 px-4 sm:px-6 text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
@@ -498,27 +498,27 @@ export function DashboardView() {
                         className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
                       >
                         {/* Request Number */}
-                        <td className="py-3.5 px-5  font-bold text-slate-900 group-hover:text-[#e20c0c] transition-colors">
+                        <td className="py-3.5 sm:py-4 px-4 sm:px-6 font-bold text-slate-900 group-hover:text-[#e20c0c] transition-colors whitespace-nowrap">
                           {req.requestNumber}
                         </td>
 
                         {/* Vehicle */}
-                        <td className="py-3.5 px-4 font-medium text-slate-800 whitespace-nowrap">
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 font-medium text-slate-800 whitespace-nowrap">
                           {req.vehicle.make} {req.vehicle.model} {req.vehicle.year}
                         </td>
 
                         {/* Part Name */}
-                        <td className="py-3.5 px-4 text-slate-600 max-w-[220px] truncate" title={req.part.name}>
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 text-slate-600 max-w-[220px] truncate" title={req.part.name}>
                           {req.part.name}
                         </td>
 
                         {/* Date */}
-                        <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap text-[11px]">
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 text-slate-500 whitespace-nowrap text-[11px]">
                           {req.dateSubmitted}
                         </td>
 
                         {/* Status Badge */}
-                        <td className="py-3.5 px-4 whitespace-nowrap">
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 whitespace-nowrap">
                           <span
                             className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${getStatusBadge(
                               req.status
@@ -530,12 +530,12 @@ export function DashboardView() {
                         </td>
 
                         {/* Value */}
-                        <td className="py-3.5 px-5 text-right  font-bold text-slate-900 whitespace-nowrap">
+                        <td className="py-3.5 sm:py-4 px-3 sm:px-4 text-right font-bold text-slate-900 whitespace-nowrap">
                           {req.quotedValue ? `$${req.quotedValue.toFixed(2)}` : "—"}
                         </td>
 
                         {/* Action */}
-                        <td className="py-3.5 px-4 text-center">
+                        <td className="py-3.5 sm:py-4 px-4 sm:px-6 text-center whitespace-nowrap">
                           <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 group-hover:text-[#e20c0c] transition-colors">
                             View
                             <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -548,27 +548,27 @@ export function DashboardView() {
               )}
             </div>
 
-            {/* Pagination Footer */}
+            {/* Responsive Pagination Footer */}
             {requests.length > 0 && totalPages > 1 && (
-              <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/50 px-6 py-4">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 bg-slate-50/60 px-4 sm:px-6 py-3.5">
                 <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">
                   Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, requests.length)} of {requests.length} requests
                 </span>
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-xs cursor-pointer"
                   >
                     Previous
                   </button>
-                  <span className="text-[11px] font-bold text-slate-600 px-3 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-slate-700 px-2">
                     Page {currentPage} of {totalPages}
                   </span>
                   <button
-                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-xs cursor-pointer"
                   >
                     Next
                   </button>

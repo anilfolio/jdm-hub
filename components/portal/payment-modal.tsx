@@ -47,7 +47,7 @@ export function PaymentModal() {
     paymentReference: `${req.requestNumber}`,
     bankDetails: {
       bankName: "ANZ New Zealand",
-      accountName: "Autohub Procurement NZ Ltd",
+      accountName: "JDMHUB Procurement NZ Ltd",
       accountNumber: "01-0288-0349821-00",
       swiftBic: "ANZBNZ22",
     },
@@ -78,11 +78,11 @@ export function PaymentModal() {
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-4 sm:my-6">
+      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-4 sm:my-6 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 font-bold">
+            <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 font-bold shrink-0">
               <DollarSign className="w-5 h-5" />
             </div>
             <div>
@@ -102,8 +102,8 @@ export function PaymentModal() {
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500 ">
-                Autohub Invoice Ref: {pay.invoiceNumber} • Reference: {pay.paymentReference}
+              <p className="text-xs text-slate-500">
+                JDMHUB Invoice Ref: {pay.invoiceNumber} • Reference: {pay.paymentReference}
               </p>
             </div>
           </div>
@@ -116,16 +116,16 @@ export function PaymentModal() {
         </div>
 
         {/* Body */}
-        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
-          {/* Autohub Invoice Notice Callout */}
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto">
+          {/* JDMHUB Invoice Notice Callout */}
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
             <FileText className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
             <div className="text-xs">
               <span className="font-bold text-slate-800 block">
-                Official Autohub Procurement GST Tax Invoice
+                Official JDMHUB Procurement GST Tax Invoice
               </span>
               <p className="text-slate-500 mt-0.5">
-                Issued by Autohub Procurement NZ Ltd (NZBN: 9429038291024, GST: 112-984-291) for order fulfillment and international shipping.
+                Issued by JDMHUB Procurement NZ Ltd (NZBN: 9429038291024, GST: 112-984-291) for order fulfillment and international shipping.
               </p>
             </div>
           </div>
@@ -141,7 +141,7 @@ export function PaymentModal() {
                   Payment Reconciled &amp; Confirmed by Admin
                 </h3>
                 <p className="text-xs text-emerald-800 mt-1">
-                  Tax invoice {pay.invoiceNumber} has been reconciled and recorded as Paid by the Autohub finance team.
+                  Tax invoice {pay.invoiceNumber} has been reconciled and recorded as Paid by the JDMHUB finance team.
                 </p>
               </div>
 
@@ -150,7 +150,7 @@ export function PaymentModal() {
                   <span className="text-slate-400 block text-[10px] uppercase font-bold">
                     Amount Settled
                   </span>
-                  <span className=" font-bold text-emerald-900 text-sm">
+                  <span className="font-bold text-emerald-900 text-sm">
                     ${pay.amount.toFixed(2)} NZD
                   </span>
                 </div>
@@ -158,20 +158,20 @@ export function PaymentModal() {
                   <span className="text-slate-400 block text-[10px] uppercase font-bold">
                     Payment Reference
                   </span>
-                  <span className=" font-bold text-slate-800">
+                  <span className="font-bold text-slate-800">
                     {pay.paymentReference}
                   </span>
                 </div>
               </div>
 
               <p className="text-[11px] text-emerald-800 leading-relaxed">
-                Autohub Operations has verified payment confirmation. Your order is unlocked and in procurement fulfillment with Autohub Logistics.
+                JDMHUB Operations has verified payment confirmation. Your order is unlocked and in procurement fulfillment with JDMHUB Logistics.
               </p>
             </div>
           ) : (
             <>
               {/* Summary Box */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 flex-wrap">
                 <div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Part &amp; Order Description
@@ -183,11 +183,11 @@ export function PaymentModal() {
                     For {req.vehicle.year} {req.vehicle.make} {req.vehicle.model}
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Payable Balance (incl GST)
                   </span>
-                  <div className="text-2xl font-black text-slate-900 ">
+                  <div className="text-2xl font-black text-slate-900">
                     ${pay.amount.toFixed(2)}{" "}
                     <span className="text-xs font-bold text-slate-500">NZD</span>
                   </div>
@@ -199,29 +199,29 @@ export function PaymentModal() {
                 <div className="flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-slate-700" />
                   <h4 className="font-bold text-slate-900">
-                    Autohub NZ Direct Deposit / Wire Details:
+                    JDMHUB NZ Direct Deposit / Wire Details:
                   </h4>
                 </div>
 
-                <div className="space-y-2 ">
+                <div className="space-y-2">
                   <div className="flex justify-between items-center bg-white p-2.5 rounded-lg border border-slate-200">
-                    <span className="text-slate-500  text-xs">Bank:</span>
+                    <span className="text-slate-500 text-xs">Bank:</span>
                     <span className="font-bold text-slate-900">
                       {pay.bankDetails?.bankName || "ANZ New Zealand"}
                     </span>
                   </div>
 
                   <div className="flex justify-between items-center bg-white p-2.5 rounded-lg border border-slate-200">
-                    <span className="text-slate-500  text-xs">
+                    <span className="text-slate-500 text-xs">
                       Account Name:
                     </span>
                     <span className="font-bold text-slate-900">
-                      {pay.bankDetails?.accountName || "Autohub Procurement NZ Ltd"}
+                      {pay.bankDetails?.accountName || "JDMHUB Procurement NZ Ltd"}
                     </span>
                   </div>
 
                   <div className="flex justify-between items-center bg-white p-2.5 rounded-lg border border-slate-200">
-                    <span className="text-slate-500  text-xs">
+                    <span className="text-slate-500 text-xs">
                       Account Number:
                     </span>
                     <div className="flex items-center gap-2">
@@ -245,7 +245,7 @@ export function PaymentModal() {
                   </div>
 
                   <div className="flex justify-between items-center bg-amber-50/50 p-2.5 rounded-lg border border-amber-300">
-                    <span className="text-amber-900  text-xs font-bold">
+                    <span className="text-amber-900 text-xs font-bold">
                       Mandatory Reference:
                     </span>
                     <div className="flex items-center gap-2">
@@ -277,7 +277,7 @@ export function PaymentModal() {
                     value={bankReference}
                     onChange={(e) => setBankReference(e.target.value)}
                     placeholder="e.g. ANZ-TX-98124912"
-                    className="w-full text-xs p-2.5 rounded-lg border border-slate-200 outline-none focus:border-[#e20c0c] bg-white "
+                    className="w-full text-xs p-2.5 rounded-lg border border-slate-200 outline-none focus:border-[#e20c0c] bg-white"
                   />
                   <p className="text-[10px] text-slate-400 mt-1">
                     If you have already initiated your bank transfer, enter your transaction reference above to assist our accounts team with reconciliation.
@@ -292,14 +292,14 @@ export function PaymentModal() {
                   <span>Only Admins Can Update Payment Status</span>
                 </div>
                 <p className="text-slate-600 leading-relaxed text-[11px]">
-                  In accordance with commercial trade guidelines, customers cannot manually mark invoices as paid. Once your bank deposit is received using the mandatory reference, the Autohub Accounts team reconciles the bank ledger and updates your order status to <strong>Paid</strong>, releasing the consignment for dispatch.
+                  In accordance with commercial trade guidelines, customers cannot manually mark invoices as paid. Once your bank deposit is received using the mandatory reference, the JDMHUB Accounts team reconciles the bank ledger and updates your order status to <strong>Paid</strong>, releasing the consignment for dispatch.
                 </p>
               </div>
 
               {referenceSubmitted && (
                 <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-medium flex items-center gap-1.5 animate-in fade-in">
                   <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Remittance reference submitted to Autohub Accounts team!</span>
+                  <span>Remittance reference submitted to JDMHUB Accounts team!</span>
                 </div>
               )}
             </>
@@ -307,10 +307,10 @@ export function PaymentModal() {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50 shrink-0">
           <button
             onClick={() => setIsPaymentModalOpen(false)}
-            className="px-4 py-2 text-xs font-bold text-slate-600 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 transition-colors cursor-pointer"
+            className="px-4 py-2 text-xs font-bold text-slate-600 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 active:scale-[0.98] transition-all cursor-pointer shadow-xs"
           >
             Close
           </button>
@@ -320,7 +320,7 @@ export function PaymentModal() {
               {bankReference.trim() ? (
                 <button
                   onClick={handleSubmitRemittanceNote}
-                  className="px-4 py-2.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs shadow-red-500/20 active:scale-[0.98] transition-all cursor-pointer"
                 >
                   <span>Submit Remittance Note</span>
                   <ArrowRight className="w-4 h-4" />
@@ -328,7 +328,7 @@ export function PaymentModal() {
               ) : (
                 <button
                   onClick={() => setIsPaymentModalOpen(false)}
-                  className="px-4 py-2.5 bg-[#e20c0c] hover:bg-[#ED2025] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs shadow-red-500/20 active:scale-[0.98] transition-all cursor-pointer"
                 >
                   I Understand
                 </button>

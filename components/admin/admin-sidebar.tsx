@@ -179,7 +179,7 @@ export function AdminSidebar({
               className="hidden lg:flex items-center justify-center"
             >
               <div className="w-9 h-9 rounded-lg border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
-                <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">P</span>
+                <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">JD</span>
               </div>
             </Link>
           )}

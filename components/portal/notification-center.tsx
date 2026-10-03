@@ -195,7 +195,7 @@ export function NotificationCenter() {
           {/* Footer */}
           <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
             <span className="text-[11px] text-slate-500 font-medium">
-              Autohub New Zealand • Trade Operations Live Feed
+              JDMHUB New Zealand • Trade Operations Live Feed
             </span>
           </div>
         </div>

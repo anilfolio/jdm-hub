@@ -351,7 +351,7 @@ export function LoginView() {
                 Sign in to your account
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Enter your trade credentials to access Autohub parts procurement.
+                Enter your trade credentials to access JDMHUB parts procurement.
               </p>
             </div>
 
@@ -601,7 +601,7 @@ export function LoginView() {
                 Register your business
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Create a trade account to access Autohub parts sourcing and wholesale procurement lines.
+                Create a trade account to access JDMHUB parts sourcing and wholesale procurement lines.
               </p>
             </div>
 
@@ -624,7 +624,7 @@ export function LoginView() {
                   </div>
 
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Thank you! Your trade registration for <strong>{regBusinessName}</strong> has been received. Customer trade approvals are reviewed manually by the JDMHUB Autohub operations team for MVP.
+                    Thank you! Your trade registration for <strong>{regBusinessName}</strong> has been received. Customer trade approvals are reviewed manually by the JDMHUB operations team for MVP.
                   </p>
 
                   {/* Registered Details Summary Card */}
@@ -1105,7 +1105,7 @@ export function LoginView() {
                 Change your password
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Create a strong new password that meets Autohub enterprise security policy.
+                Create a strong new password that meets JDMHUB enterprise security policy.
               </p>
             </div>
 
@@ -1119,13 +1119,13 @@ export function LoginView() {
                   </h4>
                 </div>
                 <p className="text-xs text-emerald-700 leading-relaxed">
-                  Your new credentials have been activated in the Autohub Identity System. Redirecting to your {getPortalName(email)}...
+                  Your new credentials have been activated in the JDMHUB Identity System. Redirecting to your {getPortalName(email)}...
                 </p>
                 <div className="pt-1">
                   <Button
                     type="button"
                     onClick={() => router.push(getPortalRoute(email))}
-                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] text-white rounded-xl"
+                    className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#D81419] text-white rounded-xl shadow-xs active:scale-[0.98] transition-all cursor-pointer"
                   >
                     Go to {getPortalName(email)} Now →
                   </Button>

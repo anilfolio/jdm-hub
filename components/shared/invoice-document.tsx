@@ -197,7 +197,7 @@ export function InvoiceDocument({
             <div>
               <h3 className="text-sm font-bold text-slate-900">{fileName}</h3>
               <p className="text-xs text-slate-500">
-                Official accounts receivable invoice attached by Autohub Finance
+                Official accounts receivable invoice attached by JDMHUB Finance
               </p>
             </div>
           </div>

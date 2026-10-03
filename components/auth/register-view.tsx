@@ -434,7 +434,7 @@ export function RegisterView() {
                   <span>Manual Business Verification Process</span>
                 </div>
                 <p className="leading-relaxed">
-                  For platform security and trade wholesale pricing eligibility, all new workshop accounts are manually verified by the JDMHUB Autohub operations desk. We will review your NZBN and company credentials within <strong>1 business day</strong>.
+                  For platform security and trade wholesale pricing eligibility, all new workshop accounts are manually verified by the JDMHUB operations desk. We will review your NZBN and company credentials within <strong>1 business day</strong>.
                 </p>
               </div>
 

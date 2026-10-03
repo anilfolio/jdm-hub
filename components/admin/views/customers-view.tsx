@@ -44,7 +44,7 @@ export function CustomersView() {
       status: "Active",
       registrationDate: new Date().toISOString().split("T")[0],
       requestCount: 0,
-      notes: "Directly added by Autohub administration desk.",
+      notes: "Directly added by JDMHUB administration desk.",
     };
 
     addCustomer(newCust);
@@ -68,12 +68,12 @@ export function CustomersView() {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
         <div>
           <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
             Customer Trade Accounts ({customers.length})
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 mt-0.5">
             Manage automotive workshops, fleet operators, and trade dealerships registered on JDMHUB.
           </p>
         </div>
@@ -81,27 +81,27 @@ export function CustomersView() {
         <button
           type="button"
           onClick={() => setShowAddModal(true)}
-          className="px-3.5 py-2 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#e20c0c] hover:bg-[#D81419] text-white rounded-xl text-xs font-bold transition-all shadow-xs active:scale-[0.98] self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          Add Customer
+          <span>Add Customer</span>
         </button>
       </div>
 
       {/* Customer Accounts Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
         <div className="overflow-x-auto custom-scrollbar">
-          <table className="w-full min-w-[650px] text-left text-xs border-collapse">
+          <table className="w-full min-w-[720px] text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                <th className="py-3 px-4">Business Name</th>
-                <th className="py-3 px-4">Contact Person</th>
-                <th className="py-3 px-4">Email Address</th>
-                <th className="py-3 px-4">Phone</th>
-                <th className="py-3 px-4">Registered Date</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-center">Requests</th>
-                <th className="py-3 px-4 text-center">Actions</th>
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                <th className="py-3 sm:py-3.5 px-4 sm:px-6">Business Name</th>
+                <th className="py-3 sm:py-3.5 px-3 sm:px-4">Contact Person</th>
+                <th className="py-3 sm:py-3.5 px-3 sm:px-4">Email Address</th>
+                <th className="py-3 sm:py-3.5 px-3 sm:px-4">Phone</th>
+                <th className="py-3 sm:py-3.5 px-3 sm:px-4">Registered Date</th>
+                <th className="py-3 sm:py-3.5 px-3 sm:px-4">Status</th>
+                <th className="py-3 sm:py-3.5 px-3 sm:px-4 text-center">Requests</th>
+                <th className="py-3 sm:py-3.5 px-4 sm:px-6 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">

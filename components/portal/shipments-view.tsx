@@ -486,7 +486,7 @@ export function ShipmentsView() {
 
             <button
               onClick={() => setSelectedRequest(selectedReq)}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold rounded-xl transition-colors shadow-xs cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold rounded-xl transition-colors shadow-xs cursor-pointer active:scale-[0.98]"
             >
               <span>View Complete Request Audit Log</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -548,33 +548,36 @@ export function ShipmentsView() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Milestone Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Milestone Tabs (Smooth Horizontal Scroll on Touch) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1">
           {["All", ...MILESTONES].map((tab) => {
             const isActive = milestoneFilter === tab;
             const count =
               tab === "All"
                 ? shippedRequests.length
                 : shippedRequests.filter(
-                  (r) =>
-                    (r.shipment?.currentMilestone ||
-                      (r.status === "Delivered" ? "Delivered" : "In Transit")) === tab
-                ).length;
+                    (r) =>
+                      (r.shipment?.currentMilestone ||
+                        (r.status === "Delivered" ? "Delivered" : "In Transit")) === tab
+                  ).length;
 
             return (
               <button
                 key={tab}
+                type="button"
                 onClick={() => setMilestoneFilter(tab)}
-                className={`px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${isActive
-                  ? "bg-[#e20c0c] text-white shadow-sm"
-                  : "bg-slate-100 hover:bg-slate-200/70 text-slate-600"
-                  }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${
+                  isActive
+                    ? "bg-[#e20c0c] text-white shadow-xs"
+                    : "bg-slate-100 hover:bg-slate-200/80 text-slate-600"
+                }`}
               >
                 <span>{tab}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full  font-bold ${isActive ? "bg-white/20 text-white" : "bg-slate-200 text-slate-700"
-                    }`}
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                    isActive ? "bg-white/20 text-white" : "bg-slate-200 text-slate-700"
+                  }`}
                 >
                   {count}
                 </span>
@@ -584,14 +587,14 @@ export function ShipmentsView() {
         </div>
 
         {/* Search input */}
-        <div className="relative w-full md:w-72">
+        <div className="relative w-full md:w-72 shrink-0">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
             placeholder="Search req, vehicle, carrier..."
-            className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] transition-all"
+            className="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] transition-all"
           />
           {searchFilter && (
             <button
@@ -606,13 +609,13 @@ export function ShipmentsView() {
 
       {/* Shipments Table List */}
       {filteredRequests.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-12 text-center">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-10 sm:p-12 text-center">
           <Truck className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-          <p className="font-bold text-slate-700">No active consignments found</p>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="font-bold text-slate-700 text-sm">No active consignments found</p>
+          <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
             {searchFilter || milestoneFilter !== "All"
               ? "No shipments match your search or milestone filter criteria."
-              : "When your supplier order is dispatched by Autohub Logistics, live tracking milestones will appear here."}
+              : "When your supplier order is dispatched by JDMHUB Logistics, live tracking milestones will appear here."}
           </p>
           {(searchFilter || milestoneFilter !== "All") && (
             <button
@@ -620,25 +623,36 @@ export function ShipmentsView() {
                 setSearchFilter("");
                 setMilestoneFilter("All");
               }}
-              className="mt-4 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+              className="mt-4 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-xs active:scale-[0.98]"
             >
               Reset Filters
             </button>
           )}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+          {/* Sub-header Info */}
+          <div className="px-4 sm:px-6 py-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-slate-900">{filteredRequests.length}</span>
+              <span>shipments {milestoneFilter !== "All" ? `(${milestoneFilter})` : "listed"}</span>
+            </div>
+            <span className="text-[11px] text-slate-400">
+              Click any shipment row to view live milestone checkpoints
+            </span>
+          </div>
+
           <div className="overflow-x-auto custom-scrollbar">
-            <table className="w-full min-w-[700px] text-left border-collapse text-xs">
+            <table className="w-full min-w-[760px] text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Request ID</th>
-                  <th className="py-3.5 px-4">Vehicle</th>
-                  <th className="py-3.5 px-4">Part Details</th>
-                  <th className="py-3.5 px-4">Carrier & Route</th>
-                  <th className="py-3.5 px-4">Estimated Delivery</th>
-                  <th className="py-3.5 px-4">Current Milestone</th>
-                  <th className="py-3.5 px-6 text-right">Actions</th>
+                <tr className="border-b border-slate-200 bg-slate-50/80 text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  <th className="py-3 sm:py-3.5 px-4 sm:px-6">Request ID</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4">Vehicle</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4">Part Details</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4">Carrier & Route</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4">Estimated Delivery</th>
+                  <th className="py-3 sm:py-3.5 px-3 sm:px-4">Current Milestone</th>
+                  <th className="py-3 sm:py-3.5 px-4 sm:px-6 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700">
@@ -662,22 +676,22 @@ export function ShipmentsView() {
                       title="Click row to view shipment details"
                     >
                       {/* Request ID */}
-                      <td className="py-4 px-4  font-bold text-slate-700 whitespace-nowrap">
+                      <td className="py-3.5 sm:py-4 px-4 sm:px-6 font-bold text-slate-900 group-hover:text-[#e20c0c] transition-colors whitespace-nowrap">
                         {req.requestNumber}
                       </td>
 
                       {/* Vehicle */}
-                      <td className="py-4 px-4 whitespace-nowrap">
+                      <td className="py-3.5 sm:py-4 px-3 sm:px-4 whitespace-nowrap">
                         <p className="font-semibold text-slate-800">
                           {req.vehicle?.year} {req.vehicle?.make} {req.vehicle?.model}
                         </p>
-                        <p className="text-[11px]  text-slate-400">
+                        <p className="text-[11px] text-slate-400">
                           {req.vehicle?.vin || "N/A"}
                         </p>
                       </td>
 
                       {/* Part Details */}
-                      <td className="py-4 px-4 max-w-[200px]">
+                      <td className="py-3.5 sm:py-4 px-3 sm:px-4 max-w-[200px]">
                         <p className="font-medium text-slate-800 truncate" title={req.part?.name}>
                           {req.part?.name || "Component"}
                         </p>
@@ -687,7 +701,7 @@ export function ShipmentsView() {
                       </td>
 
                       {/* Carrier & Route */}
-                      <td className="py-4 px-4 whitespace-nowrap">
+                      <td className="py-3.5 sm:py-4 px-3 sm:px-4 whitespace-nowrap">
                         <span className="font-bold text-slate-800 block">
                           {sh.carrier}
                         </span>
@@ -697,7 +711,7 @@ export function ShipmentsView() {
                       </td>
 
                       {/* Estimated Delivery */}
-                      <td className="py-4 px-4  font-bold text-slate-800 whitespace-nowrap">
+                      <td className="py-3.5 sm:py-4 px-3 sm:px-4 font-bold text-slate-800 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5 text-slate-400" />
                           <span>{sh.estimatedDelivery}</span>
@@ -705,7 +719,7 @@ export function ShipmentsView() {
                       </td>
 
                       {/* Current Milestone Badge */}
-                      <td className="py-4 px-4 whitespace-nowrap">
+                      <td className="py-3.5 sm:py-4 px-3 sm:px-4 whitespace-nowrap">
                         <span
                           className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${badge.badgeClass}`}
                         >
@@ -715,13 +729,13 @@ export function ShipmentsView() {
                       </td>
 
                       {/* Actions Column */}
-                      <td className="py-4 px-6 text-right whitespace-nowrap">
+                      <td className="py-3.5 sm:py-4 px-4 sm:px-6 text-right whitespace-nowrap">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSelectShipment(req.id);
                           }}
-                          className="px-3.5 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-1.5 transition-all active:scale-95 group-hover:shadow cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-xs active:scale-[0.98] transition-all cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View</span>
@@ -734,27 +748,27 @@ export function ShipmentsView() {
             </table>
           </div>
 
-          {/* Pagination Footer */}
+          {/* Responsive Pagination Footer */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/50 px-6 py-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 bg-slate-50/60 px-4 sm:px-6 py-3.5">
               <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">
                 Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, filteredRequests.length)} of {filteredRequests.length} shipments
               </span>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-xs cursor-pointer"
                 >
                   Previous
                 </button>
-                <span className="text-[11px] font-bold text-slate-600 px-3 uppercase tracking-wider">
+                <span className="text-xs font-bold text-slate-700 px-2">
                   Page {currentPage} of {totalPages}
                 </span>
                 <button
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-xs cursor-pointer"
                 >
                   Next
                 </button>

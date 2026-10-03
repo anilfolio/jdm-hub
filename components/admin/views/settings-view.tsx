@@ -23,9 +23,9 @@ export function AdminSettingsView() {
   const [defaultAirFreight, setDefaultAirFreight] = useState(adminSettings.defaultAirFreight || 185);
   const [defaultSeaFreight, setDefaultSeaFreight] = useState(adminSettings.defaultSeaFreight || 65);
   const [taxRate, setTaxRate] = useState(15);
-  const [refPrefix, setRefPrefix] = useState("AutoHub-P-");
+  const [refPrefix, setRefPrefix] = useState("JDM-P-");
   const [m365Connected, setM365Connected] = useState(true);
-  const [m365Sender, setM365Sender] = useState("procurement@autohub.co.nz");
+  const [m365Sender, setM365Sender] = useState("procurement@jdmhub.co.nz");
   const [termsVersion, setTermsVersion] = useState("v2026.1 (NZ Commercial Trade)");
   const [privacyVersion, setPrivacyVersion] = useState("v2026.1 (NZ Privacy Act 2020)");
 
@@ -51,9 +51,9 @@ export function AdminSettingsView() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-6 sm:p-8 max-w-7xl mx-auto w-full">
+    <div className="space-y-6 w-full min-w-0">
       {/* Top Banner */}
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+      <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
         <div>
           <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
             System Configuration &amp; Parameters
@@ -73,7 +73,7 @@ export function AdminSettingsView() {
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* 1. Pricing & Quotation Defaults */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-6 shadow-xs">
           <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
             <Percent className="w-4 h-4 text-[#e20c0c]" />
             Procurement &amp; Quotation Calculation Defaults
@@ -82,7 +82,7 @@ export function AdminSettingsView() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
               <label className="block font-bold text-slate-700 mb-1">
-                Default Autohub Margin (%)
+                Default JDMHUB Margin (%)
               </label>
               <input
                 type="number"
@@ -90,7 +90,7 @@ export function AdminSettingsView() {
                 max="100"
                 value={defaultMargin}
                 onChange={(e) => setDefaultMargin(Number(e.target.value))}
-                className="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c]"
+                className="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/20 focus:border-[#e20c0c] transition-all"
               />
               <span className="text-[10px] text-slate-400 mt-1 block">
                 Applied automatically in the Quote Tab on supplier landed costs.
@@ -243,7 +243,7 @@ export function AdminSettingsView() {
           <button
             type="button"
             onClick={handleResetData}
-            className="text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-4 py-2.5 rounded-xl transition-all shadow-xs active:scale-[0.98] cursor-pointer self-start sm:self-auto"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset Mock Data to Initial State
@@ -251,7 +251,7 @@ export function AdminSettingsView() {
 
           <button
             type="submit"
-            className="px-6 py-2.5 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold shadow-xs transition-colors flex items-center gap-2 self-end sm:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#e20c0c] hover:bg-[#D81419] text-white rounded-xl text-xs uppercase font-bold tracking-wider shadow-xs shadow-red-500/20 active:scale-[0.98] transition-all cursor-pointer self-end sm:self-auto"
           >
             <Save className="w-4 h-4" />
             Save Configuration
