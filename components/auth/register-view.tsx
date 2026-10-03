@@ -565,68 +565,94 @@ export function RegisterView() {
             {/* ═════════════════════════════════════════════════════════════ */}
             {/* STEP PROGRESS INDICATOR                                      */}
             {/* ═════════════════════════════════════════════════════════════ */}
-            <div className="relative">
+            <div className="relative select-none py-1">
               {/* Desktop Step Indicator */}
-              <div className="hidden sm:flex items-center justify-between relative">
-                {/* Progress connector bar (background) */}
-                <div className="absolute top-5 left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-[3px] bg-slate-200 rounded-full z-0" />
-                {/* Active progress bar */}
+              <div className="hidden sm:block relative w-full">
+                {/* Continuous Connecting Rail behind the step nodes */}
                 <div
-                  className="absolute top-5 left-[calc(12.5%+16px)] h-[3px] bg-gradient-to-r from-[#e20c0c] to-[#FF4444] rounded-full z-[1] transition-all duration-500 ease-out"
-                  style={{
-                    width: `${((Math.min(currentStep, 4) - 1) / 3) * (100 - 25)}%`,
-                  }}
-                />
+                  className="absolute top-5 left-[12.5%] right-[12.5%] h-[3px] bg-slate-300/80 -translate-y-1/2 rounded-full overflow-hidden z-0"
+                  aria-hidden="true"
+                >
+                  <div
+                    className="h-full bg-gradient-to-r from-[#e20c0c] via-[#FF3333] to-[#e20c0c] transition-all duration-500 ease-out rounded-full shadow-xs"
+                    style={{
+                      width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%`,
+                    }}
+                  />
+                </div>
 
-                {STEPS.map((step) => {
-                  const status = getStepStatus(step.id);
-                  const StepIcon = step.icon;
-                  return (
-                    <button
-                      key={step.id}
-                      type="button"
-                      onClick={() => {
-                        if (step.id < currentStep) goToStep(step.id);
-                        else if (step.id === currentStep + 1) handleNext();
-                      }}
-                      className={`relative z-10 flex flex-col items-center gap-1.5 group transition-all duration-200 ${step.id <= currentStep || visitedSteps.has(step.id) ? "cursor-pointer" : "cursor-default"
+                {/* 4 Equal Step Columns */}
+                <div className="grid grid-cols-4 relative z-10">
+                  {STEPS.map((step) => {
+                    const status = getStepStatus(step.id);
+                    const StepIcon = step.icon;
+                    const isCompleted = status === "completed";
+                    const isActive = status === "active";
+                    const canJump = step.id <= currentStep || visitedSteps.has(step.id);
+
+                    return (
+                      <button
+                        key={step.id}
+                        type="button"
+                        onClick={() => {
+                          if (step.id < currentStep) goToStep(step.id);
+                          else if (step.id === currentStep + 1) handleNext();
+                        }}
+                        disabled={!canJump}
+                        className={`flex flex-col items-center group transition-all duration-200 focus:outline-none ${
+                          canJump ? "cursor-pointer" : "cursor-default"
                         }`}
-                    >
-                      {/* Circle */}
-                      <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${status === "completed"
-                          ? "bg-emerald-500 border-emerald-500 text-white shadow-sm shadow-emerald-200"
-                          : status === "active"
-                            ? "bg-[#e20c0c] border-[#e20c0c] text-white shadow-md shadow-red-200 scale-110"
-                            : status === "visited"
-                              ? "bg-white border-slate-300 text-slate-500"
-                              : "bg-slate-100 border-slate-200 text-slate-400"
-                          }`}
                       >
-                        {status === "completed" ? (
-                          <Check className="w-4.5 h-4.5" />
-                        ) : (
-                          <StepIcon className="w-4 h-4" />
-                        )}
-                      </div>
-
-                      {/* Label */}
-                      <div className="text-center">
-                        <span
-                          className={`block text-[13px] font-bold transition-colors ${status === "active"
-                            ? "text-[#e20c0c]"
-                            : status === "completed"
-                              ? "text-emerald-700"
-                              : "text-slate-400"
-                            }`}
+                        {/* Circle Node with backdrop masking ring matching page background (#EAECEF) */}
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ring-4 ring-[#EAECEF] ${
+                            isCompleted
+                              ? "bg-emerald-500 text-white shadow-xs group-hover:scale-105 group-hover:bg-emerald-600"
+                              : isActive
+                              ? "bg-[#e20c0c] text-white shadow-md shadow-red-500/25 ring-offset-2 ring-offset-[#EAECEF] scale-105"
+                              : status === "visited"
+                              ? "bg-white border-2 border-slate-300 text-slate-600 group-hover:border-[#e20c0c] group-hover:text-[#e20c0c]"
+                              : "bg-white border border-slate-300 text-slate-400"
+                          }`}
                         >
-                          {step.label}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+                          {isCompleted ? (
+                            <Check className="w-5 h-5 stroke-[2.5]" />
+                          ) : (
+                            <StepIcon className="w-4 h-4" />
+                          )}
+                        </div>
+
+                        {/* Step Typography */}
+                        <div className="flex flex-col items-center mt-2 text-center">
+                          <span
+                            className={`text-[13px] font-bold tracking-tight transition-colors ${
+                              isActive
+                                ? "text-[#e20c0c]"
+                                : isCompleted
+                                ? "text-slate-800"
+                                : "text-slate-500"
+                            }`}
+                          >
+                            {step.label}
+                          </span>
+                          <span
+                            className={`text-[10px] tracking-wide font-semibold mt-0.5 ${
+                              isActive
+                                ? "text-[#e20c0c]"
+                                : isCompleted
+                                ? "text-emerald-600"
+                                : "text-slate-400"
+                            }`}
+                          >
+                            {isCompleted ? "Done" : isActive ? "Current" : `Step ${step.id}`}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
+
 
               {/* Mobile Step Indicator (tactile interactive pills + progress bar) */}
               <div className="sm:hidden space-y-2.5">
