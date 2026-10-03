@@ -8,7 +8,6 @@ import { ValuePropositionSection } from "./value-proposition-section";
 import { HowItWorksSection } from "./how-it-works-section";
 import { LessChasingSection } from "./less-chasing-section";
 import { QuoteFreightSection } from "./quote-freight-section";
-import { TrackRequestSection } from "./track-request-section";
 import { BuiltForTradeSection } from "./built-for-trade-section";
 import { FinalCtaSection } from "./final-cta-section";
 import { LandingFooter } from "./landing-footer";
@@ -41,20 +40,17 @@ export function LandingPageView() {
         {/* 03. VALUE PROPOSITION */}
         <ValuePropositionSection />
 
-        {/* 03. HOW IT WORKS */}
+        {/* 04. HOW IT WORKS */}
         <HowItWorksSection />
 
-        {/* 04. LESS CHASING & WORKFLOW */}
+        {/* 05. LESS CHASING & WORKFLOW */}
         <LessChasingSection />
 
-        {/* 05. QUOTE & FREIGHT */}
-        <QuoteFreightSection />
-
-        {/* 06. TRACK YOUR REQUEST */}
-        <TrackRequestSection />
+        {/* 06. QUOTE & FREIGHT */}
+        <QuoteFreightSection onRequestClick={() => handleOpenRequest()} />
 
         {/* 07. BUILT FOR AUTOMOTIVE BUSINESSES */}
-        <BuiltForTradeSection />
+        <BuiltForTradeSection onRequestClick={() => handleOpenRequest()} />
 
         {/* 08. FINAL CTA */}
         <FinalCtaSection onRequestClick={(data) => handleOpenRequest(data)} />
@@ -73,3 +69,4 @@ export function LandingPageView() {
     </div>
   );
 }
+

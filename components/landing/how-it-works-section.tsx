@@ -6,215 +6,273 @@ import {
   Search,
   Receipt,
   CheckCircle2,
+  Package,
   Truck,
   ArrowRight,
-  Car,
-  DollarSign,
-  ShieldCheck,
-  CreditCard,
-  Plane,
+  ChevronRight,
+  Check,
+  Sparkles,
 } from "lucide-react";
 
 export function HowItWorksSection() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2); // Default to QUOTE stage to demonstrate product capability
 
-  const steps = [
+  const stages = [
     {
-      num: "01 — Request",
-      title: "Tell Us What You Need",
-      desc: "Submit Your Part and Vehicle Details.",
+      id: "request",
+      name: "REQUEST",
+      summary: "Tell us what you need",
       icon: FileText,
-      smallImage:
-        "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=400&q=80",
       detail:
-        "Input vehicle VIN, registration, make, model and the required component. Add photos or part diagrams directly.",
-      badge: "Fast Submission Form",
+        "Submit vehicle registration or VIN and specify the required component. Attach workshop photos or part diagrams directly.",
+      badge: "Customer Intake",
+      statusText: "Request Logged",
+      color: "from-red-500 to-rose-500",
     },
     {
-      num: "02 — Source",
-      title: "We Find the Part",
-      desc: "JDMHub Coordinates With Suppliers to Source It.",
+      id: "source",
+      name: "SOURCE",
+      summary: "We find the part",
       icon: Search,
-      smallImage:
-        "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=400&q=80",
       detail:
-        "Our specialized procurement desks in Japan and Australasia query official OEM depots, dismantling networks, and verified aftermarket partners.",
-      badge: "Supplier Network Japan",
+        "JDMHub queries Tokyo and Nagoya supplier depots, verified OEM warehouses, and Japanese domestic parts networks.",
+      badge: "Supplier Search",
+      statusText: "Depots Queried",
+      color: "from-amber-500 to-orange-500",
     },
     {
-      num: "03 — Quote",
-      title: "Review the Quote",
-      desc: "See Part Pricing, Freight Options, and Landed Cost.",
+      id: "quote",
+      name: "QUOTE",
+      summary: "Review price + freight",
       icon: Receipt,
-      smallImage:
-        "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=400&q=80",
       detail:
-        "Receive a transparent quote including part cost, air or sea freight options, and clear landed NZD totals before you commit.",
-      badge: "No Hidden Costs",
+        "Receive a transparent quote with part cost, express air or sea freight, and guaranteed landed total in NZD before committing.",
+      badge: "Cost Transparency",
+      statusText: "Quote Ready",
+      color: "from-blue-500 to-indigo-500",
     },
     {
-      num: "04 — Approve",
-      title: "Approve & Pay",
-      desc: "Confirm Your Purchase and Complete Payment.",
+      id: "approve",
+      name: "APPROVE",
+      summary: "Confirm your purchase",
       icon: CheckCircle2,
-      smallImage:
-        "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=400&q=80",
       detail:
-        "Accept terms with one click. Pay securely via POLi, Credit Card, or Approved Trade Account Terms.",
-      badge: "1-Click Confirmation",
+        "Authorize the order with one click. Settle via trade account or instant payment with zero hidden currency fees.",
+      badge: "1-Click Authorization",
+      statusText: "Purchase Confirmed",
+      color: "from-emerald-500 to-teal-500",
     },
     {
-      num: "05 — Deliver",
-      title: "Track Your Delivery",
-      desc: "Follow Your Order Through Shipment to Bay Delivery.",
-      icon: Truck,
-      smallImage:
-        "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=400&q=80",
+      id: "procure",
+      name: "PROCURE",
+      summary: "We coordinate the order",
+      icon: Package,
       detail:
-        "Real-time milestone notifications from Tokyo packaging to air cargo customs clearance and courier delivery to your workshop bay.",
-      badge: "Door-to-Door Tracking",
+        "JDMHub verifies part serials, arranges packaging in Japan, clears export customs, and schedules express air freight.",
+      badge: "Logistics Coordination",
+      statusText: "Order Dispatched",
+      color: "from-violet-500 to-purple-500",
+    },
+    {
+      id: "deliver",
+      name: "DELIVER",
+      summary: "Track it to your door",
+      icon: Truck,
+      detail:
+        "Monitor international transit and local courier handover directly to your workshop hoist bay.",
+      badge: "Final Handover",
+      statusText: "Bay Delivery",
+      color: "from-[#e20c0c] to-red-600",
     },
   ];
 
   return (
     <section id="how-it-works" className="relative bg-slate-50 py-20 lg:py-28 text-slate-900 border-b border-slate-200/80 overflow-hidden">
+      {/* Background decorative */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-50/30 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-50/30 rounded-full blur-[120px]" />
+        {/* Dotted pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #0f172a 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+      </div>
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200 text-xs font-bold uppercase tracking-wider text-[#e20c0c]">
+        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-50 to-rose-50 border border-red-200/80 text-xs font-bold uppercase tracking-wider text-[#e20c0c] shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-[#e20c0c]" />
-            How It Works
+            Request Lifecycle
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-slate-900">
             From Request{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e20c0c] to-red-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e20c0c] via-red-500 to-rose-600">
               to Delivery.
             </span>
           </h2>
 
-          <div className="w-12 h-1 bg-[#e20c0c] rounded-full mx-auto my-2" />
+          <div className="flex items-center justify-center gap-1.5 my-2">
+            <div className="w-12 h-1 bg-gradient-to-r from-[#e20c0c] to-red-400 rounded-full" />
+            <div className="w-3 h-1 bg-slate-300 rounded-full" />
+            <div className="w-1.5 h-1 bg-slate-200 rounded-full" />
+          </div>
 
           <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
-            A Simple Procurement Journey Managed Seamlessly Through One Platform.
+            One simple workflow. Managed by JDMHub from start to finish.
           </p>
         </div>
 
-        {/* Horizontal Journey Journey Nodes */}
-        <div className="relative">
-          {/* Connecting Track Line for Desktop */}
-          <div
-            className="hidden lg:block absolute top-[52px] left-[10%] right-[10%] h-[3px] bg-slate-200 pointer-events-none z-0"
-            aria-hidden="true"
-          >
+        {/* Single Horizontal Journey Bar */}
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-4 sm:p-6 lg:p-8 space-y-8 backdrop-blur-sm">
+          {/* Horizontal Stepper Strip */}
+          <div className="relative">
+            {/* Connecting Track Line behind steps on desktop */}
             <div
-              className="h-full bg-gradient-to-r from-[#e20c0c] via-blue-600 to-emerald-500 transition-all duration-500"
-              style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
-            />
-          </div>
+              className="hidden lg:block absolute top-7 left-10 right-10 h-[3px] bg-slate-200 z-0 pointer-events-none rounded-full overflow-hidden"
+              aria-hidden="true"
+            >
+              <div
+                className="h-full bg-gradient-to-r from-[#e20c0c] via-red-500 to-[#e20c0c] transition-all duration-500 ease-out rounded-full"
+                style={{ width: `${(activeStep / (stages.length - 1)) * 100}%` }}
+              />
+            </div>
 
-          {/* 5 Step Nodes Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative z-10">
-            {steps.map((step, idx) => {
-              const Icon = step.icon;
-              const isCurrent = activeStep === idx;
+            {/* 6 Sequential Step Indicators */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 relative z-10">
+              {stages.map((stage, idx) => {
+                const Icon = stage.icon;
+                const isActive = activeStep === idx;
+                const isPassed = idx < activeStep;
 
-              return (
-                <div
-                  key={step.num}
-                  onClick={() => setActiveStep(idx)}
-                  className={`group relative rounded-2xl p-5 flex flex-col items-center text-center cursor-pointer transition-all duration-300 border ${
-                    isCurrent
-                      ? "bg-white border-[#e20c0c] shadow-lg shadow-red-500/10 -translate-y-2 ring-2 ring-[#e20c0c]/30"
-                      : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-md"
-                  }`}
-                >
-                  {/* Step Number Tag */}
-                  <span
-                    className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mb-3 ${
-                      isCurrent
-                        ? "bg-[#e20c0c] text-white"
-                        : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"
+                return (
+                  <button
+                    key={stage.id}
+                    type="button"
+                    onClick={() => setActiveStep(idx)}
+                    className={`p-3.5 sm:p-4 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center justify-between cursor-pointer group relative overflow-hidden ${
+                      isActive
+                        ? "bg-white border-[#e20c0c] ring-2 ring-[#e20c0c]/25 shadow-xl shadow-red-500/5 -translate-y-1.5"
+                        : isPassed
+                        ? "bg-white border-slate-200 hover:border-emerald-300 hover:shadow-md hover:-translate-y-0.5"
+                        : "bg-slate-50/80 border-slate-200 hover:bg-white hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 opacity-80 hover:opacity-100"
                     }`}
                   >
-                    {step.num}
-                  </span>
+                    {/* Active card top accent */}
+                    {isActive && (
+                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#e20c0c] to-red-400 rounded-t-2xl" />
+                    )}
 
-                  {/* Icon Node Container with Image Thumbnail */}
-                  <div className="relative mb-4">
+                    {/* Step Icon Badge */}
                     <div
-                      className={`w-16 h-16 rounded-2xl overflow-hidden border-2 relative flex items-center justify-center transition-all bg-gradient-to-br from-slate-800 to-slate-900 ${
-                        isCurrent
-                          ? "border-[#e20c0c] ring-4 ring-[#e20c0c]/15 scale-105"
-                          : "border-slate-200 group-hover:border-slate-300"
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all duration-300 ${
+                        isActive
+                          ? `bg-gradient-to-br ${stage.color} text-white shadow-lg scale-105`
+                          : isPassed
+                          ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                          : "bg-white text-slate-500 border border-slate-200 group-hover:text-slate-800 group-hover:border-slate-300"
                       }`}
                     >
-                      <img
-                        src={step.smallImage}
-                        alt={step.title}
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLElement).style.display = "none";
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-white" />
+                      {isPassed ? (
+                        <Check className="w-5 h-5 stroke-[2.5]" />
+                      ) : (
+                        <Icon className="w-5 h-5 stroke-[2.2]" />
+                      )}
+                    </div>
+
+                    {/* Step Name */}
+                    <div className="space-y-1">
+                      <div
+                        className={`text-xs font-black uppercase tracking-wider transition-colors ${
+                          isActive
+                            ? "text-[#e20c0c]"
+                            : isPassed
+                            ? "text-slate-900"
+                            : "text-slate-600"
+                        }`}
+                      >
+                        {stage.name}
+                      </div>
+                      <div className="text-[11px] font-semibold text-slate-500 leading-snug line-clamp-1">
+                        {stage.summary}
                       </div>
                     </div>
-                  </div>
 
-                  {/* Step Title & Subtitle */}
-                  <h3 className="text-base font-bold tracking-tight text-slate-900 mb-1.5 group-hover:text-[#e20c0c] transition-colors">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 font-normal leading-relaxed mb-3">
-                    {step.desc}
-                  </p>
-
-                  {/* Micro Badge */}
-                  <span className="mt-auto inline-block text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
-                    {step.badge}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Selected Step Deep Dive Banner */}
-        <div className="mt-12 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#e20c0c] text-white flex items-center justify-center font-black text-lg shrink-0 shadow-md">
-              0{activeStep + 1}
+                    {/* Micro Status Marker */}
+                    <div className="mt-3">
+                      <span
+                        className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full transition-all ${
+                          isActive
+                            ? "bg-red-100 text-[#e20c0c] shadow-sm"
+                            : isPassed
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        {isActive ? "Active Stage" : isPassed ? "✓ Complete" : `Stage 0${idx + 1}`}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-            <div>
-              <div className="text-xs font-bold text-[#e20c0c] uppercase tracking-wider">
-                Stage {activeStep + 1} of 5 &bull; {steps[activeStep].num}
+          </div>
+
+          {/* Active Stage Interactive Deep-Dive View — Enhanced */}
+          <div className="bg-gradient-to-r from-slate-50 to-slate-50/80 rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-500 relative overflow-hidden">
+            {/* Subtle background accent */}
+            <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${stages[activeStep].color} rounded-l-2xl`} />
+            
+            <div className="space-y-3 text-center md:text-left pl-0 md:pl-4">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                <span className={`px-3 py-1.5 rounded-lg bg-gradient-to-r ${stages[activeStep].color} text-white text-[11px] font-black uppercase tracking-wider shadow-md`}>
+                  Stage 0{activeStep + 1} &bull; {stages[activeStep].name}
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-xs">
+                  {stages[activeStep].badge}
+                </span>
+                <span className="text-xs text-slate-400 font-mono hidden sm:inline">
+                  Reference: #AH-P-000123
+                </span>
               </div>
-              <h4 className="text-xl font-bold tracking-tight text-slate-900 mt-0.5">
-                {steps[activeStep].title}
-              </h4>
-              <p className="text-sm text-slate-600 mt-1 max-w-2xl font-normal leading-relaxed">
-                {steps[activeStep].detail}
-              </p>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => setActiveStep((prev) => (prev > 0 ? prev - 1 : steps.length - 1))}
-              type="button"
-              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => setActiveStep((prev) => (prev < steps.length - 1 ? prev + 1 : 0))}
-              type="button"
-              className="px-4 py-2 rounded-xl bg-[#e20c0c] hover:bg-[#9B0A0F] text-xs font-bold uppercase tracking-wider text-white transition-colors shadow-sm"
-            >
-              Next Step &rarr;
-            </button>
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                  {stages[activeStep].summary}
+                </h3>
+                <p className="text-sm text-slate-600 mt-1 max-w-2xl font-normal leading-relaxed">
+                  {stages[activeStep].detail}
+                </p>
+              </div>
+            </div>
+
+            {/* Stepper Navigation Buttons — Enhanced */}
+            <div className="flex items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveStep((prev) => (prev > 0 ? prev - 1 : stages.length - 1))
+                }
+                className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold uppercase tracking-wider text-slate-700 transition-all shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveStep((prev) => (prev < stages.length - 1 ? prev + 1 : 0))
+                }
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#e20c0c] to-[#c40b0b] hover:from-[#c40b0b] hover:to-[#9B0A0F] text-xs font-bold uppercase tracking-wider text-white transition-all shadow-md shadow-red-500/20 hover:shadow-lg flex items-center gap-1.5 active:scale-95 cursor-pointer"
+              >
+                <span>Next Stage</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
