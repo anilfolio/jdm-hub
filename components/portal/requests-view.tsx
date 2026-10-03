@@ -169,7 +169,7 @@ export function RequestsView() {
                     className="hover:bg-slate-50 cursor-pointer transition-colors group"
                   >
                     {/* Request Number */}
-                    <td className="py-4 px-6  font-black text-slate-900 group-hover:text-[#e20c0c] transition-colors">
+                    <td className="py-4 px-6  font-bold text-slate-900 group-hover:text-[#e20c0c] transition-colors">
                       {req.requestNumber}
                     </td>
 

@@ -453,7 +453,7 @@ export function LoginView() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-lg transition-all shadow-xs"
+                className="w-full h-12 text-xs sm:text-sm font-bold bg-[#e20c0c] hover:bg-[#9B0A0F] active:bg-[#85080C] text-white rounded-lg transition-all shadow-sm"
                 isLoading={isLoggingIn}
                 loadingText="Authenticating..."
               >
