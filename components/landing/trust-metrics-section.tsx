@@ -43,7 +43,7 @@ export function TrustMetricsSection() {
             return (
               <div
                 key={item.title}
-                className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-50/70 hover:bg-white border border-slate-200/80 ${item.hoverBorder} shadow-xs hover:shadow-md transition-all duration-300 flex items-start gap-4 group`}
+                className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white hover:bg-white border border-slate-200/80 ${item.hoverBorder} shadow-sm hover:shadow-xs transition-all duration-300 flex items-start gap-4 group`}
               >
                 <div
                   className={`w-12 h-12 rounded-2xl flex items-center justify-center border shrink-0 group-hover:scale-105 transition-transform ${item.iconBg}`}
