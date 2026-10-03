@@ -16,6 +16,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "JDMHub | Unified Autohub Admin & Customer Platform",
   description: "JDMHub — B2B Automotive Procurement Platform built with Next.js, TypeScript, and Tailwind CSS.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {

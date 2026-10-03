@@ -15,7 +15,7 @@ export function AuthLayout({ children, maxWidth = "max-w-[430px]" }: AuthLayoutP
       <header className="lg:hidden sticky top-0 w-full bg-gradient-to-r from-[#D9141B] via-[#C40E14] to-[#8A080C] text-white px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between shadow-md border-b border-red-900/30 z-30 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg border-2 border-white/90 bg-[#e20c0c] flex items-center justify-center font-black text-sm leading-none text-white shadow-xs shrink-0">
-            P
+            JD
           </div>
           <div className="flex flex-col">
             <span className="font-black italic text-lg tracking-tight text-white uppercase leading-none">
