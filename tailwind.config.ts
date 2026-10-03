@@ -45,8 +45,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        inter: ["var(--font-inter)", "Inter", "sans-serif"],
-        sans: ["var(--font-inter)", "Inter", "sans-serif"],
+        roboto: ["var(--font-roboto)", "Roboto", "sans-serif"],
+        sans: ["var(--font-roboto)", "Roboto", "sans-serif"],
+        inter: ["var(--font-roboto)", "Roboto", "sans-serif"],
       },
     },
   },
