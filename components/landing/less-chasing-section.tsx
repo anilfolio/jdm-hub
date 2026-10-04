@@ -14,6 +14,7 @@ import {
   Sparkles,
   AlertTriangle,
   TrendingUp,
+  ChevronRight,
 } from "lucide-react";
 
 export function LessChasingSection() {

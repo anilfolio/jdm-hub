@@ -480,7 +480,7 @@ export function LoginView() {
                   Tap to prefill credentials
                 </span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 {/* 1. Customer Portal: James Wilson */}
                 <div
                   onClick={() =>
