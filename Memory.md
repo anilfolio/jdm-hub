@@ -112,6 +112,7 @@ The platform features four synchronized surfaces:
 ### 1.6 Project Documentation & Governance Ecosystem
 
 The project repository includes a complete suite of institutional-grade governance documents:
+- [README.md](file:///f:/Project-Personal-Portfolio/jdmhub/README.md): Primary repository entry point, platform overview, architecture, quickstart, demo personas, and development guide.
 - [PRD.md](file:///f:/Project-Personal-Portfolio/jdmhub/PRD.md): Product Requirements Document detailing user personas, market pain points, functional requirements, and KPIs.
 - [Architecture.md](file:///f:/Project-Personal-Portfolio/jdmhub/Architecture.md): System architecture detailing multi-portal topology, runtime layers, sequence diagrams, and directory structure.
 - [DESIGN.md](file:///f:/Project-Personal-Portfolio/jdmhub/DESIGN.md): Visual design specifications, color tokens, typography, component styling guidelines, and UI states.
@@ -218,6 +219,7 @@ The project repository includes a complete suite of institutional-grade governan
   - Quick action shortcuts (Create Request, Switch Persona, Navigate to Portals).
 
 ### 2.8 Complete Architectural & Engineering Documentation
+- [x] Authored [README.md](file:///f:/Project-Personal-Portfolio/jdmhub/README.md) (Primary Repository Entry & Engineering Guide).
 - [x] Authored [PRD.md](file:///f:/Project-Personal-Portfolio/jdmhub/PRD.md) (Product Requirements Document).
 - [x] Authored [Architecture.md](file:///f:/Project-Personal-Portfolio/jdmhub/Architecture.md) (System Architecture Specification).
 - [x] Authored [DESIGN.md](file:///f:/Project-Personal-Portfolio/jdmhub/DESIGN.md) (Design System & UI Tokens).

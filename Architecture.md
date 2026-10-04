@@ -415,8 +415,12 @@ jdmhub/
 │   ├── portal.ts                     # Customer portal tab navigation types
 │   └── shared.ts                     # Canonical domain models (PartRequest, etc.)
 ├── .gitignore                        # Git exclusion rules
-├── DESIGN.md                         # Design system specifications
+├── README.md                         # Primary project documentation & quickstart
+├── PRD.md                            # Product Requirements Document
 ├── Architecture.md                   # System architecture documentation (This file)
+├── DESIGN.md                         # Design system specifications
+├── Rules.md                          # Mandatory engineering rules & coding standards
+├── Memory.md                         # Living project memory & historical state
 ├── next.config.mjs                   # Next.js framework configuration
 ├── package.json                      # NPM dependencies & lifecycle scripts
 ├── postcss.config.mjs                # PostCSS plugins config
