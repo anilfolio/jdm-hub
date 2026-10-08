@@ -115,7 +115,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
       {/* Top Banner */}
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-sm font-bold text-slate-900">
               Operations & Shipment Tracking
             </h3>
@@ -127,18 +127,18 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
           {!shipment ? (
             <button
               type="button"
               onClick={() => setShowCreateModal(true)}
-              className="px-4 py-2 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+              className="w-full sm:w-auto px-4 py-2 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               Create Shipment
             </button>
           ) : (
-            <div className="flex flex-wrap items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-300 shadow-xs">
+            <div className="w-full sm:w-auto flex flex-wrap items-center justify-between sm:justify-start gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-300 shadow-xs">
               <label className="text-xs font-bold text-slate-700 whitespace-nowrap">
                 Shipment Status:
               </label>
@@ -163,7 +163,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
                   setSelectedMilestone(shipment.currentMilestone);
                   setShowAdvanceModal(true);
                 }}
-                className="text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:underline px-1 whitespace-nowrap"
+                className="text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:underline px-1.5 py-1 whitespace-nowrap"
                 title="Add a custom note to this milestone"
               >
                 + Note
@@ -173,7 +173,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
                 <button
                   type="button"
                   onClick={() => completeRequest(request.id)}
-                  className="ml-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs flex items-center gap-1"
+                  className="w-full sm:w-auto mt-1 sm:mt-0 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   Complete Request
@@ -185,7 +185,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
       </div>
 
       {!shipment ? (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-12 text-center shadow-xs">
+        <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 sm:p-12 text-center shadow-xs">
           <Truck className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <h4 className="text-sm font-bold text-slate-700">No Shipment Record Created</h4>
           <p className="text-xs text-slate-400 max-w-sm mx-auto mt-1 mb-4">
@@ -194,36 +194,45 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
           <button
             type="button"
             onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 bg-[#e20c0c] text-white rounded-xl text-xs font-semibold shadow-xs"
+            className="w-full sm:w-auto px-4 py-2 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-semibold shadow-xs"
           >
             Create Consignment Shipment
           </button>
         </div>
       ) : (
         <>
-          {/* Shipment Key Metrics */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+          {/* Shipment Key Metrics (2x2 on mobile, 4 columns on desktop) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs">
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
               <span className="text-slate-400 block text-[11px]">Freight Carrier</span>
-              <span className="font-bold text-slate-900 text-sm">{shipment.carrier}</span>
+              <span className="font-bold text-slate-900 text-sm mt-0.5 block truncate">{shipment.carrier}</span>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-              <span className="text-slate-400 block text-[11px]">Origin & Transit</span>
-              <span className="font-medium text-slate-800 line-clamp-1">{shipment.origin}</span>
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span className="text-slate-400 block text-[11px]">Tracking Number</span>
+              <span className="font-bold text-[#e20c0c] text-sm mt-0.5 block truncate font-mono">
+                {shipment.trackingNumber || "AWB-Pending"}
+              </span>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span className="text-slate-400 block text-[11px]">Origin Facility</span>
+              <span className="font-medium text-slate-800 text-sm mt-0.5 block truncate" title={shipment.origin}>
+                {shipment.origin}
+              </span>
+            </div>
+
+            <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
               <span className="text-slate-400 block text-[11px]">Estimated Delivery</span>
-              <span className="font-bold text-slate-900 text-sm">
+              <span className="font-bold text-slate-900 text-sm mt-0.5 block truncate">
                 {shipment.estimatedDelivery}
               </span>
             </div>
           </div>
 
           {/* Internal Shipping Milestones Stepper (Section 23) */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-            <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-slate-100 gap-2">
               <div>
                 <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                   Internal Shipping Milestones (Inside &quot;SHIPPED&quot;)
@@ -232,12 +241,12 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
                   The Customer Portal automatically displays the latest achieved milestone.
                 </p>
               </div>
-              <span className="text-xs  font-bold text-cyan-800 bg-cyan-50 px-2.5 py-1 rounded-lg border border-cyan-200">
+              <span className="text-xs font-bold text-cyan-800 bg-cyan-50 px-2.5 py-1 rounded-lg border border-cyan-200 self-start sm:self-auto shrink-0">
                 Step {currentMilestoneIndex + 1} of {MILESTONES.length}
               </span>
             </div>
 
-            <div className="relative pl-6 space-y-8 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+            <div className="relative pl-6 space-y-6 sm:space-y-8 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
               {MILESTONES.map((m, idx) => {
                 const isPassed = idx < currentMilestoneIndex;
                 const isCurrent = idx === currentMilestoneIndex;
@@ -248,7 +257,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
                 );
 
                 return (
-                  <div key={m.name} className="relative flex items-start gap-4">
+                  <div key={m.name} className="relative flex items-start gap-3 sm:gap-4">
                     {/* Circle marker */}
                     <div
                       className={`absolute -left-6 mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-10 transition-all ${isPassed
@@ -261,9 +270,9 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
                       {isPassed ? <CheckCircle2 className="w-3.5 h-3.5" /> : idx + 1}
                     </div>
 
-                    <div className="flex-1 bg-slate-50/60 p-4 rounded-xl border border-slate-200/80">
+                    <div className="flex-1 bg-slate-50/60 p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <h5
                             className={`text-xs font-bold ${isCurrent ? "text-[#2B4499]" : "text-slate-900"
                               }`}
@@ -277,13 +286,13 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
                           )}
                         </div>
                         {matchingLog?.timestamp && (
-                          <span className="text-[11px] text-slate-400 ">
+                          <span className="text-[11px] text-slate-400">
                             {matchingLog.timestamp}
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-600 mt-1">
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
                         {matchingLog?.description || m.desc}
                       </p>
                     </div>
@@ -298,7 +307,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
       {/* MODAL: Create Shipment */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-100 animate-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-100 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#e20c0c]/10 to-[#e20c0c]/5 border border-[#e20c0c]/20 flex items-center justify-center shrink-0 shadow-inner">
                 <Truck className="w-5 h-5 text-[#e20c0c]" />
@@ -415,7 +424,7 @@ export function ShipmentTab({ request: initialRequest }: ShipmentTabProps) {
       {/* MODAL: Advance Milestone */}
       {showAdvanceModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
             <h3 className="text-base font-bold text-slate-900 mb-1">Update Shipment Status</h3>
             <p className="text-xs text-slate-500 mb-4">
               Select any milestone to advance or reverse the shipment status.

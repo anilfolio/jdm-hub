@@ -240,7 +240,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
               <ShieldCheck className="w-4 h-4 text-[#2B4499]" />
               Customer Acceptance Audit Trail
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <div>
                 <span className="text-slate-500 block text-[10px] font-bold uppercase mb-1">Accepted By</span>
                 <span className="font-bold text-[#0f172a]">{request.quoteAcceptance.acceptedBy}</span>
@@ -301,7 +301,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                       : "border-slate-200 bg-white hover:border-slate-300"
                       }`}
                   >
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2 flex-wrap">
                         <h4 className="font-bold text-slate-900 text-sm">{quote.supplierName}</h4>
                         <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full border border-slate-200 font-medium">
@@ -313,7 +313,7 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                           </span>
                         )}
                       </div>
-                      <div className="text-right shrink-0">
+                      <div className="text-left sm:text-right shrink-0">
                         <div className={`font-bold text-[15px]  ${isSelected ? "text-[#e20c0c]" : "text-slate-900"}`}>
                           ${totalCost.toFixed(2)} NZD
                         </div>
@@ -338,26 +338,26 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
         </div>
 
         {/* The Beautiful Landed Cost Schedule */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] relative overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] relative overflow-hidden">
           {/* Header */}
-          <div className="flex justify-between items-start mb-5 border-b border-slate-100 pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5 border-b border-slate-100 pb-5">
             <div>
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
                 <span className="text-[10px] font-bold text-[#e20c0c] bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-md uppercase tracking-widest">
                   FORMAL QUOTATION
                 </span>
                 <span className="text-xs text-slate-400 ">QTE-2026-00138</span>
               </div>
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">Total Landed Cost Schedule (NZD)</h2>
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">Total Landed Cost Schedule (NZD)</h2>
             </div>
-            <div className="text-right">
-              <div className="text-[11px] text-slate-400 uppercase tracking-widest mb-1">Valid Until</div>
+            <div className="text-left sm:text-right">
+              <div className="text-[11px] text-slate-400 uppercase tracking-widest mb-0.5">Valid Until</div>
               <div className="font-bold text-slate-800 text-sm">7 Sept 2026</div>
             </div>
           </div>
 
           {/* Admin Controls (Manual Input) */}
-          <div className="bg-slate-50 rounded-xl p-5 mb-8 border border-slate-100 grid grid-cols-1 gap-6">
+          <div className="bg-slate-50 rounded-xl p-4 sm:p-5 mb-6 sm:mb-8 border border-slate-100 grid grid-cols-1 gap-6">
             <div className="space-y-1.5">
               <label className="text-[11px] font-bold text-slate-500 uppercase block">Target Margin</label>
               <div className="relative">
@@ -377,11 +377,11 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
           </div>
 
           {/* Freight Selection */}
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-4">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div className="text-xs font-bold text-slate-800 uppercase tracking-widest">SELECT YOUR FREIGHT TRANSIT OPTION:</div>
               {request.supporting?.freightPreference && (
-                <div className="text-[11px] font-bold text-[#e20c0c] bg-red-50 px-2 py-1 rounded border border-red-100">
+                <div className="text-[11px] font-bold text-[#e20c0c] bg-red-50 px-2 py-1 rounded border border-red-100 self-start sm:self-auto">
                   Customer Preference: {request.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : request.supporting.freightPreference}
                 </div>
               )}

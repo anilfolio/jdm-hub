@@ -51,28 +51,28 @@ export function ActivityTab({ request }: ActivityTabProps) {
       </div>
 
       {activities.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-400 text-xs">
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 sm:p-12 text-center text-slate-400 text-xs shadow-xs">
           No activity records logged for this request yet.
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-          <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+          <div className="relative pl-6 space-y-5 sm:space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
             {activities.map((item) => (
-              <div key={item.id} className="relative flex items-start gap-4">
+              <div key={item.id} className="relative flex items-start gap-3 sm:gap-4">
                 {/* Timeline node */}
                 <div className="absolute -left-6 mt-1 w-5 h-5 rounded-full bg-white border-2 border-slate-300 flex items-center justify-center shadow-xs">
                   {getIcon(item.type)}
                 </div>
 
-                <div className="flex-1 bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/80">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
-                    <div className="flex items-center gap-2">
+                <div className="flex-1 bg-slate-50/70 p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h4 className="text-xs font-bold text-slate-900">{item.title}</h4>
                       <span className="text-[10px] font-medium text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
                         {item.actor}
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-400 ">
+                    <span className="text-[11px] text-slate-400 font-medium">
                       {item.timeLabel || item.timestamp}
                     </span>
                   </div>

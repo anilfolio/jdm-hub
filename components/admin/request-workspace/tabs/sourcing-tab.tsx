@@ -167,7 +167,8 @@ export function SourcingTab({ request }: SourcingTabProps) {
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-          <div className="overflow-x-auto custom-scrollbar">
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto custom-scrollbar">
             <table className="w-full min-w-[650px] text-left border-collapse text-xs">
               <thead>
                 <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
@@ -305,6 +306,125 @@ export function SourcingTab({ request }: SourcingTabProps) {
             </table>
           </div>
 
+          {/* Mobile Card-Based Quotations View */}
+          <div className="block md:hidden p-3.5 space-y-3">
+            {supplierQuotations.map((quote) => {
+              const numericCost = parseFloat(quote.supplierCost.toString()) || 0;
+              const total = numericCost + (quote.airFreightCost ?? quote.supplierFreight);
+              const isSelected = quote.isSelected;
+
+              return (
+                <div
+                  key={quote.id}
+                  className={`p-4 rounded-xl border transition-all ${
+                    isSelected
+                      ? "border-[#e20c0c] bg-red-50/20 shadow-xs"
+                      : "border-slate-200 bg-white"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-bold text-slate-900 text-sm">{quote.supplierName}</span>
+                        <span className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                          {quote.supplierCountry}
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-slate-500 font-medium block mt-0.5">
+                        Ref: {quote.supplierPartRef}
+                      </span>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="text-[10px] text-slate-400 uppercase font-bold block">Total (Air)</span>
+                      <span className="text-base font-black text-slate-900">
+                        NZ${total.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Badges */}
+                  <div className="flex items-center gap-1.5 flex-wrap my-2.5">
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
+                      quote.condition === "Genuine" ? "bg-blue-50 text-blue-700" : "bg-slate-100 text-slate-700"
+                    }`}>
+                      {quote.condition}
+                    </span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
+                      quote.availability === "In Stock" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+                    }`}>
+                      {quote.availability}
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
+                      Lead: {quote.leadTimeDays}d
+                    </span>
+                  </div>
+
+                  {/* Cost Breakdown pills */}
+                  <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-lg text-[11px] my-3 border border-slate-100">
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Part Cost</span>
+                      <span className="font-bold text-slate-800">
+                        {typeof quote.supplierCost === 'number' ? `NZ$${quote.supplierCost.toFixed(2)}` : quote.supplierCost}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Air Freight</span>
+                      <span className="font-bold text-slate-800">
+                        NZ${(quote.airFreightCost ?? quote.supplierFreight).toFixed(2)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Ocean Freight</span>
+                      <span className="font-bold text-slate-800">
+                        NZ${(quote.seaFreightCost ?? 0).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => selectSupplierQuotation(request.id, quote.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                        isSelected
+                          ? "bg-[#e20c0c] text-white shadow-xs"
+                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      }`}
+                    >
+                      {isSelected ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" /> Selected
+                        </>
+                      ) : (
+                        "Select Supplier"
+                      )}
+                    </button>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(quote)}
+                        className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                        title="Edit Quote"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteSupplierQuotation(request.id, quote.id)}
+                        className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Delete Quote"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           {/* Selected Quote Information Box */}
           {selectedQuote && (
             <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -331,8 +451,8 @@ export function SourcingTab({ request }: SourcingTabProps) {
 
       {/* MODAL: Add/Edit Supplier Quote */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-3 sm:p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
             <h3 className="text-base font-bold text-slate-900 mb-1">
               {editingQuoteId ? "Edit Supplier Quotation" : "Add Supplier Quotation"}
             </h3>
@@ -341,7 +461,7 @@ export function SourcingTab({ request }: SourcingTabProps) {
             </p>
 
             <form onSubmit={handleSaveQuote} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                 <div className="col-span-2">
                   <label className="block text-sm font-semibold text-slate-700 mb-1">

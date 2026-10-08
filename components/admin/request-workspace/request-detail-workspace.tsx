@@ -199,62 +199,70 @@ export function RequestDetailWorkspace({
   return (
     <div className="space-y-6 animate-in fade-in-50 duration-200">
       {/* Back Button & Top Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        {onBack ? (
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl shadow-xs transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Requests
-          </button>
-        ) : (
-          <Link
-            href="/admin/requests"
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl shadow-xs transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Requests
-          </Link>
-        )}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-2">
+          {onBack ? (
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Requests</span>
+            </button>
+          ) : (
+            <Link
+              href="/admin/requests"
+              className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Requests</span>
+            </Link>
+          )}
 
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="hidden md:flex items-center gap-2 mr-3 px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-200 shadow-xs">
+          {/* Mobile Assigned Badge */}
+          <div className="flex md:hidden items-center gap-1.5 px-2.5 py-1.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+            <span className="text-[10px] font-bold text-slate-400 uppercase">Assigned:</span>
+            <span className="text-xs font-bold text-slate-900 truncate max-w-[120px]">{request.assignedStaff || "Unassigned"}</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+          <div className="hidden md:flex items-center gap-2 mr-2 px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-200 shadow-xs">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Assigned:</span>
             <span className="text-xs font-bold text-slate-900">{request.assignedStaff || "Unassigned"}</span>
           </div>
           <button
             type="button"
             onClick={() => setShowAssignModal(true)}
-            className="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-colors shadow-xs"
+            className="w-full sm:w-auto px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition-colors shadow-xs text-center"
           >
-            Assign Request
+            Assign
           </button>
           <button
             type="button"
             onClick={() => setShowStatusModal(true)}
-            className="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-colors shadow-xs"
+            className="w-full sm:w-auto px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition-colors shadow-xs text-center"
           >
-            Change Status
+            Status
           </button>
           <button
             type="button"
             onClick={() => setShowNoteModal(true)}
-            className="px-3 py-1.5 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-semibold transition-colors shadow-xs flex items-center gap-1.5"
+            className="w-full sm:w-auto px-3 py-2 bg-[#e20c0c] hover:bg-[#C8101E] text-white rounded-xl text-xs font-bold transition-colors shadow-xs flex items-center justify-center gap-1.5"
           >
-            <Plus className="w-3.5 h-3.5" />
-            Add Note
+            <Plus className="w-3.5 h-3.5 shrink-0" />
+            <span>Note</span>
           </button>
         </div>
       </div>
 
       {/* REQUEST SUMMARY HEADER CARD (Section 7) */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-100">
           <div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className=" text-xl sm:text-2xl font-black text-[#e20c0c]">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <span className="text-xl sm:text-2xl font-black text-[#e20c0c]">
                 {request.requestNumber}
               </span>
               <StatusBadge status={request.status} size="lg" />
@@ -264,33 +272,34 @@ export function RequestDetailWorkspace({
               )}
             </div>
 
-            <div className="mt-1.5 flex items-center gap-2 text-xs text-slate-500 flex-wrap">
+            <div className="mt-2 flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 flex-wrap">
               <span className="font-bold text-slate-800">{request.customerName}</span>
               <span>•</span>
               <span>{request.contactName}</span>
-              <span>•</span>
-              <span>Submitted {request.dateSubmitted}</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">Submitted {request.dateSubmitted}</span>
               <span>•</span>
               <span>Updated {request.lastUpdated}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-6 lg:border-l lg:pl-6 border-slate-200 shrink-0">
+          <div className="flex items-center justify-between sm:justify-start gap-4 sm:gap-6 bg-slate-50/80 sm:bg-transparent p-3 sm:p-0 rounded-xl sm:rounded-none border sm:border-0 border-slate-100 lg:border-l lg:pl-6 border-slate-200 shrink-0">
             <div>
-              <span className="text-slate-400 block text-[11px] font-medium uppercase">
+              <span className="text-slate-400 block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
                 Quote Value
               </span>
-              <span className=" text-xl sm:text-2xl font-black text-slate-900">
+              <span className="text-lg sm:text-2xl font-black text-slate-900">
                 NZ${finalAmount.toFixed(2)}
               </span>
             </div>
-            <div>
-              <span className="text-slate-400 block text-[11px] font-medium uppercase">
+            <div className="text-right sm:text-left">
+              <span className="text-slate-400 block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
                 Payment Status
               </span>
               <span
-                className={`font-bold text-xs ${request.payment?.status === "Paid" ? "text-emerald-600" : "text-rose-600"
-                  }`}
+                className={`font-black text-xs sm:text-sm tracking-wide ${
+                  request.payment?.status === "Paid" ? "text-emerald-600" : "text-rose-600"
+                }`}
               >
                 {request.payment?.status === "Paid" ? "PAID" : "UNPAID"}
               </span>
@@ -299,37 +308,37 @@ export function RequestDetailWorkspace({
         </div>
 
         {/* Vehicle & Part Quick Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs bg-slate-50 p-3.5 sm:p-4 rounded-xl border border-slate-100">
           <div>
-            <span className="text-slate-400 block text-[11px]">Vehicle</span>
-            <span className="font-bold text-slate-900">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] uppercase font-bold tracking-wider">Vehicle</span>
+            <span className="font-bold text-slate-900 block mt-0.5">
               {request.vehicle.year} {request.vehicle.make} {request.vehicle.model}
             </span>
-            <span className="text-[10px] text-slate-500 block ">
+            <span className="text-[10px] text-slate-500 block">
               VIN: {request.vehicle.vin}
             </span>
           </div>
 
           <div>
-            <span className="text-slate-400 block text-[11px]">Requested Part</span>
-            <span className="font-bold text-slate-900 truncate block">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] uppercase font-bold tracking-wider">Requested Part</span>
+            <span className="font-bold text-slate-900 truncate block mt-0.5">
               {request.part.name}
             </span>
-            <span className="text-[10px] text-slate-500 block ">
+            <span className="text-[10px] text-slate-500 block">
               {request.part.partNumber || "OEM Part"}
             </span>
           </div>
 
           <div>
-            <span className="text-slate-400 block text-[11px]">Quantity & Preference</span>
-            <span className="font-semibold text-slate-800">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] uppercase font-bold tracking-wider">Quantity &amp; Preference</span>
+            <span className="font-semibold text-slate-800 block mt-0.5">
               Qty: {request.part.quantity} • {request.part.preference}
             </span>
           </div>
 
           <div>
-            <span className="text-slate-400 block text-[11px]">Workshop Delivery</span>
-            <span className="font-semibold text-slate-800 truncate block">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] uppercase font-bold tracking-wider">Workshop Delivery</span>
+            <span className="font-semibold text-slate-800 truncate block mt-0.5">
               {request.deliveryAddress.city} ({request.deliveryAddress.suburb})
             </span>
           </div>
@@ -337,23 +346,23 @@ export function RequestDetailWorkspace({
       </div>
 
       {/* VISUAL REQUEST LIFECYCLE TRACKER (Section 8) */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-slate-100">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-              Request Lifecycle Progression
+              Request Lifecycle
             </h3>
             <span className="text-xs font-semibold text-slate-500">
               Stage {currentStageIndex + 1}/{LIFECYCLE_STAGES.length}:{" "}
-              <span className="text-slate-900 font-bold">{request.status}</span>
+              <span className="text-[#e20c0c] font-bold">{request.status}</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <select
               value={request.status}
               onChange={(e) => handleStageSelect(e.target.value as RequestStatus)}
-              className="text-xs font-bold bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-slate-700 outline-none focus:border-[#e20c0c] cursor-pointer"
+              className="flex-1 sm:flex-none text-xs font-bold bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 outline-none focus:border-[#e20c0c] cursor-pointer"
               title="Quickly jump or update stage status"
             >
               {LIFECYCLE_STAGES.map((s, idx) => (
@@ -367,25 +376,24 @@ export function RequestDetailWorkspace({
               <button
                 type="button"
                 onClick={handleAdvanceStage}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-[#e20c0c] hover:bg-[#B30D12] text-white text-xs font-bold rounded-lg transition-colors shadow-xs"
+                className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 bg-[#e20c0c] hover:bg-[#B30D12] text-white text-xs font-bold rounded-lg transition-colors shadow-xs"
                 title={`Advance to ${LIFECYCLE_STAGES[currentStageIndex + 1]}`}
               >
-                <span>Advance to {LIFECYCLE_STAGES[currentStageIndex + 1]} →</span>
+                <span>Advance →</span>
               </button>
             )}
           </div>
         </div>
 
-        {/* Stepper container */}
-        <div className="overflow-x-auto py-2">
-          <div className="flex items-center justify-between min-w-[700px] relative">
+        {/* Stepper container with hidden scrollbar and touch smooth-scroll */}
+        <div className="overflow-x-auto py-2 -mx-2 px-2 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center justify-between min-w-[700px] relative px-2">
             {/* Connecting background line */}
             <div className="absolute top-3.5 left-6 right-6 h-0.5 bg-slate-200 -z-0" />
 
             {LIFECYCLE_STAGES.map((stage, idx) => {
               const isCompleted = idx < currentStageIndex;
               const isCurrent = idx === currentStageIndex;
-              const isPending = idx > currentStageIndex;
 
               return (
                 <button
@@ -396,22 +404,24 @@ export function RequestDetailWorkspace({
                   title={`Click to view relevant tab for ${stage}`}
                 >
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${isCompleted
-                      ? "bg-emerald-500 text-white shadow-xs group-hover:scale-110"
-                      : isCurrent
-                        ? "bg-[#e20c0c] text-white ring-4 ring-red-100 animate-pulse shadow-md group-hover:scale-110"
-                        : "bg-white border-2 border-slate-300 text-slate-400 group-hover:border-slate-500 group-hover:text-slate-600"
-                      }`}
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                      isCompleted
+                        ? "bg-emerald-500 text-white shadow-xs group-hover:scale-110"
+                        : isCurrent
+                          ? "bg-[#e20c0c] text-white ring-4 ring-red-100 animate-pulse shadow-md group-hover:scale-110"
+                          : "bg-white border-2 border-slate-300 text-slate-400 group-hover:border-slate-500 group-hover:text-slate-600"
+                    }`}
                   >
                     {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
                   </div>
                   <span
-                    className={`text-[11px] mt-2 whitespace-nowrap font-medium text-center transition-colors ${isCurrent
-                      ? "font-bold text-[#e20c0c]"
-                      : isCompleted
-                        ? "text-slate-800 font-semibold group-hover:text-slate-950"
-                        : "text-slate-400 group-hover:text-slate-700"
-                      }`}
+                    className={`text-[11px] mt-2 whitespace-nowrap font-medium text-center transition-colors ${
+                      isCurrent
+                        ? "font-bold text-[#e20c0c]"
+                        : isCompleted
+                          ? "text-slate-800 font-semibold group-hover:text-slate-950"
+                          : "text-slate-400 group-hover:text-slate-700"
+                    }`}
                   >
                     {stage}
                   </span>
@@ -423,7 +433,7 @@ export function RequestDetailWorkspace({
       </div>
 
       {/* THE 7 REQUEST DETAIL TABS (Section 9) */}
-      <div className="border-b border-slate-200 flex items-center gap-2 overflow-x-auto custom-scrollbar">
+      <div className="border-b border-slate-200 flex items-center gap-1 sm:gap-2 overflow-x-auto scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-2 sm:mx-0 px-2 sm:px-0">
         {tabsConfig.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -431,18 +441,20 @@ export function RequestDetailWorkspace({
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${isActive
-                ? "border-[#e20c0c] text-[#e20c0c]"
-                : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
-                }`}
+              className={`flex items-center gap-1.5 sm:gap-2 py-3 px-3 sm:px-4 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
+                isActive
+                  ? "border-[#e20c0c] text-[#e20c0c]"
+                  : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+              }`}
             >
               <span>{tab.label}</span>
               {tab.badge !== undefined && (
                 <span
-                  className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${isActive
-                    ? "bg-red-50 text-[#e20c0c]"
-                    : "bg-slate-200 text-slate-700"
-                    }`}
+                  className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
+                    isActive
+                      ? "bg-red-50 text-[#e20c0c]"
+                      : "bg-slate-200 text-slate-700"
+                  }`}
                 >
                   {tab.badge}
                 </span>
@@ -462,7 +474,7 @@ export function RequestDetailWorkspace({
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
             onClick={() => setShowStatusModal(false)}
           />
-          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-5">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
             {/* Header */}
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-rose-50 rounded-2xl flex items-center justify-center shrink-0 border border-rose-100 shadow-inner">
@@ -532,7 +544,7 @@ export function RequestDetailWorkspace({
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
             onClick={() => setShowAssignModal(false)}
           />
-          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-5">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
             {/* Header */}
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-rose-50 rounded-2xl flex items-center justify-center shrink-0 border border-rose-100 shadow-inner">
@@ -609,7 +621,7 @@ export function RequestDetailWorkspace({
             onClick={() => setShowNoteModal(false)}
           />
 
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-6">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
 
             {/* Header */}
             <div className="flex items-start gap-4">

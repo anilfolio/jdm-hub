@@ -59,15 +59,15 @@ export function OverviewTab({ request }: OverviewTabProps) {
               <span className="text-slate-400 block text-[11px]">Contact Person</span>
               <span className="font-semibold text-slate-800">{request.contactName}</span>
             </div>
-            <div className="flex items-center gap-4 pt-1">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1">
               <div className="flex items-center gap-1.5 text-slate-600">
-                <Mail className="w-3.5 h-3.5 text-slate-400" />
-                <a href={`mailto:${request.customerEmail}`} className="hover:underline">
+                <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <a href={`mailto:${request.customerEmail}`} className="hover:underline truncate">
                   {request.customerEmail}
                 </a>
               </div>
               <div className="flex items-center gap-1.5 text-slate-600">
-                <Phone className="w-3.5 h-3.5 text-slate-400" />
+                <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <a href={`tel:${request.customerPhone}`} className="hover:underline">
                   {request.customerPhone}
                 </a>
@@ -112,7 +112,7 @@ export function OverviewTab({ request }: OverviewTabProps) {
               {request.vehicle.registration || "NO PLATE"}
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-xs">
             <div>
               <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-0.5">Make</span>
               <span className="font-bold text-slate-900">
@@ -188,7 +188,7 @@ export function OverviewTab({ request }: OverviewTabProps) {
                 {request.part.name}
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-2 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
               <div>
                 <span className="text-slate-400 block text-[11px]">Part Number (OEM)</span>
                 <span className=" font-semibold text-slate-800">
@@ -200,7 +200,7 @@ export function OverviewTab({ request }: OverviewTabProps) {
                 <span className="font-semibold text-slate-800">{request.part.preference}</span>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <span className="text-slate-400 block text-[11px]">Condition Requirement</span>
                 <span className="font-medium text-slate-700">{request.part.condition}</span>
@@ -235,7 +235,7 @@ export function OverviewTab({ request }: OverviewTabProps) {
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
               Attached Photos
             </span>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {request.supporting.photos.map((p, idx) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -281,8 +281,8 @@ export function OverviewTab({ request }: OverviewTabProps) {
                   : "bg-slate-50 border-slate-200"
                   }`}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-bold text-slate-900">{note.author}</span>
                     <span className="text-[10px] text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">
                       {note.role}

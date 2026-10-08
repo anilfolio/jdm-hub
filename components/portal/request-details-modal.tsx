@@ -91,6 +91,55 @@ export function RequestDetailsModal() {
     setQuotePhotoLightbox(photos[index]);
   };
 
+  const formatTimelineTime = (raw: string | undefined): string => {
+    if (!raw) return "";
+    try {
+      if (
+        /^\d{1,2}:\d{2}\s?(AM|PM)/i.test(raw) ||
+        raw.includes("AM") ||
+        raw.includes("PM") ||
+        raw.includes("Today") ||
+        raw.includes("Yesterday") ||
+        raw.includes("Scheduled")
+      ) {
+        return raw;
+      }
+      const d = new Date(raw);
+      if (!isNaN(d.getTime())) {
+        const timeStr = d.toLocaleTimeString("en-NZ", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+        const dateStr = d.toLocaleDateString("en-NZ", {
+          day: "numeric",
+          month: "short",
+        });
+        return `${timeStr.toUpperCase()} • ${dateStr}`;
+      }
+    } catch {
+      // fallback
+    }
+    return raw;
+  };
+
+  const getMilestoneIcon = (milestone: string, isCompleted: boolean, isCurrent: boolean) => {
+    switch (milestone) {
+      case "Received At Shipping Facility":
+        return <Package className={`w-3.5 h-3.5 ${isCompleted ? "text-blue-600" : isCurrent ? "text-blue-600" : "text-slate-400"}`} />;
+      case "In Transit":
+        return <Truck className={`w-3.5 h-3.5 ${isCompleted ? "text-cyan-600" : isCurrent ? "text-cyan-600" : "text-slate-400"}`} />;
+      case "Arrived in NZ":
+        return <MapPin className={`w-3.5 h-3.5 ${isCompleted ? "text-purple-600" : isCurrent ? "text-purple-600" : "text-slate-400"}`} />;
+      case "Out For Delivery":
+        return <Truck className={`w-3.5 h-3.5 ${isCompleted ? "text-amber-600" : isCurrent ? "text-amber-600" : "text-slate-400"}`} />;
+      case "Delivered":
+        return <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? "text-emerald-600" : isCurrent ? "text-emerald-600" : "text-slate-400"}`} />;
+      default:
+        return <Clock className={`w-3.5 h-3.5 ${isCompleted ? "text-slate-600" : isCurrent ? "text-blue-600" : "text-slate-400"}`} />;
+    }
+  };
+
   // Sync active tab based on selected request status
   React.useEffect(() => {
     if (selectedRequestDetailsTab && ["overview", "quote", "shipment", "invoice"].includes(selectedRequestDetailsTab)) {
@@ -1538,53 +1587,58 @@ export function RequestDetailsModal() {
               )}
 
               {/* Internal Logistics Milestones within Shipped Stage */}
-              <div className="p-4 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+              <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-5">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                    Internal Logistics Milestones (Shipped Stage)
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                    Internal Logistics Milestones
                   </h4>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                     Real-time operational tracking from international facility to workshop
                   </p>
                 </div>
 
-                <div className="relative pl-6 sm:pl-7 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-300">
+                <div className="relative pl-6 space-y-4 sm:space-y-5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
                   {req.shipment.milestonesHistory.map((m, idx) => {
                     const isCurrent =
                       req.shipment?.currentMilestone === m.milestone;
                     return (
-                      <div key={idx} className="relative">
+                      <div key={idx} className="relative flex items-start gap-4">
+                        {/* Timeline node */}
                         <div
-                          className={`absolute -left-6 sm:-left-7 top-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center ${m.isCompleted
-                            ? "bg-emerald-500 border-emerald-500 text-white"
-                            : isCurrent
-                              ? "bg-[#e20c0c] border-[#e20c0c] text-white animate-pulse"
-                              : "bg-white border-slate-300"
-                            }`}
+                          className={`absolute -left-6 mt-1 w-5 h-5 rounded-full bg-white border-2 flex items-center justify-center shadow-xs transition-colors ${
+                            isCurrent
+                              ? "border-[#2B4499] ring-2 ring-blue-100"
+                              : m.isCompleted
+                                ? "border-slate-300"
+                                : "border-slate-200"
+                          }`}
                         >
-                          {m.isCompleted && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                          {getMilestoneIcon(m.milestone, m.isCompleted, isCurrent)}
                         </div>
 
-                        <div className="space-y-0.5">
-                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                            <span
-                              className={`text-xs font-bold ${isCurrent
-                                ? "text-[#e20c0c]"
-                                : m.isCompleted
-                                  ? "text-slate-900"
-                                  : "text-slate-500"
-                                }`}
-                            >
-                              {m.milestone}
-                            </span>
-                            <span className="text-[10px] text-slate-400 font-mono">
-                              • {m.timestamp}
+                        {/* Card item */}
+                        <div className="flex-1 bg-slate-50/70 p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                                {m.milestone}
+                              </h4>
+                              {m.location && (
+                                <span className="text-[10px] font-medium text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                                  {m.location}
+                                </span>
+                              )}
+                              {isCurrent && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-[#2B4499]">
+                                  Current Milestone
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[11px] text-slate-400 font-medium sm:text-right shrink-0">
+                              {formatTimelineTime(m.timestamp)}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-600 font-medium">
-                            {m.location}
-                          </p>
-                          <p className="text-[11px] text-slate-500 leading-relaxed">
+                          <p className="text-xs text-slate-600 leading-relaxed">
                             {m.description}
                           </p>
                         </div>

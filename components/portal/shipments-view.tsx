@@ -45,6 +45,55 @@ export function ShipmentsView() {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
 
+  const formatTimelineTime = (raw: string | undefined): string => {
+    if (!raw) return "";
+    try {
+      if (
+        /^\d{1,2}:\d{2}\s?(AM|PM)/i.test(raw) ||
+        raw.includes("AM") ||
+        raw.includes("PM") ||
+        raw.includes("Today") ||
+        raw.includes("Yesterday") ||
+        raw.includes("Scheduled")
+      ) {
+        return raw;
+      }
+      const d = new Date(raw);
+      if (!isNaN(d.getTime())) {
+        const timeStr = d.toLocaleTimeString("en-NZ", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+        const dateStr = d.toLocaleDateString("en-NZ", {
+          day: "numeric",
+          month: "short",
+        });
+        return `${timeStr.toUpperCase()} • ${dateStr}`;
+      }
+    } catch {
+      // fallback
+    }
+    return raw;
+  };
+
+  const getMilestoneIcon = (milestone: string, isCompleted: boolean, isCurrent: boolean) => {
+    switch (milestone) {
+      case "Received At Shipping Facility":
+        return <Package className={`w-3.5 h-3.5 ${isCompleted ? "text-blue-600" : isCurrent ? "text-blue-600" : "text-slate-400"}`} />;
+      case "In Transit":
+        return <Truck className={`w-3.5 h-3.5 ${isCompleted ? "text-cyan-600" : isCurrent ? "text-cyan-600" : "text-slate-400"}`} />;
+      case "Arrived in NZ":
+        return <MapPin className={`w-3.5 h-3.5 ${isCompleted ? "text-purple-600" : isCurrent ? "text-purple-600" : "text-slate-400"}`} />;
+      case "Out For Delivery":
+        return <Truck className={`w-3.5 h-3.5 ${isCompleted ? "text-amber-600" : isCurrent ? "text-amber-600" : "text-slate-400"}`} />;
+      case "Delivered":
+        return <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? "text-emerald-600" : isCurrent ? "text-emerald-600" : "text-slate-400"}`} />;
+      default:
+        return <Clock className={`w-3.5 h-3.5 ${isCompleted ? "text-slate-600" : isCurrent ? "text-blue-600" : "text-slate-400"}`} />;
+    }
+  };
+
   useEffect(() => {
     setCurrentPage(1);
   }, [milestoneFilter, searchFilter]);
@@ -430,46 +479,53 @@ export function ShipmentsView() {
                 </span>
               </div>
 
-              <div className="bg-slate-50/50 rounded-xl border border-slate-200 p-4 space-y-4">
-                {sh.milestonesHistory.map((m, idx) => {
-                  return (
-                    <div key={idx} className="flex items-start gap-3.5 text-xs group">
-                      <div className="mt-0.5 relative">
+              <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+                <div className="relative pl-6 space-y-4 sm:space-y-5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                  {sh.milestonesHistory.map((m, idx) => {
+                    const isCurrent = sh.currentMilestone === m.milestone;
+                    return (
+                      <div key={idx} className="relative flex items-start gap-4">
                         <div
-                          className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${m.isCompleted
-                            ? "bg-emerald-500 border-emerald-500"
-                            : "bg-white border-slate-300"
-                            }`}
+                          className={`absolute -left-6 mt-1 w-5 h-5 rounded-full bg-white border-2 flex items-center justify-center shadow-xs transition-colors ${
+                            isCurrent
+                              ? "border-[#2B4499] ring-2 ring-blue-100"
+                              : m.isCompleted
+                                ? "border-slate-300"
+                                : "border-slate-200"
+                          }`}
                         >
-                          {m.isCompleted && <Check className="w-2.5 h-2.5 text-white stroke-[3]" />}
+                          {getMilestoneIcon(m.milestone, m.isCompleted, isCurrent)}
                         </div>
-                        {idx !== sh.milestonesHistory.length - 1 && (
-                          <div className="w-0.5 h-7 bg-slate-200 absolute top-3.5 left-1.5 -translate-x-1/2" />
-                        )}
-                      </div>
 
-                      <div className="flex-1 space-y-0.5">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                          <span
-                            className={`font-bold ${m.isCompleted ? "text-slate-900" : "text-slate-500"
-                              }`}
-                          >
-                            {m.milestone}
-                          </span>
-                          <span className=" text-[11px] text-slate-400">
-                            {m.timestamp}
-                          </span>
+                        <div className="flex-1 bg-slate-50/70 p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                                {m.milestone}
+                              </h4>
+                              {m.location && (
+                                <span className="text-[10px] font-medium text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                                  {m.location}
+                                </span>
+                              )}
+                              {isCurrent && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-[#2B4499]">
+                                  Current Milestone
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[11px] text-slate-400 font-medium sm:text-right shrink-0">
+                              {formatTimelineTime(m.timestamp)}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-600 leading-relaxed">
+                            {m.description}
+                          </p>
                         </div>
-                        <p className="text-slate-600 text-[11px] font-medium">
-                          {m.location}
-                        </p>
-                        <p className="text-slate-500 text-[11px]">
-                          {m.description}
-                        </p>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           )}

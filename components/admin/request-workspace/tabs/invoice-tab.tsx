@@ -15,6 +15,7 @@ import {
   X,
   Download,
   RotateCcw,
+  Sparkles,
 } from "lucide-react";
 import { PartRequest } from "@/types/shared";
 import { useUnifiedData } from "@/context/unified-data-context";
@@ -31,7 +32,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
   // Invoice Number configuration
   const defaultInvoiceNumber = `INV-2026-${request.requestNumber.replace(/[^0-9]/g, "").padStart(4, "0")}`;
   const [invoiceNumber, setInvoiceNumber] = useState(
-    request.payment?.invoiceNumber || defaultInvoiceNumber
+    request.payment?.invoiceNumber || ""
   );
 
   // File upload states
@@ -84,10 +85,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
       (request.payment?.invoiceUrl ? `Tax_Invoice_${request.requestNumber}.pdf` : null)
     );
     setAttachedPdfSize(request.payment?.invoiceUrl ? "PDF Document" : null);
-    setInvoiceNumber(
-      request.payment?.invoiceNumber ||
-      `INV-2026-${request.requestNumber.replace(/[^0-9]/g, "").padStart(4, "0")}`
-    );
+    setInvoiceNumber(request.payment?.invoiceNumber || "");
     if (request.payment?.invoiceUrl) {
       setPreviewBlobUrl(getBlobUrl(request.payment.invoiceUrl));
     } else {
@@ -239,7 +237,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-100">
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -258,9 +256,9 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
           {/* Order Summary for AR */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col h-full">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col h-full">
             <h3 className="text-base font-bold text-slate-900 mb-4">Order Summary for AR</h3>
             <div className="border-t border-slate-200 mb-4"></div>
 
@@ -281,9 +279,9 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                   {request.part.name} (Qty: {request.part.quantity})
                 </span>
               </div>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span className="text-slate-500 font-medium">Delivery Address:</span>
-                <span className="font-semibold text-slate-800 text-right text-xs max-w-[200px] truncate">
+                <span className="font-semibold text-slate-800 text-left sm:text-right text-xs max-w-full sm:max-w-[220px] truncate">
                   {request.deliveryAddress?.streetAddress}, {request.deliveryAddress?.city}
                 </span>
               </div>
@@ -298,7 +296,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
           </div>
 
           {/* Invoice Attachment Form */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col h-full">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col h-full">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-bold text-slate-900">Invoice Details</h3>
               {attachedPdfUrl && (
@@ -331,19 +329,31 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                     type="text"
                     value={invoiceNumber}
                     onChange={(e) => setInvoiceNumber(e.target.value)}
-                    placeholder="e.g. INV-2026-000128"
+                    placeholder={`e.g. ${defaultInvoiceNumber}`}
                     className="w-full text-sm p-3 rounded-xl bg-white border border-slate-200 shadow-xs focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] font-bold text-slate-900 pr-24"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setInvoiceNumber(defaultInvoiceNumber)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer flex items-center gap-1"
-                    title="Reset to default sequential invoice identifier"
-                  >
-                    <RotateCcw className="w-3 h-3 text-slate-500" />
-                    <span>Reset</span>
-                  </button>
+                  {invoiceNumber ? (
+                    <button
+                      type="button"
+                      onClick={() => setInvoiceNumber(request.payment?.invoiceNumber || "")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                      title="Reset to blank"
+                    >
+                      <RotateCcw className="w-3 h-3 text-slate-500" />
+                      <span>Reset</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setInvoiceNumber(defaultInvoiceNumber)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                      title="Auto-fill sequential invoice identifier"
+                    >
+                      <Sparkles className="w-3 h-3 text-amber-500" />
+                      <span>Auto-fill</span>
+                    </button>
+                  )}
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1.5">
                   Identifier released to the customer portal under Tax Invoice and used for remittance reconciliation.

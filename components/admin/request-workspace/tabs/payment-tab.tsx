@@ -100,7 +100,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
   return (
     <div className="space-y-6">
       {/* Payment Overview Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2.5">
@@ -117,7 +117,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
               <button
                 type="button"
                 onClick={() => setShowMarkPaidModal(true)}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+                className="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 Mark as Paid
@@ -126,7 +126,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
               <button
                 type="button"
                 onClick={() => markPaymentUnpaid(request.id)}
-                className="px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-all shadow-xs"
+                className="w-full sm:w-auto px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-all shadow-xs text-center"
               >
                 Revert to Unpaid
               </button>
@@ -135,7 +135,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
         </div>
 
         {/* Payment Data Fields */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs">
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
             <span className="text-slate-400 block text-[11px]">Payable Amount</span>
             <span className=" text-lg font-bold text-slate-900">
@@ -255,7 +255,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
 
       {/* Supplier Order Details Card (If order has already been placed) */}
       {request.supplierOrder && isPaid && (
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
             <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
               <ShoppingBag className="w-4 h-4 text-[#e20c0c]" />
@@ -265,7 +265,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
               {request.supplierOrder.supplierRef}
             </span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs">
             <div>
               <span className="text-slate-400 block text-[11px]">Supplier</span>
               <span className="font-bold text-slate-900">
@@ -298,7 +298,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
           )}
 
           {/* Supplier Handover: Requester Consignment Details */}
-          <div className="mt-4 pt-4 border-t border-slate-100 bg-slate-50/70 rounded-xl p-4 border border-slate-200 text-xs">
+          <div className="mt-4 pt-4 border-t border-slate-100 bg-slate-50/70 rounded-xl p-3.5 sm:p-4 border border-slate-200 text-xs">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-200">
               <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-[#e20c0c]" />
@@ -308,7 +308,7 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
                 {request.supplierOrder.handoverMode || "Consolidated via Autohub Hub"}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <div>
                 <span className="text-slate-400 text-[10px] uppercase font-bold block">Requester Organization</span>
                 <span className="font-bold text-slate-900 block text-sm">{request.supplierOrder.requesterName || request.customerName}</span>
@@ -333,15 +333,14 @@ export function PaymentTab({ request: initialRequest, onNavigateToTab }: Payment
 
       {/* MODAL: Mark Payment Paid */}
       {showMarkPaidModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
             onClick={() => setShowMarkPaidModal(false)}
           />
 
-          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-6">
-
+          <div className="bg-white rounded-2xl max-w-xl w-full p-4 sm:p-6 shadow-2xl border border-slate-200 animate-in zoom-in-95 duration-200 relative z-10 flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
             {/* Header */}
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-emerald-50 rounded-2xl flex items-center justify-center shrink-0 border border-emerald-100 shadow-inner">
