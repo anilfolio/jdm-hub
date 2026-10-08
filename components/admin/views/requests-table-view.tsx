@@ -121,7 +121,7 @@ export function RequestsTableView() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Request # (e.g. JDM-P-123), Customer, Vehicle, Part..."
+              placeholder="Search Request # (e.g. JDHub-0001), Customer, Vehicle, Part..."
               className="w-full pl-10 pr-4 py-2 text-xs bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] transition-all"
             />
           </div>

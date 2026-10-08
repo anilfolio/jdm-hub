@@ -389,11 +389,52 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
   const getRequestById = useCallback(
     (idOrNumber: string) => {
       const normalized = (idOrNumber || "").toLowerCase().trim();
-      return requests.find(
+      const direct = requests.find(
         (r) =>
           r.id.toLowerCase() === normalized ||
           r.requestNumber.toLowerCase() === normalized
       );
+      if (direct) return direct;
+
+      // Legacy query mapping fallback (e.g. ?id=req-000123 -> JDHub-0001)
+      const legacyMap: Record<string, string> = {
+        "req-000123": "jdhub-0001",
+        "autohub-p-000123": "jdhub-0001",
+        "req-000145": "jdhub-0002",
+        "autohub-p-000145": "jdhub-0002",
+        "req-000138": "jdhub-0003",
+        "autohub-p-000138": "jdhub-0003",
+        "req-000128": "jdhub-0004",
+        "autohub-p-000128": "jdhub-0004",
+        "req-000137": "jdhub-0005",
+        "autohub-p-000137": "jdhub-0005",
+        "req-000125": "jdhub-0006",
+        "autohub-p-000125": "jdhub-0006",
+        "req-000120": "jdhub-0007",
+        "autohub-p-000120": "jdhub-0007",
+        "req-000115": "jdhub-0008",
+        "autohub-p-000115": "jdhub-0008",
+        "req-000110": "jdhub-0009",
+        "autohub-p-000110": "jdhub-0009",
+        "req-000188": "jdhub-0010",
+        "autohub-p-000188": "jdhub-0010",
+        "req-000199": "jdhub-0011",
+        "autohub-p-000199": "jdhub-0011",
+        "req-000200": "jdhub-0012",
+        "autohub-p-000200": "jdhub-0012",
+        "req-000201": "jdhub-0013",
+        "autohub-p-000201": "jdhub-0013",
+      };
+
+      const mapped = legacyMap[normalized];
+      if (mapped) {
+        return requests.find(
+          (r) =>
+            r.id.toLowerCase() === mapped ||
+            r.requestNumber.toLowerCase() === mapped
+        );
+      }
+      return undefined;
     },
     [requests]
   );
@@ -401,9 +442,9 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
   // ─── Actions: Submit Request (Customer Side) ────────────
   const submitCustomerRequest = useCallback(
     (data: Partial<PartRequest>): PartRequest => {
-      const nextCount = requests.length + 124;
-      const requestNumber = `AutoHub-P-${String(nextCount).padStart(6, "0")}`;
-      const newId = `req-${Date.now()}`;
+      const nextCount = requests.length + 1;
+      const requestNumber = `JDHub-${String(nextCount).padStart(4, "0")}`;
+      const newId = requestNumber;
 
       const newRequest: PartRequest = {
         id: newId,
@@ -616,7 +657,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
                   id: `ord-${Date.now()}`,
                   supplierId: r.selectedQuotationId || "sup-01",
                   supplierName: "Nagoya Auto Parts Co.",
-                  supplierRef: `PO-${r.requestNumber.replace("AutoHub-P-", "")}`,
+                  supplierRef: `PO-${r.requestNumber.replace("JDHub-", "").replace("AutoHub-P-", "")}`,
                   orderDate: new Date().toISOString().split("T")[0],
                   cost: 280,
                   freight: 45,
@@ -1034,7 +1075,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
               payment: {
                 id: `pay-${r.requestNumber}`,
                 requestId: r.id,
-                invoiceNumber: `INV-2026-${r.requestNumber.replace("AutoHub-P-", "")}`,
+                invoiceNumber: `INV-2026-${r.requestNumber.replace("JDHub-", "").replace("AutoHub-P-", "")}`,
                 amount,
                 currency: "NZD",
                 status: "Unpaid", // Payment is Unpaid
@@ -1222,7 +1263,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
             const currentPay = r.payment || {
               id: `pay-${r.requestNumber}`,
               requestId: r.id,
-              invoiceNumber: `INV-2026-${r.requestNumber.replace("AutoHub-P-", "")}`,
+              invoiceNumber: `INV-2026-${r.requestNumber.replace("JDHub-", "").replace("AutoHub-P-", "")}`,
               amount: r.quotedValue || 410.0,
               currency: "NZD",
               status: "Paid",

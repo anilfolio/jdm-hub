@@ -996,7 +996,7 @@ export function NewRequestModal() {
                       <strong className="text-slate-900">Automatic Request Code:</strong> Submitting will lock
                       your request and generate a tracked procurement reference in format{" "}
                       <code className=" font-bold bg-white px-1.5 py-0.5 rounded border border-slate-200 text-slate-900">
-                        AutoHub-P-XXX
+                        JDHub-0001
                       </code>
                       .
                     </p>

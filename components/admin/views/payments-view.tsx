@@ -196,7 +196,7 @@ export function PaymentsView() {
                         <span className="font-bold text-slate-900 block">{req.customerName}</span>
                         <div className="flex items-center gap-1.5 mt-0.5">
                           <span className="text-[10px] text-slate-400">
-                            {pay?.invoiceNumber || `INV-${req.requestNumber.replace("JDM-P-", "").replace("AutoHub-P-", "")}`}
+                            {pay?.invoiceNumber || `INV-${req.requestNumber.replace("JDHub-", "").replace("JDM-P-", "").replace("AutoHub-P-", "")}`}
                           </span>
                           {pay?.invoiceUrl && (
                             <a

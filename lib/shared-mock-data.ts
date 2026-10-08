@@ -237,13 +237,13 @@ export const MOCK_SUPPLIERS: Supplier[] = [
 ];
 
 // ─── Centralized Mock Requests ─────────────────────────────
-// Contains benchmark AutoHub-P-000123 as specified in prompt
+// Contains benchmark JDHub-0001 as specified in prompt
 
 export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
-  // ── 1. Benchmark Request: AutoHub-P-000123 (Awaiting Payment, Unpaid) ──
+  // ── 1. Benchmark Request: JDHub-0001 (Awaiting Payment, Unpaid) ──
   {
-    id: "req-000123",
-    requestNumber: "AutoHub-P-000123",
+    id: "JDHub-0001",
+    requestNumber: "JDHub-0001",
     customerId: "cust-01",
     customerName: "AutoCare Auckland",
     contactName: "Dave Miller",
@@ -363,7 +363,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     ],
     customerQuote: {
       id: "quote-123",
-      requestId: "req-000123",
+      requestId: "JDHub-0001",
       version: 1,
       itemDescription: "Genuine OEM Toyota Front Lower Suspension Arm (LH) assembly with factory bushings.",
       oemNumber: "48069-26150",
@@ -389,7 +389,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     },
     quotation: {
       id: "quote-123",
-      requestId: "req-000123",
+      requestId: "JDHub-0001",
       version: 1,
       itemDescription: "Genuine OEM Toyota Front Lower Suspension Arm (LH) assembly with factory bushings.",
       oemNumber: "48069-26150",
@@ -426,12 +426,12 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     },
     payment: {
       id: "pay-123",
-      requestId: "req-000123",
-      invoiceNumber: "INV-2026-00123",
+      requestId: "JDHub-0001",
+      invoiceNumber: "INV-2026-0001",
       amount: 410.0,
       currency: "NZD",
       status: "Unpaid", // Payment is Unpaid -> Supplier order LOCKED!
-      paymentReference: "AutoHub-P-000123",
+      paymentReference: "JDHub-0001",
       dueDate: "2026-09-16",
       lastUpdated: "Today",
       bankDetails: {
@@ -482,7 +482,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
         timestamp: "Today, 09:12 AM",
         timeLabel: "09:12 AM",
         title: "Request submitted",
-        description: "Request AutoHub-P-000123 submitted by Dave Miller (AutoCare Auckland).",
+        description: "Request JDHub-0001 submitted by Dave Miller (AutoCare Auckland).",
         actor: "Dave Miller",
         type: "status",
       },
@@ -527,10 +527,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "pay_now",
   },
 
-  // ── 2. Request: AutoHub-P-000145 (Status: Submitted / New) ──
+  // ── 2. Request: JDHub-0002 (Status: Submitted / New) ──
   {
-    id: "req-000145",
-    requestNumber: "AutoHub-P-000145",
+    id: "JDHub-0002",
+    requestNumber: "JDHub-0002",
     customerId: "cust-01",
     customerName: "AutoCare Auckland",
     contactName: "Dave Miller",
@@ -582,10 +582,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "none",
   },
 
-  // ── 3. Request: AutoHub-P-000138 (Status: Sourcing) ──
+  // ── 3. Request: JDHub-0003 (Status: Sourcing) ──
   {
-    id: "req-000138",
-    requestNumber: "AutoHub-P-000138",
+    id: "JDHub-0003",
+    requestNumber: "JDHub-0003",
     customerId: "cust-03",
     customerName: "Precision European",
     contactName: "Liam Davies",
@@ -690,10 +690,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "none",
   },
 
-  // ── 4. Request: AutoHub-P-000128 (Status: Quoted / Review) ──
+  // ── 4. Request: JDHub-0004 (Status: Quoted / Review) ──
   {
-    id: "req-000128",
-    requestNumber: "AutoHub-P-000128",
+    id: "JDHub-0004",
+    requestNumber: "JDHub-0004",
     customerId: "cust-02",
     customerName: "SP Motors Ltd",
     contactName: "James Wilson",
@@ -753,7 +753,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     ],
     customerQuote: {
       id: "quote-128",
-      requestId: "req-000128",
+      requestId: "JDHub-0004",
       version: 1,
       itemDescription: "OEM Toyota Front Lower Suspension Arm (LH) with integrated high-durability bush.",
       oemNumber: "48069-26150",
@@ -780,7 +780,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     },
     quotation: {
       id: "quote-128",
-      requestId: "req-000128",
+      requestId: "JDHub-0004",
       version: 1,
       itemDescription: "OEM Toyota Front Lower Suspension Arm (LH) with integrated high-durability bush.",
       oemNumber: "48069-26150",
@@ -859,10 +859,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "review_quote",
   },
 
-  // ── 5. Request: AutoHub-P-000137 (Status: Approved / Pending Payment) ──
+  // ── 5. Request: JDHub-0005 (Status: Approved / Pending Payment) ──
   {
-    id: "req-000137",
-    requestNumber: "AutoHub-P-000137",
+    id: "JDHub-0005",
+    requestNumber: "JDHub-0005",
     customerId: "cust-01",
     customerName: "AutoCare Auckland",
     contactName: "Dave Miller",
@@ -901,7 +901,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     customerResponse: "Accepted",
     customerQuote: {
       id: "quote-137",
-      requestId: "req-000137",
+      requestId: "JDHub-0005",
       version: 1,
       itemDescription: "Genuine Mazda SkyActiv-D Alternator Assembly (150A) with decoupler pulley.",
       oemNumber: "SH01-18-300B",
@@ -924,7 +924,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     },
     quotation: {
       id: "quote-137",
-      requestId: "req-000137",
+      requestId: "JDHub-0005",
       version: 1,
       itemDescription: "Genuine Mazda SkyActiv-D Alternator Assembly (150A) with decoupler pulley.",
       oemNumber: "SH01-18-300B",
@@ -968,12 +968,12 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     selectedQuotationId: "sq-137-1",
     payment: {
       id: "pay-137",
-      requestId: "req-000137",
-      invoiceNumber: "INV-2026-00137",
+      requestId: "JDHub-0005",
+      invoiceNumber: "INV-2026-0005",
       amount: 720.0,
       currency: "NZD",
       status: "Unpaid",
-      paymentReference: "AutoHub-P-000137",
+      paymentReference: "JDHub-0005",
       dueDate: "2026-09-15",
     },
     documents: [],
@@ -993,10 +993,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "upload_invoice",
   },
 
-  // ── 6. Request: AutoHub-P-000125 (Status: Ordered / Paid / Order Placed) ──
+  // ── 6. Request: JDHub-0006 (Status: Ordered / Paid / Order Placed) ──
   {
-    id: "req-000125",
-    requestNumber: "AutoHub-P-000125",
+    id: "JDHub-0006",
+    requestNumber: "JDHub-0006",
     customerId: "cust-02",
     customerName: "SP Motors Ltd",
     contactName: "James Wilson",
@@ -1035,7 +1035,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     customerResponse: "Accepted",
     customerQuote: {
       id: "quote-125",
-      requestId: "req-000125",
+      requestId: "JDHub-0006",
       version: 1,
       itemDescription: "OEM Toyota Front Lower Suspension Arm (LH) Assembly.",
       oemNumber: "48069-26140",
@@ -1072,12 +1072,12 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     selectedQuotationId: "sq-125-1",
     payment: {
       id: "pay-125",
-      requestId: "req-000125",
-      invoiceNumber: "INV-2026-00125",
+      requestId: "JDHub-0006",
+      invoiceNumber: "INV-2026-0006",
       amount: 640.0,
       currency: "NZD",
       status: "Paid", // Payment is Paid -> Supplier Order placed!
-      paymentReference: "AutoHub-P-000125-PAID",
+      paymentReference: "JDHub-0006-PAID",
       paidAt: "2026-09-07T11:00:00Z",
       dueDate: "2026-09-14",
     },
@@ -1085,7 +1085,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
       id: "ord-125",
       supplierId: "sup-02",
       supplierName: "Nagoya Auto Parts Co.",
-      supplierRef: "PO-AH-2026-0089",
+      supplierRef: "PO-0006",
       orderDate: "2026-09-07",
       cost: 410.0,
       freight: 40.0,
@@ -1127,10 +1127,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "none",
   },
 
-  // ── 7. Request: AutoHub-P-000120 (Status: Shipped / In Transit milestone) ──
+  // ── 7. Request: JDHub-0007 (Status: Shipped / In Transit milestone) ──
   {
-    id: "req-000120",
-    requestNumber: "AutoHub-P-000120",
+    id: "JDHub-0007",
+    requestNumber: "JDHub-0007",
     customerId: "cust-02",
     customerName: "SP Motors Ltd",
     contactName: "James Wilson",
@@ -1169,7 +1169,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     customerResponse: "Accepted",
     customerQuote: {
       id: "quote-120",
-      requestId: "req-000120",
+      requestId: "JDHub-0007",
       version: 1,
       itemDescription: "OEM Genuine Nissan Navara Garrett Twin Turbo Unit.",
       oemNumber: "14411-4KH1A",
@@ -1188,19 +1188,19 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     supplierQuotations: [],
     payment: {
       id: "pay-120",
-      requestId: "req-000120",
-      invoiceNumber: "INV-2026-00120",
+      requestId: "JDHub-0007",
+      invoiceNumber: "INV-2026-0007",
       amount: 2450.0,
       currency: "NZD",
       status: "Paid",
-      paymentReference: "AutoHub-P-000120-PAID",
+      paymentReference: "JDHub-0007-PAID",
       dueDate: "2026-09-08",
     },
     supplierOrder: {
       id: "ord-120",
       supplierId: "sup-01",
       supplierName: "Toyota Tsusho Parts Japan",
-      supplierRef: "PO-AH-2026-0072",
+      supplierRef: "PO-0007",
       orderDate: "2026-09-03",
       cost: 1780.0,
       freight: 120.0,
@@ -1292,10 +1292,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "view_details",
   },
 
-  // ── 8. Request: AutoHub-P-000115 (Status: Delivered) ──
+  // ── 8. Request: JDHub-0008 (Status: Delivered) ──
   {
-    id: "req-000115",
-    requestNumber: "AutoHub-P-000115",
+    id: "JDHub-0008",
+    requestNumber: "JDHub-0008",
     customerId: "cust-03",
     customerName: "Precision European",
     contactName: "Liam Davies",
@@ -1334,7 +1334,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     customerResponse: "Accepted",
     customerQuote: {
       id: "quote-115",
-      requestId: "req-000115",
+      requestId: "JDHub-0008",
       version: 1,
       itemDescription: "Brand New Genuine BMW G20 Variable Sport Steering Rack.",
       oemNumber: "32106889214",
@@ -1353,12 +1353,12 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     supplierQuotations: [],
     payment: {
       id: "pay-115",
-      requestId: "req-000115",
-      invoiceNumber: "INV-2026-00115",
+      requestId: "JDHub-0008",
+      invoiceNumber: "INV-2026-0008",
       amount: 3890.0,
       currency: "NZD",
       status: "Paid",
-      paymentReference: "AutoHub-P-000115-PAID",
+      paymentReference: "JDHub-0008-PAID",
       dueDate: "2026-09-01",
     },
     shipment: {
@@ -1429,10 +1429,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionType: "none",
   },
 
-  // ── 9. Request: AutoHub-P-000110 (Status: Completed) ──
+  // ── 9. Request: JDHub-0009 (Status: Completed) ──
   {
-    id: "req-000110",
-    requestNumber: "AutoHub-P-000110",
+    id: "JDHub-0009",
+    requestNumber: "JDHub-0009",
     customerId: "cust-02",
     customerName: "SP Motors Ltd",
     contactName: "James Wilson",
@@ -1471,7 +1471,7 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     customerResponse: "Accepted",
     customerQuote: {
       id: "quote-110",
-      requestId: "req-000110",
+      requestId: "JDHub-0009",
       version: 1,
       itemDescription: "OEM Honda Aluminum Core Radiator Assembly.",
       oemNumber: "19010-5AA-A01",
@@ -1490,12 +1490,12 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     supplierQuotations: [],
     payment: {
       id: "pay-110",
-      requestId: "req-000110",
-      invoiceNumber: "INV-2026-00110",
+      requestId: "JDHub-0009",
+      invoiceNumber: "INV-2026-0009",
       amount: 590.0,
       currency: "NZD",
       status: "Paid",
-      paymentReference: "AutoHub-P-000110-PAID",
+      paymentReference: "JDHub-0009-PAID",
       dueDate: "2026-08-20",
     },
     documents: [],
@@ -1514,10 +1514,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionRequired: "Order successfully completed and archived",
     actionType: "none",
   },
-  // ── 7. Request: AutoHub-P-000188 (Status: Ordered) ──
+  // ── 10. Request: JDHub-0010 (Status: Ordered) ──
   {
-    id: "req-000188",
-    requestNumber: "AutoHub-P-000188",
+    id: "JDHub-0010",
+    requestNumber: "JDHub-0010",
     customerId: "cust-01",
     customerName: "AutoCare Auckland",
     contactName: "Dave Miller",
@@ -1556,10 +1556,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionRequired: "Awaiting supplier fulfillment",
     actionType: "view_details",
   },
-  // ── 8. Request: AutoHub-P-000199 (Status: Ordered) ──
+  // ── 11. Request: JDHub-0011 (Status: Ordered) ──
   {
-    id: "req-000199",
-    requestNumber: "AutoHub-P-000199",
+    id: "JDHub-0011",
+    requestNumber: "JDHub-0011",
     customerId: "cust-02",
     customerName: "SP Motors Ltd",
     contactName: "James Wilson",
@@ -1598,10 +1598,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionRequired: "Supplier order confirmed",
     actionType: "view_details",
   },
-  // ── 9. Request: AutoHub-P-000200 (Status: Sourcing) ──
+  // ── 12. Request: JDHub-0012 (Status: Sourcing) ──
   {
-    id: "req-000200",
-    requestNumber: "AutoHub-P-000200",
+    id: "JDHub-0012",
+    requestNumber: "JDHub-0012",
     customerId: "cust-03",
     customerName: "Precision European",
     contactName: "Liam Davies",
@@ -1640,10 +1640,10 @@ export const INITIAL_SHARED_REQUESTS: PartRequest[] = [
     actionRequired: "Sourcing replacement part",
     actionType: "view_details",
   },
-  // ── 10. Request: AutoHub-P-000201 (Status: Ready for Dispatch) ──
+  // ── 13. Request: JDHub-0013 (Status: Ready for Dispatch) ──
   {
-    id: "req-000201",
-    requestNumber: "AutoHub-P-000201",
+    id: "JDHub-0013",
+    requestNumber: "JDHub-0013",
     customerId: "cust-02",
     customerName: "SP Motors Ltd",
     contactName: "James Wilson",
@@ -1690,38 +1690,38 @@ export const INITIAL_NOTIFICATIONS: PortalNotification[] = [
   {
     id: "notif-01",
     type: "New Request",
-    title: "New Request: AutoHub-P-000145",
+    title: "New Request: JDHub-0002",
     description: "AutoCare Auckland submitted request for Toyota RAV4 Front Brake Rotors.",
     timestamp: "10m ago",
     read: false,
-    requestId: "req-000145",
+    requestId: "JDHub-0002",
   },
   {
     id: "notif-02",
     type: "Quote Accepted",
-    title: "Quote Accepted: AutoHub-P-000123",
+    title: "Quote Accepted: JDHub-0001",
     description: "Dave Miller accepted quote for NZ$410.00. Status: Awaiting Payment.",
     timestamp: "45m ago",
     read: false,
-    requestId: "req-000123",
+    requestId: "JDHub-0001",
   },
   {
     id: "notif-03",
     type: "Payment Received",
-    title: "Payment Confirmed: AutoHub-P-000125",
+    title: "Payment Confirmed: JDHub-0006",
     description: "NZ$640.00 received. Supplier Order unlocked and placed.",
     timestamp: "2h ago",
     read: true,
-    requestId: "req-000125",
+    requestId: "JDHub-0006",
   },
   {
     id: "notif-04",
     type: "Shipment Updated",
-    title: "Shipment In Transit: AutoHub-P-000120",
+    title: "Shipment In Transit: JDHub-0007",
     description: "Flight JL0711 departed Nagoya. Arriving in NZ this weekend.",
     timestamp: "5h ago",
     read: true,
-    requestId: "req-000120",
+    requestId: "JDHub-0007",
   },
   {
     id: "notif-05",

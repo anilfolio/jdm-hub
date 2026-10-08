@@ -47,7 +47,7 @@ export const SAVED_ADDRESSES: SavedAddress[] = [
 export const INITIAL_REQUESTS: PartRequest[] = [
   {
     id: "req-128",
-    requestNumber: "AutoHub-P-128",
+    requestNumber: "JDHub-0004",
     vehicle: {
       make: "Toyota",
       model: "Hiace",
@@ -108,7 +108,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-125",
-    requestNumber: "AutoHub-P-125",
+    requestNumber: "JDHub-0006",
     vehicle: {
       make: "Toyota",
       model: "Hiace",
@@ -174,7 +174,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
       amount: 485.0,
       currency: "NZD",
       status: "Unpaid",
-      paymentReference: "AutoHub-P-125 / INV-00892",
+      paymentReference: "JDHub-0006 / INV-00892",
       bankDetails: {
         bankName: "ANZ New Zealand",
         accountName: "Autohub Procurement NZ Ltd",
@@ -187,7 +187,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-119",
-    requestNumber: "AutoHub-P-119",
+    requestNumber: "JDHub-0007",
     vehicle: {
       make: "Mazda",
       model: "CX-5",
@@ -243,7 +243,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
       amount: 650.0,
       currency: "NZD",
       status: "Unpaid",
-      paymentReference: "AutoHub-P-119",
+      paymentReference: "JDHub-0007",
       bankDetails: {
         bankName: "ANZ New Zealand",
         accountName: "Autohub Procurement NZ Ltd",
@@ -256,7 +256,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-142",
-    requestNumber: "AutoHub-P-142",
+    requestNumber: "JDHub-0002",
     vehicle: {
       make: "Toyota",
       model: "Hilux GR Sport",
@@ -290,7 +290,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-138",
-    requestNumber: "AutoHub-P-138",
+    requestNumber: "JDHub-0003",
     vehicle: {
       make: "Toyota",
       model: "Land Cruiser Prado",
@@ -322,7 +322,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-135",
-    requestNumber: "AutoHub-P-135",
+    requestNumber: "JDHub-0005",
     vehicle: {
       make: "Nissan",
       model: "Navara",
@@ -401,7 +401,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-120",
-    requestNumber: "AutoHub-P-120",
+    requestNumber: "JDHub-0007",
     vehicle: {
       make: "Honda",
       model: "Civic Type R",
@@ -437,7 +437,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
       currency: "NZD",
       status: "Paid",
       paymentMethod: "Bank Transfer",
-      paymentReference: "AutoHub-P-120",
+      paymentReference: "JDHub-0007",
       bankDetails: {
         bankName: "ANZ New Zealand",
         accountName: "Autohub Procurement NZ Ltd",
@@ -458,7 +458,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-115",
-    requestNumber: "AutoHub-P-115",
+    requestNumber: "JDHub-0008",
     vehicle: {
       make: "Subaru",
       model: "WRX STI",
@@ -530,7 +530,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
   },
   {
     id: "req-110",
-    requestNumber: "AutoHub-P-110",
+    requestNumber: "JDHub-0009",
     vehicle: {
       make: "Lexus",
       model: "RX450h",
@@ -566,7 +566,7 @@ export const INITIAL_REQUESTS: PartRequest[] = [
       currency: "NZD",
       status: "Paid",
       paymentMethod: "Bank Transfer",
-      paymentReference: "AutoHub-P-110",
+      paymentReference: "JDHub-0009",
       bankDetails: {
         bankName: "ANZ New Zealand",
         accountName: "Autohub Procurement NZ Ltd",
@@ -584,7 +584,7 @@ export const INITIAL_ACTIVITIES: ProcurementActivity[] = [
     id: "act-1",
     timestamp: "2026-09-10T10:42:00Z",
     timeLabel: "Today • 10:42 AM",
-    title: "Quote generated for AutoHub-P-128",
+    title: "Quote generated for JDHub-0004",
     description: "OEM Toyota Control Arm issued from Nagoya stock.",
     type: "quote",
     requestId: "req-128",
@@ -593,7 +593,7 @@ export const INITIAL_ACTIVITIES: ProcurementActivity[] = [
     id: "act-2",
     timestamp: "2026-09-10T09:20:00Z",
     timeLabel: "Today • 09:20 AM",
-    title: "Payment received for AutoHub-P-120",
+    title: "Payment received for JDHub-0007",
     description: "$1,980.00 settled. Purchase order dispatched to Honda supplier.",
     type: "payment",
     requestId: "req-120",
@@ -602,7 +602,7 @@ export const INITIAL_ACTIVITIES: ProcurementActivity[] = [
     id: "act-3",
     timestamp: "2026-09-09T16:15:00Z",
     timeLabel: "Yesterday • 04:15 PM",
-    title: "Consignment arrived in NZ for AutoHub-P-115",
+    title: "Consignment arrived in NZ for JDHub-0008",
     description: "Aircraft landed at Auckland Airport. Scheduled for local courier handover.",
     type: "shipment",
     requestId: "req-115",
@@ -612,7 +612,7 @@ export const INITIAL_ACTIVITIES: ProcurementActivity[] = [
     timestamp: "2026-09-09T14:00:00Z",
     timeLabel: "Yesterday • 02:00 PM",
     title: "Shipment in transit (Mainfreight Air)",
-    description: "AutoHub-P-135 departed Narita (NRT) to Auckland International (AKL).",
+    description: "JDHub-0005 departed Narita (NRT) to Auckland International (AKL).",
     type: "shipment",
     requestId: "req-135",
   },
@@ -620,7 +620,7 @@ export const INITIAL_ACTIVITIES: ProcurementActivity[] = [
     id: "act-5",
     timestamp: "2026-09-08T11:30:00Z",
     timeLabel: "08 Sep • 11:30 AM",
-    title: "New Part Request Submitted: AutoHub-P-128",
+    title: "New Part Request Submitted: JDHub-0004",
     description: "Toyota Hiace 2019 Left Front Lower Control Arm logged for SP Motors Penrose.",
     type: "request",
     requestId: "req-128",
@@ -631,7 +631,7 @@ export const INITIAL_NOTIFICATIONS: PortalNotification[] = [
   {
     id: "notif-1",
     type: "Quote Available",
-    title: "Quote Available for AutoHub-P-128",
+    title: "Quote Available for JDHub-0004",
     description: "Toyota Hiace 2019 control arm is ready for customer review at $485.00 NZD.",
     timestamp: "15m ago",
     read: false,
@@ -640,7 +640,7 @@ export const INITIAL_NOTIFICATIONS: PortalNotification[] = [
   {
     id: "notif-2",
     type: "Payment Received",
-    title: "Payment Received: AutoHub-P-120",
+    title: "Payment Received: JDHub-0007",
     description: "$1,980.00 confirmed via Bank Transfer. PO sent to Honda factory.",
     timestamp: "1h ago",
     read: false,
@@ -649,7 +649,7 @@ export const INITIAL_NOTIFICATIONS: PortalNotification[] = [
   {
     id: "notif-3",
     type: "Delivery Out",
-    title: "Delivery Out: AutoHub-P-115",
+    title: "Delivery Out: JDHub-0008",
     description: "Subaru WRX STI cylinder heads onboard courier van for SP Motors Penrose.",
     timestamp: "2h ago",
     read: false,
@@ -658,7 +658,7 @@ export const INITIAL_NOTIFICATIONS: PortalNotification[] = [
   {
     id: "notif-4",
     type: "Shipment Arrived",
-    title: "Shipment Arrived in NZ: AutoHub-P-135",
+    title: "Shipment Arrived in NZ: JDHub-0005",
     description: "Nissan Navara turbocharger landed at Auckland Cargo terminal.",
     timestamp: "1d ago",
     read: true,

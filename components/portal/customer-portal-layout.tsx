@@ -31,8 +31,42 @@ export function CustomerPortalLayout({ children }: CustomerPortalLayoutProps) {
     const reqId = params.get("request") || params.get("id");
     const tabParam = params.get("tab");
     if (reqId) {
+      const normalized = reqId.toLowerCase();
+      const legacyMap: Record<string, string> = {
+        "req-000123": "jdhub-0001",
+        "autohub-p-000123": "jdhub-0001",
+        "req-000145": "jdhub-0002",
+        "autohub-p-000145": "jdhub-0002",
+        "req-000138": "jdhub-0003",
+        "autohub-p-000138": "jdhub-0003",
+        "req-000128": "jdhub-0004",
+        "autohub-p-000128": "jdhub-0004",
+        "req-000137": "jdhub-0005",
+        "autohub-p-000137": "jdhub-0005",
+        "req-000125": "jdhub-0006",
+        "autohub-p-000125": "jdhub-0006",
+        "req-000120": "jdhub-0007",
+        "autohub-p-000120": "jdhub-0007",
+        "req-000115": "jdhub-0008",
+        "autohub-p-000115": "jdhub-0008",
+        "req-000110": "jdhub-0009",
+        "autohub-p-000110": "jdhub-0009",
+        "req-000188": "jdhub-0010",
+        "autohub-p-000188": "jdhub-0010",
+        "req-000199": "jdhub-0011",
+        "autohub-p-000199": "jdhub-0011",
+        "req-000200": "jdhub-0012",
+        "autohub-p-000200": "jdhub-0012",
+        "req-000201": "jdhub-0013",
+        "autohub-p-000201": "jdhub-0013",
+      };
+      const mapped = legacyMap[normalized] || normalized;
       const found = requests.find(
-        (r) => r.id.toLowerCase() === reqId.toLowerCase() || r.requestNumber.toLowerCase() === reqId.toLowerCase()
+        (r) =>
+          r.id.toLowerCase() === normalized ||
+          r.requestNumber.toLowerCase() === normalized ||
+          r.id.toLowerCase() === mapped ||
+          r.requestNumber.toLowerCase() === mapped
       );
       if (found) {
         setSelectedRequest(found);
