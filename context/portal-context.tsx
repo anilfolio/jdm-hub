@@ -57,7 +57,8 @@ interface PortalContextType {
   rejectQuote: (requestId: string, reason: string) => void;
   submitPayment: (
     requestId: string,
-    reference?: string
+    reference?: string,
+    markAsPaid?: boolean
   ) => void;
   sendMessage: (requestId: string, text: string) => void;
   activeCustomer: CustomerRecord;
@@ -86,6 +87,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     acceptCustomerQuote,
     rejectCustomerQuote,
     markPaymentPaid,
+    issueInvoice,
     markNotificationAsRead: sharedMarkRead,
     markAllNotificationsAsRead: sharedMarkAllRead,
   } = useUnifiedData();
@@ -330,19 +332,40 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
 
   const submitPayment = (
     requestId: string,
-    reference?: string
+    reference?: string,
+    markAsPaid: boolean = false
   ) => {
-    // Note: Only admins can mark invoices as Paid. Customer submissions record remittance notes for reconciliation.
+    // Auto-generate the Tax Invoice when the customer submits their payment details
     const target = requests.find((r) => r.id === requestId);
     const reqNum = target?.requestNumber || "Request";
+    const numericPart = reqNum.replace(/[^0-9]/g, "").padStart(6, "0");
+    const invoiceNumber = target?.payment?.invoiceNumber || `INV-2026-${numericPart}`;
+    const amount = target?.payment?.amount || target?.quotedValue || 485;
+    const dueDate =
+      target?.payment?.dueDate ||
+      new Date(Date.now() + 5 * 86400000).toISOString().split("T")[0];
+
+    // Issue the invoice with a mock PDF URL so Tax Invoice tab is immediately populated
+    issueInvoice(requestId, {
+      invoiceNumber,
+      amount,
+      dueDate,
+      pdfUrl: `/invoices/${numericPart}.pdf`,
+    });
+
+    if (markAsPaid) {
+      markPaymentPaid(requestId, reference || `${reqNum}-CARD-PAID`);
+    }
 
     setActivities((prev) => [
       {
         id: `act-${Date.now()}`,
         timestamp: new Date().toISOString(),
         timeLabel: "Just now",
-        title: `Remittance Reference Noted: ${reqNum}`,
-        description: `Customer reported bank transfer reference (${reference || reqNum}). Awaiting admin ledger reconciliation.`,
+        title: markAsPaid ? `Payment Settled: ${reqNum}` : `Remittance Reference Noted: ${reqNum}`,
+        description: markAsPaid
+          ? `Customer completed payment of $${amount.toFixed(2)} NZD. Tax Invoice ${invoiceNumber} issued as Paid.`
+          : `Customer reported bank transfer reference (${reference || reqNum}). Tax Invoice ${invoiceNumber} generated. Awaiting admin ledger reconciliation.`,
         type: "payment",
         requestId,
       },

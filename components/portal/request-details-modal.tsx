@@ -204,39 +204,67 @@ export function RequestDetailsModal() {
     <div className="w-full h-full flex flex-col animate-in fade-in duration-200">
       <div className="bg-white w-full rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-1">
         {/* Header */}
-        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
-          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+        <div className="px-3.5 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/90 shrink-0 gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1">
             <button
-              onClick={() => setSelectedRequest(null)}
-              className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+              onClick={() => {
+                setSelectedRequest(null);
+                setSelectedRequestDetailsTab?.("overview");
+              }}
+              className="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
               title="Back"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#0C101A] text-white flex items-center justify-center font-bold text-xs shadow-md shrink-0">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#0C101A] text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
                 JD
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-base font-bold text-slate-900 ">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight leading-tight">
                     {req.requestNumber}
                   </h2>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase bg-slate-200/80 text-slate-800">
+                  <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-bold uppercase bg-slate-200/90 text-slate-800 whitespace-nowrap">
                     {req.status}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500">
-                  {req.vehicle.year} {req.vehicle.make} {req.vehicle.model} • Submitted on{" "}
-                  {req.dateSubmitted}
+                <p className="text-[11px] sm:text-xs text-slate-500 truncate">
+                  {req.vehicle.year} {req.vehicle.make} {req.vehicle.model} • Submitted on {req.dateSubmitted}
                 </p>
               </div>
             </div>
           </div>
+
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Quick Contact Desk Button */}
+            <button
+              type="button"
+              onClick={() => setShowDirectContactModal(true)}
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer active:scale-95"
+              title="Contact Operations Desk"
+            >
+              <Phone className="w-3.5 h-3.5 text-[#e20c0c]" />
+              <span className="hidden sm:inline">Support Desk</span>
+            </button>
+
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedRequest(null);
+                setSelectedRequestDetailsTab?.("overview");
+              }}
+              className="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
+              title="Close modal"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Visual Lifecycle Stepper Bar */}
-        <div className="px-6 py-3 bg-[#111f4e] text-white shrink-0 overflow-x-auto">
+        {/* Desktop Visual Lifecycle Stepper Bar (hidden on mobile) */}
+        <div className="hidden md:block px-6 py-3 bg-[#111f4e] text-white shrink-0 overflow-x-auto">
           <div className="flex items-center justify-between min-w-[700px] gap-2">
             {LIFECYCLE_STAGES.map((stage, idx) => {
               const isPast = idx < currentStageIndex;
@@ -250,22 +278,24 @@ export function RequestDetailsModal() {
                     title={`Click to view details for ${stage}`}
                   >
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all group-hover:scale-110 ${isPast
-                        ? "bg-emerald-500 text-white"
-                        : isCurrent
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all group-hover:scale-110 ${
+                        isPast
+                          ? "bg-emerald-500 text-white"
+                          : isCurrent
                           ? "bg-[#e20c0c] text-white ring-4 ring-red-500/20 animate-pulse"
                           : "bg-slate-700 text-slate-400 group-hover:bg-slate-600 group-hover:text-white"
-                        }`}
+                      }`}
                     >
                       {isPast ? <Check className="w-3 h-3 stroke-[3]" /> : idx + 1}
                     </div>
                     <span
-                      className={`text-[10px] mt-1 whitespace-nowrap transition-colors ${isCurrent
-                        ? "text-white font-bold"
-                        : isPast
+                      className={`text-[10px] mt-1 whitespace-nowrap transition-colors ${
+                        isCurrent
+                          ? "text-white font-bold"
+                          : isPast
                           ? "text-emerald-400 font-medium group-hover:text-emerald-300"
                           : "text-slate-400 group-hover:text-slate-200"
-                        }`}
+                      }`}
                     >
                       {stage}
                     </span>
@@ -273,8 +303,9 @@ export function RequestDetailsModal() {
 
                   {idx < LIFECYCLE_STAGES.length - 1 && (
                     <div
-                      className={`flex-1 h-0.5 mx-1.5 ${isPast ? "bg-emerald-500" : "bg-slate-700"
-                        }`}
+                      className={`flex-1 h-0.5 mx-1.5 ${
+                        isPast ? "bg-emerald-500" : "bg-slate-700"
+                      }`}
                     />
                   )}
                 </div>
@@ -283,97 +314,164 @@ export function RequestDetailsModal() {
           </div>
         </div>
 
-        {/* Modal Navigation Tabs */}
-        <div className="flex border-b border-slate-200 bg-white px-3 sm:px-6 text-xs font-bold text-slate-600 shrink-0 overflow-x-auto custom-scrollbar no-scrollbar">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "overview"
-              ? "border-[#e20c0c] text-[#e20c0c]"
-              : "border-transparent hover:text-slate-900"
-              }`}
-          >
-            <FileText className="w-3.5 h-3.5" />
-            <span>Overview & Vehicle</span>
-          </button>
+        {/* Mobile Ultra-Premium Status & Stage Bar (visible only on mobile) */}
+        <div className="block md:hidden bg-[#111f4e] text-white px-3.5 py-2.5 shrink-0 border-b border-indigo-950">
+          <div className="flex items-center justify-between gap-2 mb-1.5">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="w-2 h-2 rounded-full bg-[#e20c0c] animate-pulse shrink-0" />
+              <span className="text-[11px] font-bold text-slate-300">
+                Stage {currentStageIndex + 1} of {LIFECYCLE_STAGES.length}:
+              </span>
+              <span className="text-xs font-black text-white truncate">
+                {req.status}
+              </span>
+            </div>
+            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-white/10 text-emerald-400 shrink-0">
+              {Math.round(((currentStageIndex + 1) / LIFECYCLE_STAGES.length) * 100)}% Complete
+            </span>
+          </div>
 
-          {(req.quotation || req.customerQuote) && (
-            <button
-              onClick={() => setActiveTab("quote")}
-              className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "quote"
-                ? "border-[#e20c0c] text-[#e20c0c]"
-                : "border-transparent hover:text-slate-900"
-                }`}
-            >
-              <FileCheck2 className="w-3.5 h-3.5" />
-              <span>Quotation & Pricing</span>
-              {req.status === "Quoted" && (
-                <span className="w-2 h-2 rounded-full bg-[#e20c0c]" />
-              )}
-            </button>
-          )}
+          {/* Smooth Gradient Progress Bar */}
+          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-2">
+            <div
+              className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-[#e20c0c] rounded-full transition-all duration-300"
+              style={{
+                width: `${Math.max(10, Math.round(((currentStageIndex + 1) / LIFECYCLE_STAGES.length) * 100))}%`,
+              }}
+            />
+          </div>
 
-          {req.shipment && (
-            <button
-              onClick={() => setActiveTab("shipment")}
-              className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "shipment"
-                ? "border-[#e20c0c] text-[#e20c0c]"
-                : "border-transparent hover:text-slate-900"
-                }`}
-            >
-              <Truck className="w-3.5 h-3.5" />
-              <span>Shipment Milestones</span>
-            </button>
-          )}
+          {/* Mobile Swipeable Stage Chips with active indicator */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+            {LIFECYCLE_STAGES.map((stage) => {
+              const idx = LIFECYCLE_STAGES.indexOf(stage);
+              const isPast = idx < currentStageIndex;
+              const isCurrent = idx === currentStageIndex;
+              return (
+                <button
+                  key={stage}
+                  type="button"
+                  onClick={() => handleStageClick(stage)}
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap flex items-center gap-1 shrink-0 transition-colors ${
+                    isCurrent
+                      ? "bg-[#e20c0c] text-white ring-1 ring-white/30"
+                      : isPast
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                      : "bg-slate-800 text-slate-400"
+                  }`}
+                >
+                  {isPast && <Check className="w-2.5 h-2.5" />}
+                  <span>{stage}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-          {(req.payment || req.quoteAcceptance || ["Invoicing", "Awaiting Payment", "Ordered", "Shipped", "Delivered", "Completed"].includes(req.status)) && (
+        {/* Modal Navigation Tabs (Enhanced Mobile Scroll with Gradient Mask) */}
+        <div className="relative border-b border-slate-200 bg-white shrink-0">
+          <div className="flex px-2 sm:px-6 text-xs font-bold text-slate-600 overflow-x-auto no-scrollbar">
             <button
               onClick={() => {
-                setActiveTab("invoice");
-                setSelectedRequestDetailsTab?.("invoice");
+                setActiveTab("overview");
+                setSelectedRequestDetailsTab?.("overview");
               }}
-              className={`py-3 px-3.5 sm:px-4 border-b-2 flex items-center gap-2 transition-colors shrink-0 whitespace-nowrap ${activeTab === "invoice"
-                ? "border-[#e20c0c] text-[#e20c0c]"
-                : "border-transparent hover:text-slate-900 text-slate-700"
-                }`}
-              title="View & Download Official GST Tax Invoice"
+              className={`py-3 px-3 sm:px-4 border-b-2 flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 whitespace-nowrap ${
+                activeTab === "overview"
+                  ? "border-[#e20c0c] text-[#e20c0c]"
+                  : "border-transparent hover:text-slate-900"
+              }`}
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>Tax Invoice</span>
-              {req.payment?.invoiceUrl && (
-                <span className="text-[10px]  bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">
-                  {req.payment?.invoiceNumber || `INV-2026-${req.requestNumber.replace(/[^0-9]/g, "").padStart(4, "0")}`}
-                </span>
-              )}
+              <span>Overview &amp; Vehicle</span>
             </button>
-          )}
 
-          <div className="ml-auto py-2 flex items-center">
-            <button
-              type="button"
-              onClick={() => setShowDirectContactModal(true)}
-              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors inline-flex items-center gap-1.5"
-            >
-              <Phone className="w-3.5 h-3.5 text-[#e20c0c]" />
-              <span>Contact Operations (Email / Teams / Phone)</span>
-            </button>
+            {(req.quotation || req.customerQuote) && (
+              <button
+                onClick={() => {
+                  setActiveTab("quote");
+                  setSelectedRequestDetailsTab?.("quote");
+                }}
+                className={`py-3 px-3 sm:px-4 border-b-2 flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 whitespace-nowrap ${
+                  activeTab === "quote"
+                    ? "border-[#e20c0c] text-[#e20c0c]"
+                    : "border-transparent hover:text-slate-900"
+                }`}
+              >
+                <FileCheck2 className="w-3.5 h-3.5" />
+                <span>Quotation &amp; Pricing</span>
+                {req.status === "Quoted" && (
+                  <span className="w-2 h-2 rounded-full bg-[#e20c0c]" />
+                )}
+              </button>
+            )}
+
+            {req.shipment && (
+              <button
+                onClick={() => {
+                  setActiveTab("shipment");
+                  setSelectedRequestDetailsTab?.("shipment");
+                }}
+                className={`py-3 px-3 sm:px-4 border-b-2 flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 whitespace-nowrap ${
+                  activeTab === "shipment"
+                    ? "border-[#e20c0c] text-[#e20c0c]"
+                    : "border-transparent hover:text-slate-900"
+                }`}
+              >
+                <Truck className="w-3.5 h-3.5" />
+                <span>Shipment Milestones</span>
+              </button>
+            )}
+
+            {(req.payment ||
+              req.quoteAcceptance ||
+              ["Invoicing", "Awaiting Payment", "Ordered", "Shipped", "Delivered", "Completed"].includes(
+                req.status
+              )) && (
+              <button
+                onClick={() => {
+                  setActiveTab("invoice");
+                  setSelectedRequestDetailsTab?.("invoice");
+                }}
+                className={`py-3 px-3 sm:px-4 border-b-2 flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 whitespace-nowrap ${
+                  activeTab === "invoice"
+                    ? "border-[#e20c0c] text-[#e20c0c]"
+                    : "border-transparent hover:text-slate-900 text-slate-700"
+                }`}
+                title="View & Download Official GST Tax Invoice"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Tax Invoice</span>
+                {req.payment?.invoiceNumber ? (
+                  <span className="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold font-mono">
+                    <span className="hidden sm:inline">{req.payment.invoiceNumber}</span>
+                    <span className="sm:hidden">INV</span>
+                  </span>
+                ) : (
+                  <span className="text-[10px] bg-red-50 text-[#e20c0c] px-1.5 py-0.5 rounded font-bold">
+                    NEW
+                  </span>
+                )}
+              </button>
+            )}
           </div>
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-6">
+        <div className="p-3.5 sm:p-5 md:p-6 overflow-y-auto flex-1 space-y-4 sm:space-y-6">
           {/* TAB 1: OVERVIEW & VEHICLE DETAILS */}
           {activeTab === "overview" && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Top Quick Status Alert */}
               {req.status === "Invoicing" ? (
-                <div className="p-4 rounded-xl bg-indigo-50/80 border border-indigo-200 flex items-start justify-between gap-4">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-indigo-50/80 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-indigo-950">
                         Quote Accepted — Invoicing in Progress
                       </h4>
-                      <p className="text-[11px] text-indigo-800 mt-0.5">
+                      <p className="text-[11px] text-indigo-800 mt-0.5 leading-relaxed">
                         JDMHUB operations is generating and attaching your official GST tax invoice. You will be notified once ready for settlement.
                       </p>
                     </div>
@@ -383,20 +481,20 @@ export function RequestDetailsModal() {
                       setActiveTab("invoice");
                       setSelectedRequestDetailsTab?.("invoice");
                     }}
-                    className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
+                    className="w-full sm:w-auto px-4 py-2 sm:py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm text-center justify-center shrink-0 cursor-pointer active:scale-95 transition-all"
                   >
                     View Invoice Tab →
                   </button>
                 </div>
               ) : req.actionRequired && (
-                <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 flex items-start justify-between gap-4">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-amber-50 border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-start gap-3">
                     <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-amber-900">
                         Action Required: {req.actionRequired}
                       </h4>
-                      <p className="text-[11px] text-amber-800 mt-0.5">
+                      <p className="text-[11px] text-amber-800 mt-0.5 leading-relaxed">
                         Please review quotation or approve payment to avoid logistics delays.
                       </p>
                     </div>
@@ -404,7 +502,7 @@ export function RequestDetailsModal() {
                   {req.status === "Quoted" && (
                     <button
                       onClick={() => setActiveTab("quote")}
-                      className="px-4 py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
+                      className="w-full sm:w-auto px-4 py-2 sm:py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm text-center justify-center shrink-0 cursor-pointer active:scale-95 transition-all"
                     >
                       Review Quote →
                     </button>
@@ -415,7 +513,7 @@ export function RequestDetailsModal() {
                         setPaymentRequest(req);
                         setIsPaymentModalOpen(true);
                       }}
-                      className="px-4 py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm whitespace-nowrap"
+                      className="w-full sm:w-auto px-4 py-2 sm:py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm text-center justify-center shrink-0 cursor-pointer active:scale-95 transition-all"
                     >
                       Record Settlement (Unpaid) →
                     </button>
@@ -425,8 +523,8 @@ export function RequestDetailsModal() {
 
               {/* Quotation Ready Highlight Banner in Overview */}
               {(req.quotation || req.customerQuote) && (
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-50/90 via-white to-slate-50 border border-red-200/90 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="space-y-1.5 flex-1">
+                <div className="p-3.5 sm:p-5 rounded-2xl bg-gradient-to-r from-red-50/90 via-white to-slate-50 border border-red-200/90 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3.5 sm:gap-4">
+                  <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#e20c0c] text-white">
                         Quotation Ready
@@ -440,15 +538,15 @@ export function RequestDetailsModal() {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 truncate">
                       {(req.quotation || req.customerQuote)?.itemDescription}
                     </h3>
-                    <p className="text-xs text-slate-600 line-clamp-1 italic">
+                    <p className="text-xs text-slate-600 line-clamp-2 italic">
                       &ldquo;{(req.quotation || req.customerQuote)?.notes || "Genuine OEM part inspected and verified by JDMHUB sourcing specialist."}&rdquo;
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3 shrink-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 shrink-0">
                     {/* Thumbnail previews */}
                     {(() => {
                       const qPhotos = (req.quotation?.quotePhotos || req.customerQuote?.quotePhotos || req.customerQuoteVersions?.[0]?.quotePhotos || []);
@@ -480,7 +578,7 @@ export function RequestDetailsModal() {
 
                     <button
                       onClick={() => setActiveTab("quote")}
-                      className="px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all inline-flex items-center gap-1.5 shrink-0"
+                      className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all inline-flex items-center justify-center gap-1.5 shrink-0 cursor-pointer active:scale-95"
                     >
                       <Camera className="w-3.5 h-3.5" />
                       <span>View Quote &amp; Photos</span>
@@ -491,41 +589,41 @@ export function RequestDetailsModal() {
               )}
 
               {/* 2-Column Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {/* Vehicle Specifications */}
-                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
+                <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
                     <Car className="w-4 h-4 text-[#e20c0c]" />
                     <span>Vehicle Information</span>
                   </div>
                   <div className="space-y-2 text-xs">
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Make & Model:</span>
-                      <span className="font-bold text-slate-800">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Make &amp; Model:</span>
+                      <span className="font-bold text-slate-800 text-right">
                         {req.vehicle.make} {req.vehicle.model} ({req.vehicle.year})
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">VIN / Chassis:</span>
-                      <span className=" font-bold text-slate-800">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">VIN / Chassis:</span>
+                      <span className="font-bold text-slate-800 font-mono break-all text-right">
                         {req.vehicle.vin}
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Registration Plate:</span>
-                      <span className=" font-bold text-slate-800 uppercase">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Registration Plate:</span>
+                      <span className="font-bold text-slate-800 uppercase font-mono text-right">
                         {req.vehicle.registration || "—"}
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Engine / Drivetrain:</span>
-                      <span className="text-slate-800">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Engine / Drivetrain:</span>
+                      <span className="text-slate-800 text-right">
                         {req.vehicle.engine || "—"} • {req.vehicle.driveConfig || "—"}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Transmission:</span>
-                      <span className="text-slate-800">
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="text-slate-500 shrink-0">Transmission:</span>
+                      <span className="text-slate-800 text-right">
                         {req.vehicle.transmission || "—"}
                       </span>
                     </div>
@@ -533,39 +631,39 @@ export function RequestDetailsModal() {
                 </div>
 
                 {/* Part Requirements */}
-                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
+                <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
                     <Package className="w-4 h-4 text-[#e20c0c]" />
                     <span>Part Specifications</span>
                   </div>
                   <div className="space-y-2 text-xs">
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Part Name:</span>
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Part Name:</span>
                       <span className="font-bold text-slate-800 text-right">
                         {req.part.name}
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Part Number:</span>
-                      <span className=" font-bold text-slate-800">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Part Number:</span>
+                      <span className="font-bold text-slate-800 font-mono break-all text-right">
                         {req.part.partNumber || "OEM Catalog Lookup Required"}
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Quantity:</span>
-                      <span className="font-bold text-slate-800">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Quantity:</span>
+                      <span className="font-bold text-slate-800 text-right">
                         {req.part.quantity} Unit(s)
                       </span>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200/60 pb-1.5">
-                      <span className="text-slate-500">Preference:</span>
-                      <span className="font-semibold text-slate-800">
+                    <div className="flex justify-between items-start gap-3 border-b border-slate-200/60 pb-1.5">
+                      <span className="text-slate-500 shrink-0">Preference:</span>
+                      <span className="font-semibold text-slate-800 text-right">
                         {req.part.preference}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Condition:</span>
-                      <span className="font-semibold text-emerald-700">
+                    <div className="flex justify-between items-start gap-3">
+                      <span className="text-slate-500 shrink-0">Condition:</span>
+                      <span className="font-semibold text-emerald-700 text-right">
                         {req.part.condition}
                       </span>
                     </div>
@@ -574,33 +672,43 @@ export function RequestDetailsModal() {
               </div>
 
               {/* Delivery Address & Notes */}
-              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <div className="flex items-center gap-2 text-xs font-bold text-slate-900 mb-2">
                     <MapPin className="w-4 h-4 text-[#e20c0c]" />
-                    <span>Delivery Address & Logistics</span>
+                    <span>Delivery Address &amp; Logistics</span>
                   </div>
-                  <div className="text-xs text-slate-600 space-y-0.5">
-                    <p className="font-bold text-slate-800">
-                      {req.deliveryAddress.label}
-                    </p>
-                    <p>
-                      {req.deliveryAddress.streetAddress}, {req.deliveryAddress.suburb}
-                    </p>
-                    <p>
-                      {req.deliveryAddress.city} {req.deliveryAddress.postalCode}
-                    </p>
-                    <p className="text-slate-500 mt-1">
-                      Recipient: {req.deliveryAddress.recipientName} (
-                      {req.deliveryAddress.phone})
-                    </p>
-                    {req.supporting?.freightPreference && (
-                      <p className="text-slate-800 mt-2 pt-2 border-t border-slate-200/60 font-semibold inline-flex items-center gap-1.5">
-                        <Truck className="w-3.5 h-3.5 text-[#0ea5e9]" />
-                        <span>Freight Preference: <span className="text-[#0ea5e9]">{req.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : req.supporting.freightPreference}</span></span>
-                      </p>
-                    )}
-                  </div>
+                  {(() => {
+                    const addr = typeof req.deliveryAddress === "string"
+                      ? { label: "Delivery Address", streetAddress: req.deliveryAddress, suburb: "", city: "", postalCode: "", recipientName: req.contactName || "Customer", phone: req.customerPhone || "" }
+                      : req.deliveryAddress || { label: "Delivery Address", streetAddress: "—", suburb: "", city: "", postalCode: "", recipientName: "—", phone: "—" };
+                    return (
+                      <div className="text-xs text-slate-600 space-y-0.5">
+                        <p className="font-bold text-slate-800">
+                          {addr.label || "Delivery Address"}
+                        </p>
+                        <p>
+                          {addr.streetAddress}{addr.suburb ? `, ${addr.suburb}` : ""}
+                        </p>
+                        {(addr.city || addr.postalCode) && (
+                          <p>
+                            {addr.city} {addr.postalCode}
+                          </p>
+                        )}
+                        {(addr.recipientName || addr.phone) && (
+                          <p className="text-slate-500 mt-1">
+                            Recipient: {addr.recipientName} {addr.phone ? `(${addr.phone})` : ""}
+                          </p>
+                        )}
+                        {req.supporting?.freightPreference && (
+                          <p className="text-slate-800 mt-2 pt-2 border-t border-slate-200/60 font-semibold inline-flex items-center gap-1.5">
+                            <Truck className="w-3.5 h-3.5 text-[#0ea5e9]" />
+                            <span>Freight Preference: <span className="text-[#0ea5e9]">{req.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : req.supporting.freightPreference}</span></span>
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <div>
@@ -608,8 +716,8 @@ export function RequestDetailsModal() {
                     <FileText className="w-4 h-4 text-[#e20c0c]" />
                     <span>Customer Notes</span>
                   </div>
-                  <p className="text-xs text-slate-600 italic bg-white p-3 rounded-lg border border-slate-200">
-                    &ldquo;{req.supporting.notes || "No special instructions provided."}&rdquo;
+                  <p className="text-xs text-slate-600 italic bg-white p-3 rounded-lg border border-slate-200 leading-relaxed">
+                    &ldquo;{req.supporting?.notes || "No special instructions provided."}&rdquo;
                   </p>
                 </div>
               </div>
@@ -629,34 +737,34 @@ export function RequestDetailsModal() {
             const customerVisibleNotes = (req.internalNotes || []).filter((n: any) => n.isCustomerVisible);
 
             return (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Quote Overview Card */}
-                <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
-                    <div>
+                <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div className="space-y-1">
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                         Official Quotation
                       </span>
-                      <h3 className="text-lg font-bold text-slate-900">
+                      <h3 className="text-base sm:text-lg font-bold text-slate-900">
                         {quote.itemDescription}
                       </h3>
-                      <p className="text-xs text-slate-500 ">
+                      <p className="text-xs text-slate-500 font-mono">
                         OEM Ref: {quote.oemNumber || req.part.partNumber || "Verified"} • Supplier Hub:{" "}
                         {quote.supplierLocation || "Japan / Global"}
                       </p>
                       {req.supporting?.freightPreference && (
-                        <div className="mt-1">
+                        <div className="pt-0.5">
                           <span className="text-[10px] font-bold text-[#e20c0c] bg-red-50 px-2 py-0.5 rounded border border-red-100 inline-flex items-center gap-1">
                             Freight Preference: {req.supporting.freightPreference === "Sea Freight" ? "Ocean Freight" : req.supporting.freightPreference}
                           </span>
                         </div>
                       )}
                     </div>
-                    <div className="text-right">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    <div className="sm:text-right bg-slate-50 sm:bg-transparent p-3 sm:p-0 rounded-xl sm:rounded-none border sm:border-0 border-slate-100 shrink-0">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
                         Total Landed Price
                       </span>
-                      <div className="text-2xl font-black text-slate-900 ">
+                      <div className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
                         {selectedFreightType ? (
                           <>
                             ${(
@@ -674,7 +782,7 @@ export function RequestDetailsModal() {
                           </>
                         )}
                       </div>
-                      <span className="text-[10px] text-emerald-600 font-semibold">
+                      <span className="text-[10px] text-emerald-600 font-semibold block mt-0.5">
                         {selectedFreightType
                           ? "Includes 15% NZ GST & Freight"
                           : "Select freight option below"}
@@ -684,18 +792,18 @@ export function RequestDetailsModal() {
 
                   {/* Sourcing Specialist Advisory & Admin Notes */}
                   {(specialistNote || customerVisibleNotes.length > 0) && (
-                    <div className="p-5 rounded-2xl bg-amber-50/80 border border-amber-200/90 text-xs space-y-3 shadow-xs">
-                      <div className="flex items-center justify-between">
+                    <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/80 border border-amber-200/90 text-xs space-y-3 shadow-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2 font-bold text-amber-950">
-                          <div className="w-7 h-7 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700">
+                          <div className="w-7 h-7 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 shrink-0">
                             <MessageSquare className="w-4 h-4" />
                           </div>
                           <div>
-                            <span className="text-sm font-bold block">Sourcing Specialist Advisory &amp; Admin Notes</span>
+                            <span className="text-xs sm:text-sm font-bold block">Sourcing Specialist Advisory &amp; Admin Notes</span>
                             <span className="text-[10px] text-amber-800 font-normal">Direct notes from JDMHUB Operations &amp; Inspection Team</span>
                           </div>
                         </div>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200/60 text-amber-900 border border-amber-300">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200/60 text-amber-900 border border-amber-300 self-start sm:self-center shrink-0">
                           Verified by JDMHUB
                         </span>
                       </div>
@@ -703,10 +811,10 @@ export function RequestDetailsModal() {
                       {specialistNote && (
                         <div className="bg-white/90 p-3.5 rounded-xl border border-amber-200/70 text-slate-800 leading-relaxed font-normal shadow-xs">
                           <div className="text-[10px] font-bold uppercase tracking-wider text-amber-800 mb-1 flex items-center gap-1.5">
-                            <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+                            <ShieldCheck className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                             <span>Part Specification &amp; Fitment Advisory</span>
                           </div>
-                          <p className="whitespace-pre-wrap text-xs text-slate-800">
+                          <p className="whitespace-pre-wrap text-xs text-slate-800 leading-relaxed">
                             {specialistNote}
                           </p>
                         </div>
@@ -718,9 +826,9 @@ export function RequestDetailsModal() {
                             Operational Updates
                           </span>
                           {customerVisibleNotes.map((note: any) => (
-                            <div key={note.id} className="bg-white/70 p-2.5 rounded-lg border border-amber-100 flex items-start justify-between gap-3 text-xs">
+                            <div key={note.id} className="bg-white/70 p-2.5 rounded-lg border border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 text-xs">
                               <p className="text-slate-700">{note.content}</p>
-                              <span className="text-[10px] text-slate-400  shrink-0">{note.createdAt}</span>
+                              <span className="text-[10px] text-slate-400 shrink-0">{note.createdAt}</span>
                             </div>
                           ))}
                         </div>
@@ -729,14 +837,14 @@ export function RequestDetailsModal() {
                   )}
 
                   {/* Pre-Dispatch Inspection Photos from Admin */}
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3.5 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 text-[#e20c0c] flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 text-[#e20c0c] flex items-center justify-center shrink-0">
                           <Camera className="w-4 h-4" />
                         </div>
                         <div>
-                          <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex flex-wrap items-center gap-2">
                             <span>Pre-Dispatch Part Photos &amp; Visual Inspection</span>
                             {adminPhotos.length > 0 && (
                               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -752,17 +860,17 @@ export function RequestDetailsModal() {
 
                       {adminPhotos.length > 0 && (
                         <span className="text-[11px] text-slate-400 italic">
-                          Click any image to expand full size
+                          Tap any image to expand
                         </span>
                       )}
                     </div>
 
                     {adminPhotos.length > 0 ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3.5">
                         {adminPhotos.map((photo: string, idx: number) => (
                           <div
                             key={idx}
-                            className="relative group rounded-xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-900 cursor-pointer"
+                            className="relative group rounded-xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-900 cursor-pointer active:scale-95 transition-transform"
                             onClick={() => openLightbox(adminPhotos, idx)}
                           >
                             <img
@@ -771,13 +879,13 @@ export function RequestDetailsModal() {
                               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-95 group-hover:opacity-100"
                               onError={handleImageError}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2 sm:p-2.5">
                               <span className="text-[10px] font-bold text-white flex items-center gap-1 w-full">
                                 <span>Photo {idx + 1} of {adminPhotos.length}</span>
                                 <ExternalLink className="w-3 h-3 text-slate-300 ml-auto" />
                               </span>
                             </div>
-                            <span className="absolute top-2 left-2 text-[9px] font-bold text-white bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-md border border-white/10">
+                            <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 text-[9px] font-bold text-white bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-md border border-white/10">
                               Admin Sourced
                             </span>
                           </div>
@@ -810,7 +918,7 @@ export function RequestDetailsModal() {
                           {customerPhotos.map((photo: string, idx: number) => (
                             <div
                               key={idx}
-                              className="relative group rounded-lg overflow-hidden border border-slate-200 aspect-square bg-slate-100 cursor-pointer"
+                              className="relative group rounded-lg overflow-hidden border border-slate-200 aspect-square bg-slate-100 cursor-pointer active:scale-95 transition-transform"
                               onClick={() => openLightbox(customerPhotos, idx)}
                             >
                               <img
@@ -851,7 +959,7 @@ export function RequestDetailsModal() {
 
                   {/* Freight Selection Options */}
                   {req.status === "Quoted" && !req.quoteAcceptance ? (
-                    <div className="space-y-3">
+                    <div id="freight-selection-section" className="space-y-3 pt-2">
                       {/* Required Selection Header */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -866,11 +974,11 @@ export function RequestDetailsModal() {
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                         {/* Air Freight Option */}
                         <div
                           onClick={() => setSelectedFreightType("Air")}
-                          className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreightType === "Air"
+                          className={`relative p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 active:scale-[0.99] ${selectedFreightType === "Air"
                             ? "border-[#e20c0c] bg-red-50/30 shadow-lg shadow-red-500/10 ring-1 ring-[#e20c0c]/20"
                             : selectedFreightType === null
                               ? "border-slate-300 bg-white hover:border-[#e20c0c]/50 hover:shadow-md"
@@ -889,26 +997,26 @@ export function RequestDetailsModal() {
                             </div>
                             <div>
                               <span className="text-sm font-bold text-slate-900 block">Air Express</span>
-                              <span className="text-[10px] text-slate-500">Fastest option</span>
+                              <span className="text-[10px] text-slate-500">Fastest priority route</span>
                             </div>
                           </div>
-                          <div className="text-xl font-black text-slate-900  mb-2">
+                          <div className="text-lg sm:text-xl font-black text-slate-900 mb-2">
                             ${((quote.subtotal + (quote.airFreightCost || 0)) * 1.15).toFixed(2)}
                             <span className="text-xs font-bold text-slate-500 ml-1">NZD</span>
                           </div>
                           <div className="flex items-center gap-1.5 text-[11px] text-slate-600 mb-1">
-                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             <span className="font-semibold">7–10 business days</span> transit
                           </div>
                           <p className="text-[10px] text-slate-400 leading-relaxed">
-                            Priority air cargo. Landed door-to-door.
+                            Priority international air cargo. Landed door-to-door.
                           </p>
                         </div>
 
                         {/* Sea Freight Option */}
                         <div
                           onClick={() => setSelectedFreightType("Sea")}
-                          className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${selectedFreightType === "Sea"
+                          className={`relative p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 active:scale-[0.99] ${selectedFreightType === "Sea"
                             ? "border-[#e20c0c] bg-red-50/30 shadow-lg shadow-red-500/10 ring-1 ring-[#e20c0c]/20"
                             : selectedFreightType === null
                               ? "border-slate-300 bg-white hover:border-[#e20c0c]/50 hover:shadow-md"
@@ -927,15 +1035,15 @@ export function RequestDetailsModal() {
                             </div>
                             <div>
                               <span className="text-sm font-bold text-slate-900 block">Sea Freight</span>
-                              <span className="text-[10px] text-emerald-600 font-semibold">Budget-friendly</span>
+                              <span className="text-[10px] text-emerald-600 font-semibold">Budget-friendly route</span>
                             </div>
                           </div>
-                          <div className="text-xl font-black text-slate-900  mb-2">
+                          <div className="text-lg sm:text-xl font-black text-slate-900 mb-2">
                             ${((quote.subtotal + (quote.seaFreightCost || quote.freightCost || 0)) * 1.15).toFixed(2)}
                             <span className="text-xs font-bold text-slate-500 ml-1">NZD</span>
                           </div>
                           <div className="flex items-center gap-1.5 text-[11px] text-slate-600 mb-1">
-                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             <span className="font-semibold">25–40 business days</span> transit
                           </div>
                           <p className="text-[10px] text-slate-400 leading-relaxed">
@@ -958,8 +1066,8 @@ export function RequestDetailsModal() {
                       )}
                     </div>
                   ) : (
-                    <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2">
-                      <div className="flex items-center justify-between">
+                    <div className="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
                           {req.quoteAcceptance?.selectedFreightType === "Air" ? (
                             <Send className="w-4 h-4 text-[#e20c0c]" />
@@ -973,7 +1081,7 @@ export function RequestDetailsModal() {
                             Locked
                           </span>
                         </div>
-                        <span className=" text-sm font-bold text-slate-900">
+                        <span className="text-xs sm:text-sm font-bold text-slate-900">
                           ${(req.quoteAcceptance?.freightCost || quote.freightCost || 0).toFixed(2)} NZD
                         </span>
                       </div>
@@ -982,15 +1090,15 @@ export function RequestDetailsModal() {
 
                   {/* Acceptance Record if already accepted */}
                   {req.quoteAcceptance && (
-                    <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs space-y-2">
-                      <div className="flex items-center justify-between">
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs space-y-2.5">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5 font-bold text-emerald-800">
-                          <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                          <span>Quote Accepted & Order Logged</span>
+                          <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>Quote Accepted &amp; Order Logged</span>
                         </div>
                         {req.payment && (
                           <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${req.payment.status === "Paid"
+                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border self-start sm:self-center ${req.payment.status === "Paid"
                               ? "bg-emerald-100 text-emerald-800 border-emerald-200"
                               : "bg-amber-100 text-amber-800 border-amber-200"
                               }`}
@@ -999,27 +1107,27 @@ export function RequestDetailsModal() {
                           </span>
                         )}
                       </div>
-                      <p className="text-emerald-700">
+                      <p className="text-emerald-700 leading-relaxed">
                         Accepted by {req.quoteAcceptance.acceptedBy} (
                         {req.quoteAcceptance.userRole}) on{" "}
                         {req.quoteAcceptance.acceptedAt}.
                         {req.payment?.invoiceUrl && (
                           <>
                             {" "}JDMHUB Invoice Ref:{" "}
-                            <strong className="">{req.payment.invoiceNumber}</strong> (Issued by JDMHUB Operations).
+                            <strong className="font-mono">{req.payment.invoiceNumber}</strong> (Issued by JDMHUB Operations).
                           </>
                         )}
                       </p>
 
                       {/* Accounts Receivable Invoice Handover Action Box - only once invoice PDF uploaded */}
                       {req.payment?.invoiceUrl && (
-                        <div className="bg-white p-3.5 rounded-xl border border-emerald-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-emerald-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                           <div>
                             <span className="text-[10px] uppercase font-bold text-slate-400 block">
                               Accounts Receivable Invoice Handover
                             </span>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className=" font-bold text-slate-900 text-sm">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-0.5">
+                              <span className="font-mono font-bold text-slate-900 text-xs sm:text-sm">
                                 {req.payment?.invoiceNumber || `INV-2026-${req.requestNumber.replace(/[^0-9]/g, "").padStart(4, "0")}`}
                               </span>
                               <span className="text-[11px] text-slate-500 font-medium">
@@ -1027,14 +1135,14 @@ export function RequestDetailsModal() {
                               </span>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                             <button
                               type="button"
                               onClick={() => {
                                 setActiveTab("invoice");
                                 setSelectedRequestDetailsTab?.("invoice");
                               }}
-                              className="px-3 py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+                              className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
                             >
                               <FileText className="w-3.5 h-3.5" />
                               <span>View Invoice Tab</span>
@@ -1042,7 +1150,7 @@ export function RequestDetailsModal() {
                             <a
                               href={req.payment.invoiceUrl}
                               download={req.payment.invoiceFileName || `Tax_Invoice_${req.payment.invoiceNumber || req.requestNumber}.pdf`}
-                              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                              className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                               title="Download official attached PDF invoice"
                             >
                               <Download className="w-3.5 h-3.5" />
@@ -1054,35 +1162,35 @@ export function RequestDetailsModal() {
 
                       {/* Supplier Order Handover Active Box */}
                       {req.supplierOrder && (
-                        <div className="bg-white p-3.5 rounded-xl border border-indigo-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                        <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-indigo-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
                           <div>
                             <div className="flex items-center gap-1.5 font-bold text-indigo-900">
-                              <ShoppingBag className="w-3.5 h-3.5 text-indigo-600" />
+                              <ShoppingBag className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                               <span>Supplier Order Handover Active</span>
                             </div>
-                            <p className="text-slate-600 text-[11px] mt-0.5">
-                              Purchase Order <strong className=" text-slate-800">{req.supplierOrder.supplierRef}</strong> released to {req.supplierOrder.supplierName}. Handover Route: <span className="font-semibold text-slate-700">{req.supplierOrder.handoverMode || "Consolidated via JDMHUB Hub"}</span>.
+                            <p className="text-slate-600 text-[11px] mt-0.5 leading-relaxed">
+                              Purchase Order <strong className="font-mono text-slate-800">{req.supplierOrder.supplierRef}</strong> released to {req.supplierOrder.supplierName}. Handover Route: <span className="font-semibold text-slate-700">{req.supplierOrder.handoverMode || "Consolidated via JDMHUB Hub"}</span>.
                             </p>
                           </div>
-                          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 shrink-0">
+                          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 self-start sm:self-center shrink-0">
                             PO Placed ({req.supplierOrder.orderDate})
                           </span>
                         </div>
                       )}
                       <div className="mt-2 pt-3 border-t border-emerald-200/60 text-[11px] text-emerald-700 flex flex-col gap-1.5">
-                        <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                        <div className="flex items-start gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                           <span>Particular Terms of Trade digitally accepted by customer on {req.quoteAcceptance.termsAcceptedAt || req.quoteAcceptance.acceptedAt} {req.quoteAcceptance.ipAddress && `(IP: ${req.quoteAcceptance.ipAddress})`}.</span>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                        <div className="flex items-start gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                           <span>Order Parameters Verified (Vehicle, Part, Delivery Address).</span>
                         </div>
                       </div>
                       {req.status === "Invoicing" ? (
-                        <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-emerald-200/60">
-                          <div className="flex items-center gap-2 text-xs text-indigo-900 font-medium">
-                            <Clock className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-emerald-200/60">
+                          <div className="flex items-start gap-2 text-xs text-indigo-900 font-medium">
+                            <Clock className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
                             <span>Official Tax Invoice is being prepared and attached by operations. Ready for settlement shortly.</span>
                           </div>
                           <button
@@ -1091,19 +1199,19 @@ export function RequestDetailsModal() {
                               setActiveTab("invoice");
                               setSelectedRequestDetailsTab?.("invoice");
                             }}
-                            className="text-xs text-indigo-700 font-bold hover:underline"
+                            className="text-xs text-indigo-700 font-bold hover:underline cursor-pointer shrink-0"
                           >
                             Preview Invoice Tab →
                           </button>
                         </div>
                       ) : (!req.payment || req.payment.status === "Unpaid") ? (
-                        <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-emerald-200/60">
+                        <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-emerald-200/60">
                           <button
                             onClick={() => {
                               setPaymentRequest(req);
                               setIsPaymentModalOpen(true);
                             }}
-                            className="px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm inline-flex items-center gap-1.5"
+                            className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                           >
                             <DollarSign className="w-3.5 h-3.5" />
                             <span>Record Settlement (Status: Unpaid) →</span>
@@ -1113,9 +1221,9 @@ export function RequestDetailsModal() {
                               setSelectedRequest(null);
                               setPortalTab("payments");
                             }}
-                            className="text-xs text-emerald-900 font-bold hover:underline"
+                            className="text-xs text-emerald-900 font-bold hover:underline cursor-pointer shrink-0 py-1"
                           >
-                            View Billing & Payments Tab →
+                            View Billing &amp; Payments Tab →
                           </button>
                         </div>
                       ) : null}
@@ -1124,18 +1232,18 @@ export function RequestDetailsModal() {
 
                   {/* Action Buttons if in Quoted status */}
                   {req.status === "Quoted" && !isAcceptingQuote && (
-                    <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-slate-100">
                       <button
                         onClick={() => setIsRejecting(true)}
-                        className="px-4 py-2 text-xs bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        className="w-full sm:w-auto px-4 py-2.5 text-xs bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors text-center cursor-pointer active:scale-95"
                       >
                         Decline Quote
                       </button>
 
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                         <button
                           onClick={() => setShowDirectContactModal(true)}
-                          className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors inline-flex items-center gap-1.5"
+                          className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                         >
                           <Mail className="w-3.5 h-3.5 text-slate-600" />
                           <span>Request Info (Email/Teams/Phone)</span>
@@ -1143,20 +1251,19 @@ export function RequestDetailsModal() {
                         <button
                           onClick={() => {
                             if (!selectedFreightType) {
-                              // Scroll to freight section or flash it
                               const el = document.getElementById('freight-selection-section');
                               if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                               return;
                             }
                             setIsAcceptingQuote(true);
                           }}
-                          className={`px-6 py-2.5 font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all inline-flex items-center gap-2 ${selectedFreightType
+                          className={`w-full sm:w-auto px-6 py-2.5 font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all inline-flex items-center justify-center gap-2 cursor-pointer active:scale-95 ${selectedFreightType
                             ? 'bg-[#e20c0c] hover:bg-[#9B0A0F] text-white shadow-red-500/25'
                             : 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
                             }`}
                         >
                           <FileCheck2 className="w-4 h-4" />
-                          Review Quote
+                          <span>Review &amp; Accept Quote</span>
                         </button>
                       </div>
                     </div>
@@ -1164,11 +1271,11 @@ export function RequestDetailsModal() {
 
                   {/* Single Static Terms Verification Checklist Before Acceptance */}
                   {isAcceptingQuote && (
-                    <div className="p-5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-black space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                      <div className="border-b border-slate-200 pb-4">
+                    <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-black space-y-4 sm:space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <div className="border-b border-slate-200 pb-3 sm:pb-4">
                         <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                          <ShieldCheck className="w-5 h-5 text-[#e20c0c]" />
-                          Quote Acceptance — Final Review
+                          <ShieldCheck className="w-5 h-5 text-[#e20c0c] shrink-0" />
+                          <span>Quote Acceptance — Final Review</span>
                         </h4>
                         <p className="text-xs text-slate-500 mt-1">
                           Please review the details below and confirm all information is correct before accepting this quotation.
@@ -1177,9 +1284,9 @@ export function RequestDetailsModal() {
 
                       {/* Prominent Admin Comments in Acceptance */}
                       {(specialistNote || customerVisibleNotes.length > 0) && (
-                        <div className="p-4 rounded-xl bg-amber-50 border border-amber-300 text-xs space-y-2">
+                        <div className="p-3.5 sm:p-4 rounded-xl bg-amber-50 border border-amber-300 text-xs space-y-2">
                           <div className="flex items-center gap-1.5 font-bold text-amber-900">
-                            <MessageSquare className="w-4 h-4 text-amber-600" />
+                            <MessageSquare className="w-4 h-4 text-amber-600 shrink-0" />
                             <span>Specialist Note from JDMHUB</span>
                           </div>
                           {specialistNote && (
@@ -1197,19 +1304,19 @@ export function RequestDetailsModal() {
 
                       {/* Prominent Admin Photos in Acceptance */}
                       {adminPhotos.length > 0 && (
-                        <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2.5">
+                        <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200 space-y-2.5">
                           <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                              <Camera className="w-4 h-4 text-[#e20c0c]" />
+                              <Camera className="w-4 h-4 text-[#e20c0c] shrink-0" />
                               <span>Pre-Dispatch Part Photos ({adminPhotos.length})</span>
                             </div>
-                            <span className="text-[10px] text-slate-500">Click to view full size</span>
+                            <span className="text-[10px] text-slate-500">Tap to expand</span>
                           </div>
-                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-2.5">
                             {adminPhotos.map((photo: string, idx: number) => (
                               <div
                                 key={idx}
-                                className="relative group rounded-xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-50 cursor-pointer"
+                                className="relative group rounded-xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-50 cursor-pointer active:scale-95 transition-transform"
                                 onClick={() => openLightbox(adminPhotos, idx)}
                               >
                                 <img
@@ -1226,18 +1333,18 @@ export function RequestDetailsModal() {
                       )}
 
                       {/* Selected Freight Summary */}
-                      <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-between">
+                      <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2 text-xs">
                           {selectedFreightType === "Air" ? (
-                            <Send className="w-4 h-4 text-[#e20c0c]" />
+                            <Send className="w-4 h-4 text-[#e20c0c] shrink-0" />
                           ) : (
-                            <Truck className="w-4 h-4 text-[#e20c0c]" />
+                            <Truck className="w-4 h-4 text-[#e20c0c] shrink-0" />
                           )}
                           <span className="font-bold text-slate-900">
                             {selectedFreightType === "Air" ? "Air Express" : "Sea Freight"} — {selectedFreightType === "Air" ? "7–10 days" : "25–40 days"}
                           </span>
                         </div>
-                        <span className=" text-sm font-bold text-[#e20c0c]">
+                        <span className="text-sm font-bold text-[#e20c0c]">
                           ${(
                             (quote.subtotal +
                               (selectedFreightType === "Air"
@@ -1251,53 +1358,54 @@ export function RequestDetailsModal() {
                       <div className="space-y-2.5 text-xs">
                         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Verification Checklist</p>
                         {/* 1. Vehicle verification */}
-                        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors">
+                        <label className="flex items-start sm:items-center gap-2.5 sm:gap-3 cursor-pointer p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors">
                           <input
                             type="checkbox"
                             checked={verifyVehicle}
                             onChange={(e) => setVerifyVehicle(e.target.checked)}
-                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0"
+                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0 mt-0.5 sm:mt-0"
                           />
-                          <span>
+                          <span className="leading-relaxed">
                             <strong>Verify Vehicle Information:</strong> {req.vehicle.year}{" "}
                             {req.vehicle.make} {req.vehicle.model} (VIN:{" "}
-                            {req.vehicle.vin})
+                            <span className="font-mono break-all">{req.vehicle.vin}</span>)
                           </span>
                         </label>
 
                         {/* 2. Part verification */}
-                        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors">
+                        <label className="flex items-start sm:items-center gap-2.5 sm:gap-3 cursor-pointer p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors">
                           <input
                             type="checkbox"
                             checked={verifyPart}
                             onChange={(e) => setVerifyPart(e.target.checked)}
-                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0"
+                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0 mt-0.5 sm:mt-0"
                           />
-                          <span>
+                          <span className="leading-relaxed">
                             <strong>Verify Part Information:</strong> {req.part.name} (Qty:{" "}
                             {req.part.quantity}, {req.part.condition})
                           </span>
                         </label>
 
                         {/* 3. Delivery address */}
-                        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors">
+                        <label className="flex items-start sm:items-center gap-2.5 sm:gap-3 cursor-pointer p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-colors">
                           <input
                             type="checkbox"
                             checked={verifyAddress}
                             onChange={(e) => setVerifyAddress(e.target.checked)}
-                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0"
+                            className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 shrink-0 mt-0.5 sm:mt-0"
                           />
-                          <span>
+                          <span className="leading-relaxed">
                             <strong>Verify Delivery Address:</strong>{" "}
-                            {req.deliveryAddress.streetAddress},{" "}
-                            {req.deliveryAddress.city}
+                            {typeof req.deliveryAddress === "string"
+                              ? req.deliveryAddress
+                              : `${req.deliveryAddress?.streetAddress || ""}, ${req.deliveryAddress?.city || ""}`}
                           </span>
                         </label>
 
                         {/* 4. Single static acceptance checkbox */}
                         <div className={`p-3 rounded-xl border transition-all ${acceptTerms ? "bg-slate-50 border-slate-200" : "bg-white border-slate-200 hover:border-slate-300"
                           }`}>
-                          <label className="flex items-center gap-3 cursor-pointer select-none">
+                          <label className="flex items-start sm:items-center gap-2.5 sm:gap-3 cursor-pointer select-none">
                             <input
                               type="checkbox"
                               checked={acceptTerms}
@@ -1315,9 +1423,9 @@ export function RequestDetailsModal() {
                                   setShowTermsModal(true);
                                 }
                               }}
-                              className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 cursor-pointer shrink-0"
+                              className="w-4 h-4 rounded text-[#e20c0c] focus:ring-0 cursor-pointer shrink-0 mt-0.5 sm:mt-0"
                             />
-                            <span className="text-xs text-slate-800">
+                            <span className="text-xs text-slate-800 leading-relaxed">
                               <strong>Accept Procurement Terms:</strong> I agree to the{" "}
                               <button
                                 type="button"
@@ -1333,15 +1441,15 @@ export function RequestDetailsModal() {
                             </span>
                           </label>
                           {acceptTerms && termsAcceptedAt && (
-                            <p className="text-[11px] font-medium text-emerald-700 mt-1.5 ml-7 flex items-center gap-1">
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              Particular Terms of Trade viewed and accepted ({termsAcceptedAt})
+                            <p className="text-[11px] font-medium text-emerald-700 mt-1.5 ml-6 sm:ml-7 flex items-center gap-1">
+                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                              <span>Particular Terms of Trade viewed and accepted ({termsAcceptedAt})</span>
                             </p>
                           )}
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+                      <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 pt-4 border-t border-slate-200">
                         <button
                           onClick={() => {
                             setIsAcceptingQuote(false);
@@ -1350,7 +1458,7 @@ export function RequestDetailsModal() {
                             setVerifyAddress(false);
                             setAcceptTerms(false);
                           }}
-                          className="text-sm bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors"
+                          className="w-full sm:w-auto text-center justify-center text-xs sm:text-sm bg-white px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors cursor-pointer active:scale-95"
                         >
                           ← Back to Quote
                         </button>
@@ -1359,10 +1467,10 @@ export function RequestDetailsModal() {
                             !verifyVehicle || !verifyPart || !verifyAddress || !acceptTerms
                           }
                           onClick={handleConfirmAcceptance}
-                          className="px-6 py-2.5 bg-[#e20c0c] hover:bg-[#d31318] disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none text-white font-bold text-sm uppercase rounded-xl shadow-md shadow-red-500/20 transition-all inline-flex items-center gap-2"
+                          className="w-full sm:w-auto text-center justify-center px-6 py-2.5 bg-[#e20c0c] hover:bg-[#d31318] disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none text-white font-bold text-xs sm:text-sm uppercase rounded-xl shadow-md shadow-red-500/20 transition-all inline-flex items-center gap-2 cursor-pointer active:scale-95"
                         >
-                          <ShieldCheck className="w-4 h-4" />
-                          Confirm Acceptance & Record Order
+                          <ShieldCheck className="w-4 h-4 shrink-0" />
+                          <span>Confirm Acceptance &amp; Record Order</span>
                         </button>
                       </div>
                     </div>
@@ -1374,9 +1482,9 @@ export function RequestDetailsModal() {
 
           {/* TAB 3: SHIPMENT TRACKING & INTERNAL LOGISTICS MILESTONES */}
           {activeTab === "shipment" && req.shipment && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Carrier card */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     Assigned Freight Carrier
@@ -1386,14 +1494,14 @@ export function RequestDetailsModal() {
                   </h3>
                 </div>
 
-                <div className="text-right">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                <div className="sm:text-right bg-slate-50 sm:bg-transparent p-3 sm:p-0 rounded-xl sm:rounded-none border sm:border-0 border-slate-100 shrink-0">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
                     Estimated Delivery
                   </span>
-                  <div className="text-base font-bold text-slate-900">
+                  <div className="text-base font-bold text-slate-900 mt-0.5">
                     {req.shipment.estimatedDelivery}
                   </div>
-                  <span className="text-xs text-emerald-600 font-semibold flex items-center justify-end gap-1">
+                  <span className="text-xs text-emerald-600 font-semibold flex items-center sm:justify-end gap-1 mt-0.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     On Schedule
                   </span>
@@ -1401,12 +1509,12 @@ export function RequestDetailsModal() {
               </div>
 
               {/* Evidence Media Block */}
-              {(req.supporting.photos || []).length > 0 && (
-                <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-4">
+              {(req.supporting?.photos || []).length > 0 && (
+                <div className="p-4 sm:p-6 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-3.5 sm:space-y-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                    <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
                     <div>
-                      <h4 className="text-sm font-bold text-emerald-900 uppercase tracking-wider">
+                      <h4 className="text-xs sm:text-sm font-bold text-emerald-900 uppercase tracking-wider">
                         Supplier Verified Evidence
                       </h4>
                       <p className="text-[11px] text-emerald-700">
@@ -1414,9 +1522,9 @@ export function RequestDetailsModal() {
                       </p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {req.supporting.photos?.map((url, idx) => (
-                      <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-emerald-200">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
+                    {req.supporting?.photos?.map((url, idx) => (
+                      <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-emerald-200 cursor-pointer active:scale-95 transition-transform" onClick={() => openLightbox(req.supporting?.photos || [], idx)}>
                         <img
                           src={url}
                           alt={`Evidence Media ${idx + 1}`}
@@ -1430,7 +1538,7 @@ export function RequestDetailsModal() {
               )}
 
               {/* Internal Logistics Milestones within Shipped Stage */}
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+              <div className="p-4 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                     Internal Logistics Milestones (Shipped Stage)
@@ -1440,14 +1548,14 @@ export function RequestDetailsModal() {
                   </p>
                 </div>
 
-                <div className="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-300">
+                <div className="relative pl-6 sm:pl-7 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-300">
                   {req.shipment.milestonesHistory.map((m, idx) => {
                     const isCurrent =
                       req.shipment?.currentMilestone === m.milestone;
                     return (
                       <div key={idx} className="relative">
                         <div
-                          className={`absolute -left-6 top-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center ${m.isCompleted
+                          className={`absolute -left-6 sm:-left-7 top-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center ${m.isCompleted
                             ? "bg-emerald-500 border-emerald-500 text-white"
                             : isCurrent
                               ? "bg-[#e20c0c] border-[#e20c0c] text-white animate-pulse"
@@ -1458,7 +1566,7 @@ export function RequestDetailsModal() {
                         </div>
 
                         <div className="space-y-0.5">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                             <span
                               className={`text-xs font-bold ${isCurrent
                                 ? "text-[#e20c0c]"
@@ -1469,14 +1577,14 @@ export function RequestDetailsModal() {
                             >
                               {m.milestone}
                             </span>
-                            <span className="text-[10px] text-slate-400 ">
+                            <span className="text-[10px] text-slate-400 font-mono">
                               • {m.timestamp}
                             </span>
                           </div>
                           <p className="text-xs text-slate-600 font-medium">
                             {m.location}
                           </p>
-                          <p className="text-[11px] text-slate-500">
+                          <p className="text-[11px] text-slate-500 leading-relaxed">
                             {m.description}
                           </p>
                         </div>
@@ -1485,7 +1593,7 @@ export function RequestDetailsModal() {
                   })}
                 </div>
 
-                <div className="pt-3 flex items-center justify-between border-t border-slate-200 text-xs">
+                <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-slate-200 text-xs">
                   <span className="text-slate-500">Need full tracking dashboard?</span>
                   <button
                     onClick={() => {
@@ -1503,11 +1611,9 @@ export function RequestDetailsModal() {
             </div>
           )}
 
-
-
-          {/* TAB 5: TAX INVOICE (Within the tab, NOT modal) */}
+          {/* TAB 4: TAX INVOICE (Within the tab, NOT modal) */}
           {activeTab === "invoice" && (
-            <div className="space-y-6 animate-in fade-in duration-200">
+            <div className="space-y-4 sm:space-y-6 animate-in fade-in duration-200">
               <InvoiceDocument
                 request={req}
                 isModal={false}
@@ -1525,11 +1631,11 @@ export function RequestDetailsModal() {
 
       {/* Direct MVP Communication Modal (Email, Teams, Phone) */}
       {showDirectContactModal && (
-        <div className="fixed inset-0 z-60 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden space-y-4 p-6">
+        <div className="fixed inset-0 z-60 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
+          <div className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border border-slate-200 space-y-4 p-4 sm:p-6">
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-red-50 text-[#e20c0c] flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-red-50 text-[#e20c0c] flex items-center justify-center font-bold shrink-0">
                   <Headphones className="w-5 h-5" />
                 </div>
                 <div>
@@ -1549,8 +1655,8 @@ export function RequestDetailsModal() {
               </button>
             </div>
 
-            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-800">
-              <strong>MVP Communication Policy:</strong> In-app messaging is removed for MVP. Inquiries, price queries, and logistics updates occur directly via Email, Teams, and Phone.
+            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-800 leading-relaxed">
+              <strong>MVP Communication Policy:</strong> Direct inquiries, price queries, and logistics updates occur directly via Email, Teams, and Phone.
             </div>
 
             {/* Channels List */}
@@ -1566,24 +1672,24 @@ export function RequestDetailsModal() {
                     Recommended
                   </span>
                 </div>
-                <p className="text-slate-600 text-xs">
+                <p className="text-slate-600 text-xs font-mono">
                   procurement@jdmhub.co.nz
                 </p>
-                <div className="flex items-center gap-2 pt-1">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
                   <a
                     href={`mailto:procurement@jdmhub.co.nz?subject=${encodeURIComponent(
                       `[JDMHUB Quote Query] ${req.requestNumber} - ${req.vehicle.year} ${req.vehicle.make} ${req.vehicle.model}`
                     )}&body=${encodeURIComponent(
                       `Hi JDMHUB Operations Team,\n\nRegarding request ${req.requestNumber} (${req.part.name}):\n\n[Please enter your inquiry here]\n\nTrade Customer: SP Motors Auckland\nContact: James Wilson`
                     )}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 sm:py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer active:scale-95 text-center"
                   >
                     <Mail className="w-3.5 h-3.5" />
                     <span>Open Email Draft →</span>
                   </a>
                   <button
                     onClick={() => handleCopy("procurement@jdmhub.co.nz", "email")}
-                    className="px-2.5 py-1.5 border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded-lg inline-flex items-center gap-1 text-xs cursor-pointer"
+                    className="px-2.5 py-2 sm:py-1.5 border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded-lg inline-flex items-center justify-center gap-1 text-xs cursor-pointer active:scale-95"
                   >
                     <Copy className="w-3 h-3" />
                     <span>{copiedContact === "email" ? "Copied!" : "Copy Email"}</span>
@@ -1610,7 +1716,7 @@ export function RequestDetailsModal() {
                     href="https://teams.microsoft.com/l/chat/0/0?users=procurement@jdmhub.co.nz"
                     target="_blank"
                     rel="noreferrer"
-                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                    className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 text-center"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>Launch Teams Chat →</span>
@@ -1629,20 +1735,20 @@ export function RequestDetailsModal() {
                     7:30 AM - 6:00 PM NZST
                   </span>
                 </div>
-                <p className="text-slate-600  text-xs">
+                <p className="text-slate-600 text-xs font-mono">
                   +64 9 555 0192 (Ext 2 - Trade Desk)
                 </p>
-                <div className="flex items-center gap-2 pt-1">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
                   <a
                     href="tel:+6495550192"
-                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center gap-1.5"
+                    className="px-3 py-2 sm:py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 text-center"
                   >
                     <Phone className="w-3.5 h-3.5" />
                     <span>Call Desk (+64 9 555 0192) →</span>
                   </a>
                   <button
                     onClick={() => handleCopy("+6495550192", "phone")}
-                    className="px-2.5 py-1.5 border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded-lg inline-flex items-center gap-1 text-xs"
+                    className="px-2.5 py-2 sm:py-1.5 border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded-lg inline-flex items-center justify-center gap-1 text-xs cursor-pointer active:scale-95"
                   >
                     <Copy className="w-3 h-3" />
                     <span>{copiedContact === "phone" ? "Copied!" : "Copy Phone"}</span>
@@ -1655,7 +1761,7 @@ export function RequestDetailsModal() {
               <button
                 type="button"
                 onClick={() => setShowDirectContactModal(false)}
-                className="px-4 py-2 bg-slate-900 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
+                className="w-full sm:w-auto px-4 py-2 border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer active:scale-95"
               >
                 Close Support
               </button>

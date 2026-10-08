@@ -29,6 +29,7 @@ export function RequestsView() {
     setQuoteRequest,
     setIsPaymentModalOpen,
     setPaymentRequest,
+    setSelectedRequestDetailsTab,
   } = usePortal();
 
   const [statusFilter, setStatusFilter] = useState<string>("All");
@@ -230,7 +231,16 @@ export function RequestsView() {
                 paginatedRequests.map((req) => (
                   <tr
                     key={req.id}
-                    onClick={() => setSelectedRequest(req)}
+                    onClick={() => {
+                      if (req.status === "Quoted" || req.actionType === "review_quote") {
+                        setSelectedRequestDetailsTab("quote");
+                      } else if (req.status === "Awaiting Payment") {
+                        setSelectedRequestDetailsTab("invoice");
+                      } else {
+                        setSelectedRequestDetailsTab("overview");
+                      }
+                      setSelectedRequest(req);
+                    }}
                     className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
                   >
                     {/* Request Number */}
@@ -291,11 +301,12 @@ export function RequestsView() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            setSelectedRequestDetailsTab("quote");
                             setSelectedRequest(req);
                           }}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#e20c0c] hover:bg-[#D81419] text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-xs active:scale-[0.98] transition-all cursor-pointer"
                         >
-                          Review Quote →
+                          Accept Quote →
                         </button>
                       ) : req.actionType === "pay_now" || (req.status === "Awaiting Payment" && req.payment?.status !== "Paid") ? (
                         <button

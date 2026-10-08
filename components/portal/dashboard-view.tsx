@@ -28,6 +28,7 @@ export function DashboardView() {
     setIsNewRequestModalOpen,
     setActiveTab,
     setSelectedRequest,
+    setSelectedRequestDetailsTab,
     setIsQuoteModalOpen,
     setQuoteRequest,
     setIsPaymentModalOpen,
@@ -42,15 +43,27 @@ export function DashboardView() {
   const ITEMS_PER_PAGE = 5;
   const totalPages = Math.max(1, Math.ceil(requests.length / ITEMS_PER_PAGE));
 
-  // Action required items from requests
+  // Action required items — quote review, unpaid invoices, view_details shipments
   const actionItems = requests.filter(
     (r) =>
       r.actionType === "review_quote" ||
-      r.actionType === "pay_now" ||
-      r.actionType === "view_details" ||
       r.status === "Quoted" ||
-      (r.status === "Awaiting Payment" && r.payment?.status !== "Paid")
+      r.actionType === "pay_now" ||
+      (r.payment?.status === "Unpaid" && r.customerResponse === "Accepted") ||
+      (r.status === "Awaiting Payment" && r.payment?.status !== "Paid") ||
+      r.actionType === "view_details"
   );
+
+  // Derive action type per request for rendering
+  const getActionKind = (req: PartRequest): "accept_quote" | "pay_now" | "view_details" => {
+    if (req.actionType === "review_quote" || req.status === "Quoted") return "accept_quote";
+    if (
+      req.actionType === "pay_now" ||
+      req.payment?.status === "Unpaid" ||
+      (req.status === "Awaiting Payment" && req.payment?.status !== "Paid")
+    ) return "pay_now";
+    return "view_details";
+  };
 
   // Status badge styling helper (covers all workflow statuses)
   const getStatusBadge = (status: RequestStatus | string) => {
@@ -58,12 +71,16 @@ export function DashboardView() {
   };
 
   const handleActionClick = (req: PartRequest) => {
-    if (req.actionType === "review_quote" || req.status === "Quoted") {
+    const kind = getActionKind(req);
+    if (kind === "accept_quote") {
+      // Open request details modal directly on the Quotation & Pricing tab
+      setSelectedRequestDetailsTab("quote");
       setSelectedRequest(req);
-    } else if (req.actionType === "pay_now" || (req.status === "Awaiting Payment" && req.payment?.status !== "Paid")) {
+    } else if (kind === "pay_now") {
       setPaymentRequest(req);
       setIsPaymentModalOpen(true);
     } else {
+      setSelectedRequestDetailsTab("overview");
       setSelectedRequest(req);
     }
   };
@@ -351,85 +368,104 @@ export function DashboardView() {
 
           {/* 3. Action Required Warning Banner Card */}
           {actionItems.length > 0 && (
-            <div className="bg-[#FFFBEB] border border-amber-300 rounded-2xl p-6 shadow-sm">
+            <div className="bg-[#FFFDF0] border border-amber-300 rounded-2xl overflow-hidden shadow-sm">
               {/* Header */}
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-8 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center font-bold text-sm shrink-0">
+              <div className="flex items-center gap-3 px-6 pt-5 pb-4">
+                <div className="w-8 h-8 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center font-black text-base shrink-0 shadow-sm">
                   !
                 </div>
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-slate-900">
                     Action Required
                   </h2>
-                  <p className="text-xs text-slate-600">
-                    Complete these actions to keep your procurement moving.
+                  <p className="text-xs text-slate-500">
+                    Complete these actions to keep your{" "}
+                    <span className="text-[#e20c0c] font-semibold">procurement moving.</span>
                   </p>
                 </div>
               </div>
 
-              {/* Actionable items list */}
-              <div className="divide-y divide-amber-200/70">
-                {actionItems.map((req) => (
-                  <div
-                    key={req.id}
-                    className="py-4 first:pt-0 last:pb-0 flex flex-col md:flex-row md:items-center justify-between gap-4"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className=" text-xs font-bold text-slate-900">
-                          {req.requestNumber}
-                        </span>
-                        <span className="text-xs font-bold text-slate-800">
-                          {req.vehicle.make} {req.vehicle.model} - {req.vehicle.year}
-                        </span>
+              {/* Divider */}
+              <div className="h-px bg-amber-200/80 mx-6" />
 
-                        {/* Pill Tag */}
-                        {req.status === "Quoted" && (
-                          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                            Quote Ready
+              {/* Actionable items list */}
+              <div className="divide-y divide-amber-100 px-6">
+                {actionItems.map((req) => {
+                  const kind = getActionKind(req);
+                  const isQuote = kind === "accept_quote";
+                  const isPay = kind === "pay_now";
+
+                  return (
+                    <div
+                      key={req.id}
+                      className="py-4 first:pt-5 last:pb-5 flex flex-col md:flex-row md:items-center justify-between gap-3 group"
+                    >
+                      {/* Left: meta */}
+                      <div className="space-y-1.5 min-w-0">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          {/* Request number */}
+                          <span className="text-[11px] font-extrabold text-slate-500 tracking-wide">
+                            {req.requestNumber}
                           </span>
-                        )}
-                        {req.status === "Awaiting Payment" && req.payment?.status !== "Paid" && (
-                          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                            Unpaid
+                          {/* Vehicle */}
+                          <span className="text-xs font-bold text-slate-900">
+                            {req.vehicle.make} {req.vehicle.model} - {req.vehicle.year}
                           </span>
-                        )}
+
+                          {/* Quote Ready pill (purple) */}
+                          {isQuote && (
+                            <>
+                              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-violet-100 text-violet-700 border border-violet-200">
+                                <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
+                                Quote Ready
+                              </span>
+                              {/* Action hint chip */}
+                              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                                <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                                Accept Quote
+                              </span>
+                            </>
+                          )}
+
+                          {/* Unpaid pill (amber) */}
+                          {isPay && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                              Unpaid
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Part name + amount */}
+                        <p className="text-xs text-slate-500">
+                          <span className="font-medium text-slate-700">{req.part.name}</span>
+                          {req.quotedValue != null && (
+                            <>
+                              <span className="mx-1 text-slate-300">•</span>
+                              <span>Amount:{" "}</span>
+                              <span className="font-bold text-slate-900">
+                                ${req.quotedValue.toFixed(2)}
+                              </span>
+                            </>
+                          )}
+                        </p>
                       </div>
 
-                      <p className="text-xs text-slate-600">
-                        <span className="font-medium text-slate-700">{req.part.name}</span>
-                        {req.quotedValue && (
-                          <>
-                            {" "}
-                            • Amount:{" "}
-                            <span className="font-bold text-slate-900 ">
-                              ${req.quotedValue.toFixed(2)}
-                            </span>
-                          </>
-                        )}
-                      </p>
+                      {/* Right: CTA button */}
+                      <div className="shrink-0">
+                        <button
+                          onClick={() => handleActionClick(req)}
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2 bg-[#e20c0c] hover:bg-[#b80a0a] text-white font-black text-[11px] uppercase tracking-widest rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95 whitespace-nowrap"
+                        >
+                          {isQuote && <span>Accept Quote</span>}
+                          {isPay && <span>Pay Now</span>}
+                          {!isQuote && !isPay && <span>View Details</span>}
+                          <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+                        </button>
+                      </div>
                     </div>
-
-                    {/* Right Action Button */}
-                    <div>
-                      <button
-                        onClick={() => handleActionClick(req)}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[#e20c0c] hover:bg-[#9B0A0F] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:shadow transition-all active:scale-95"
-                      >
-                        <span>
-                          {req.actionType === "review_quote"
-                            ? "Review Quote"
-                            : req.actionType === "pay_now"
-                              ? "Pay Now"
-                              : "View Details"}
-                        </span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -494,7 +530,16 @@ export function DashboardView() {
                     {requests.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((req) => (
                       <tr
                         key={req.id}
-                        onClick={() => setSelectedRequest(req)}
+                        onClick={() => {
+                          if (req.status === "Quoted" || req.actionType === "review_quote") {
+                            setSelectedRequestDetailsTab("quote");
+                          } else if (req.status === "Awaiting Payment") {
+                            setSelectedRequestDetailsTab("invoice");
+                          } else {
+                            setSelectedRequestDetailsTab("overview");
+                          }
+                          setSelectedRequest(req);
+                        }}
                         className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
                       >
                         {/* Request Number */}

@@ -8,7 +8,6 @@ import { NewRequestModal } from "./new-request-modal";
 import { RequestDetailsModal } from "./request-details-modal";
 import { PaymentModal } from "./payment-modal";
 import { usePortal } from "@/context/portal-context";
-import { useUnifiedData } from "@/context/unified-data-context";
 
 interface CustomerPortalLayoutProps {
   children?: React.ReactNode;
@@ -18,22 +17,41 @@ export function CustomerPortalLayout({ children }: CustomerPortalLayoutProps) {
   const pathname = usePathname();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { selectedRequest, setSelectedRequest, setSelectedRequestDetailsTab, setActiveTab, activeTab } = usePortal();
-  const { getRequestById } = useUnifiedData();
+  const { selectedRequest, setSelectedRequest, setSelectedRequestDetailsTab, setActiveTab, activeTab, requests } = usePortal();
 
   // Close mobile drawer whenever pathname or activeTab changes
   useEffect(() => {
     setIsMobileOpen(false);
   }, [pathname, activeTab]);
 
+  // Read URL query parameters to auto-open request (e.g. ?request=req-000128&tab=quote)
+  useEffect(() => {
+    if (typeof window === "undefined" || !requests || requests.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const reqId = params.get("request") || params.get("id");
+    const tabParam = params.get("tab");
+    if (reqId) {
+      const found = requests.find(
+        (r) => r.id.toLowerCase() === reqId.toLowerCase() || r.requestNumber.toLowerCase() === reqId.toLowerCase()
+      );
+      if (found) {
+        setSelectedRequest(found);
+        if (tabParam) {
+          setSelectedRequestDetailsTab(tabParam);
+        }
+      }
+    }
+  }, [requests, setSelectedRequest, setSelectedRequestDetailsTab]);
+
   // Listen for search item selection in customer portal
   useEffect(() => {
     const handleOpenCustomerRequest = (e: Event) => {
       const customEvent = e as CustomEvent<{ requestId: string; tab?: string }>;
       if (!customEvent.detail?.requestId) return;
-      const req = getRequestById(customEvent.detail.requestId);
+      const targetId = customEvent.detail.requestId.toLowerCase();
+      const req = requests.find((r) => r.id.toLowerCase() === targetId || r.requestNumber.toLowerCase() === targetId);
       if (req) {
-        setSelectedRequest(req as any);
+        setSelectedRequest(req);
         if (customEvent.detail.tab) {
           setSelectedRequestDetailsTab(customEvent.detail.tab);
         }
@@ -43,7 +61,7 @@ export function CustomerPortalLayout({ children }: CustomerPortalLayoutProps) {
 
     window.addEventListener("JDMHUB:open-customer-request", handleOpenCustomerRequest);
     return () => window.removeEventListener("JDMHUB:open-customer-request", handleOpenCustomerRequest);
-  }, [getRequestById, setSelectedRequest, setSelectedRequestDetailsTab, setActiveTab]);
+  }, [requests, setSelectedRequest, setSelectedRequestDetailsTab, setActiveTab]);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex text-slate-900 w-full overflow-x-hidden">
