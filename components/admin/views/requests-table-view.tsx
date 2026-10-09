@@ -43,6 +43,16 @@ export function RequestsTableView() {
     return Array.from(new Set(requests.map((r) => r.customerName)));
   }, [requests]);
 
+  const revisionCount = useMemo(
+    () =>
+      requests.filter(
+        (r) =>
+          r.customerResponse === "Revision Requested" ||
+          Boolean(r.quoteRevisionRequest)
+      ).length,
+    [requests]
+  );
+
   // Filtered & Sorted Requests
   const filteredRequests = useMemo(() => {
     return requests
@@ -61,7 +71,12 @@ export function RequestsTableView() {
         }
 
         // Status Filter
-        if (statusFilter !== "All" && r.status !== statusFilter) {
+        if (statusFilter === "Revision Requested") {
+          const hasRevision =
+            r.customerResponse === "Revision Requested" ||
+            Boolean(r.quoteRevisionRequest);
+          if (!hasRevision) return false;
+        } else if (statusFilter !== "All" && r.status !== statusFilter) {
           return false;
         }
 
@@ -148,6 +163,69 @@ export function RequestsTableView() {
             )}
         </div>
 
+        {/* Quick Filter Chips */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
+          <span className="text-[10px] font-bold text-slate-400 uppercase mr-1">Quick:</span>
+          <button
+            type="button"
+            onClick={() => setStatusFilter("All")}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+              statusFilter === "All"
+                ? "bg-slate-900 text-white"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+            }`}
+          >
+            All ({requests.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatusFilter("Revision Requested")}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === "Revision Requested"
+                ? "bg-amber-600 text-white shadow-xs"
+                : revisionCount > 0
+                ? "bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 font-black"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+            Revision Requested ({revisionCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatusFilter("Submitted")}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+              statusFilter === "Submitted"
+                ? "bg-sky-600 text-white"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+            }`}
+          >
+            New ({requests.filter((r) => r.status === "Submitted").length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatusFilter("Sourcing")}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+              statusFilter === "Sourcing"
+                ? "bg-amber-600 text-white"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+            }`}
+          >
+            Sourcing ({requests.filter((r) => r.status === "Sourcing").length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatusFilter("Awaiting Payment")}
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+              statusFilter === "Awaiting Payment"
+                ? "bg-[#e20c0c] text-white"
+                : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+            }`}
+          >
+            Awaiting Payment ({requests.filter((r) => r.status === "Awaiting Payment").length})
+          </button>
+        </div>
+
         {/* Filter Dropdowns */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-slate-100 text-xs">
           {/* Status Filter */}
@@ -161,6 +239,7 @@ export function RequestsTableView() {
               className="w-full text-xs p-2 rounded-xl border border-slate-200 bg-slate-50 font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#e20c0c]"
             >
               <option value="All">All Statuses</option>
+              <option value="Revision Requested">⚡ Revision Requested ({revisionCount})</option>
               <option value="Submitted">Submitted</option>
               <option value="Sourcing">Sourcing</option>
               <option value="Quoted">Quoted</option>
@@ -170,6 +249,7 @@ export function RequestsTableView() {
               <option value="Shipped">Shipped</option>
               <option value="Delivered">Delivered</option>
               <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
               <option value="Ready for Dispatch">Ready for Dispatch</option>
             </select>
           </div>
@@ -298,7 +378,15 @@ export function RequestsTableView() {
                       {req.dateSubmitted}
                     </td>
                     <td className="py-3.5 sm:py-4 px-3 sm:px-4 whitespace-nowrap">
-                      <StatusBadge status={req.status} size="sm" />
+                      <div className="flex flex-col gap-1 items-start">
+                        <StatusBadge status={req.status} size="sm" />
+                        {(req.customerResponse === "Revision Requested" || Boolean(req.quoteRevisionRequest)) && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 inline-flex items-center gap-1 shadow-2xs">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                            Revision Requested
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-3.5 sm:py-4 px-3 sm:px-4 text-right font-bold text-slate-900 whitespace-nowrap">
                       {req.quotedValue || req.customerQuote?.totalAmount

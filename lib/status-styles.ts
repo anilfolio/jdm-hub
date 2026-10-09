@@ -43,6 +43,8 @@ export function getStatusBadgeClasses(status: RequestStatus | string): string {
       return "bg-teal-50 text-teal-700 border-teal-200 ring-teal-600/10";
     case "Completed":
       return "bg-slate-100 text-slate-700 border-slate-200 ring-slate-600/10";
+    case "Cancelled":
+      return "bg-rose-50 text-rose-700 border-rose-200 ring-rose-600/10";
     default:
       return "bg-slate-100 text-slate-700 border-slate-200 ring-slate-600/10";
   }
@@ -110,6 +112,9 @@ export function getCustomerResponseBadgeClasses(response?: CustomerResponse | st
   }
   if (response === "Rejected") {
     return "bg-rose-100 text-rose-800 border-rose-200";
+  }
+  if (response === "Cancelled") {
+    return "bg-slate-100 text-slate-800 border-slate-300";
   }
   return "bg-amber-100 text-amber-800 border-amber-200";
 }

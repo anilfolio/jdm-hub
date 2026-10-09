@@ -88,6 +88,7 @@ interface UnifiedDataContextType {
   ) => void;
   acceptCustomerQuote: (requestId: string, audit: QuoteAcceptanceAudit) => void;
   rejectCustomerQuote: (requestId: string, reason: string) => void;
+  cancelCustomerRequest: (requestId: string, reason: string) => void;
   requestQuoteRevision: (
     requestId: string,
     revision: {
@@ -1292,6 +1293,66 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
     [getRequestById]
   );
 
+  const cancelCustomerRequest = useCallback(
+    (requestId: string, reason: string) => {
+      setRequests((prev) =>
+        prev.map((r) => {
+          if (r.id === requestId || r.requestNumber === requestId) {
+            const customerName = r.contactName || r.customerName || "Customer";
+            const cancelMsg: RequestMessage = {
+              id: `msg-${Date.now()}`,
+              requestId: r.id,
+              senderName: customerName,
+              senderRole: "Customer",
+              senderType: "customer",
+              message: `[Request Cancelled] Customer withdrew request. Reason: ${reason}. Japan sourcing halted.`,
+              timestamp: "Just now",
+            };
+            return {
+              ...r,
+              status: "Cancelled",
+              customerResponse: "Cancelled",
+              actionRequired: `Request cancelled by customer (${reason})`,
+              actionType: "none",
+              lastUpdated: "Just now",
+              messages: [...(r.messages || []), cancelMsg],
+              activity: [
+                {
+                  id: `act-${Date.now()}`,
+                  timestamp: new Date().toISOString(),
+                  timeLabel: "Just now",
+                  title: "Request Cancelled by Customer",
+                  description: `Customer withdrew request. Reason: ${reason}. Sourcing operations stopped.`,
+                  actor: customerName,
+                  type: "status",
+                },
+                ...(r.activity || []),
+              ],
+            };
+          }
+          return r;
+        })
+      );
+
+      const target = getRequestById(requestId);
+      if (target) {
+        setNotifications((prev) => [
+          {
+            id: `notif-${Date.now()}`,
+            type: "Request Cancelled",
+            title: `Request Cancelled: ${target.requestNumber}`,
+            description: `Customer ${target.customerName || "Customer"} cancelled request. Reason: ${reason}. Sourcing ceased.`,
+            timestamp: "Just now",
+            read: false,
+            requestId: target.id,
+          },
+          ...prev,
+        ]);
+      }
+    },
+    [getRequestById]
+  );
+
   const requestQuoteRevision = useCallback(
     (
       requestId: string,
@@ -2174,7 +2235,25 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
   const updateCustomerStatus = useCallback(
     (customerId: string, status: CustomerStatus) => {
       setCustomers((prev) =>
-        prev.map((c) => (c.id === customerId ? { ...c, status } : c))
+        prev.map((c) => {
+          if (c.id === customerId) {
+            if (status === "Active" && c.status !== "Active") {
+              setNotifications((nPrev) => [
+                {
+                  id: `notif-${Date.now()}`,
+                  type: "Registration Approval",
+                  title: `Trade Account Approved: ${c.businessName}`,
+                  description: `${c.businessName} is now Approved with full trade pricing & priority Japan sourcing.`,
+                  timestamp: "Just now",
+                  read: false,
+                },
+                ...nPrev,
+              ]);
+            }
+            return { ...c, status };
+          }
+          return c;
+        })
       );
     },
     []
@@ -2288,6 +2367,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
         createCustomerQuote,
         acceptCustomerQuote,
         rejectCustomerQuote,
+        cancelCustomerRequest,
         requestQuoteRevision,
         requestMoreInfo,
         markPaymentPaid,

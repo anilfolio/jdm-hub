@@ -54,6 +54,7 @@ export function RequestDetailsModal() {
     setSelectedRequest,
     acceptQuote,
     rejectQuote,
+    cancelCustomerRequest,
     requestQuoteRevision,
     addNoteReply,
     sendMessage,
@@ -94,6 +95,12 @@ export function RequestDetailsModal() {
   const [revisionFreight, setRevisionFreight] = useState<"Air Freight" | "Sea Freight">("Sea Freight");
   const [revisionPartPreference, setRevisionPartPreference] = useState<"Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A">("Aftermarket Quality");
   const [revisionNotes, setRevisionNotes] = useState("");
+
+  // Request withdrawal / cancellation state
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [cancelReason, setCancelReason] = useState("Found part locally in New Zealand");
+  const [cancelNotes, setCancelNotes] = useState("");
+  const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
 
   // Direct Note reply state
   const [replyingNoteId, setReplyingNoteId] = useState<string | null>(null);
@@ -296,6 +303,18 @@ export function RequestDetailsModal() {
     setRevisionNotes("");
   };
 
+  const handleConfirmCancel = () => {
+    setIsConfirmingCancel(true);
+    const finalReason = cancelNotes.trim()
+      ? `${cancelReason} — ${cancelNotes.trim()}`
+      : cancelReason;
+    cancelCustomerRequest(req.id, finalReason);
+    setTimeout(() => {
+      setIsConfirmingCancel(false);
+      setIsCancelling(false);
+    }, 400);
+  };
+
   return (
     <div className="w-full h-full flex flex-col animate-in fade-in duration-200">
       <div className="bg-white w-full rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col flex-1">
@@ -333,6 +352,19 @@ export function RequestDetailsModal() {
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Quick Withdraw Request button if in Submitted or Sourcing */}
+            {(req.status === "Submitted" || req.status === "Sourcing") && (
+              <button
+                type="button"
+                onClick={() => setIsCancelling(true)}
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-600 hover:text-rose-700 text-xs font-bold transition-all inline-flex items-center gap-1.5 shadow-2xs cursor-pointer active:scale-95"
+                title="Withdraw this request"
+              >
+                <X className="w-3.5 h-3.5 text-rose-500" />
+                <span className="hidden sm:inline">Withdraw</span>
+              </button>
+            )}
+
             {/* Quick Contact Desk Button */}
             <button
               type="button"
@@ -578,6 +610,48 @@ export function RequestDetailsModal() {
           {/* TAB 1: OVERVIEW & VEHICLE DETAILS */}
           {activeTab === "overview" && (
             <div className="space-y-4 sm:space-y-6">
+              {/* Early-stage Sourcing / Submitted card with Withdrawal Option */}
+              {(req.status === "Submitted" || req.status === "Sourcing") && (
+                <div className="p-3.5 sm:p-4 rounded-xl bg-sky-50/70 border border-sky-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in">
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs font-bold text-sky-950">
+                        {req.status === "Submitted" ? "Request Submitted — Queueing Sourcing" : "Active Japan Supplier Sourcing"}
+                      </h4>
+                      <p className="text-[11px] text-sky-800 mt-0.5 leading-relaxed">
+                        {req.status === "Submitted"
+                          ? "Our Auckland & Japan procurement team is reviewing your vehicle details and preparing supplier inquiries."
+                          : "Our team in Japan is actively contacting OEM dismantlers, Tier 1 manufacturers, and auction partners for authentic pricing."}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsCancelling(true)}
+                    className="w-full sm:w-auto px-3.5 py-1.5 bg-white hover:bg-rose-50 text-rose-700 hover:text-rose-800 border border-rose-200 hover:border-rose-300 font-bold text-xs rounded-lg shadow-2xs transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer active:scale-95"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    <span>Withdraw Request</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Cancelled Banner */}
+              {req.status === "Cancelled" && (
+                <div className="p-3.5 sm:p-4 rounded-xl bg-slate-100 border border-slate-300 flex items-start gap-3 animate-in fade-in">
+                  <RotateCcw className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-900">
+                      Request Withdrawn / Cancelled
+                    </h4>
+                    <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                      This parts request was cancelled by customer request. Japan procurement operations have been stopped. You can submit a new request anytime from your dashboard.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Top Quick Status Alert */}
               {req.status === "Invoicing" ? (
                 <div className="p-3.5 sm:p-4 rounded-xl bg-indigo-50/80 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -2620,6 +2694,113 @@ export function RequestDetailsModal() {
               >
                 <X className="w-3.5 h-3.5" />
                 <span>Close Preview</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Request Withdrawal / Cancellation Modal */}
+      {isCancelling && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in"
+          onClick={() => setIsCancelling(false)}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-4 animate-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+                  <RotateCcw className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">Withdraw Parts Request</h3>
+                  <p className="text-xs text-slate-500">Order Ref: {req.requestNumber}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsCancelling(false)}
+                className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
+              <strong>Notice:</strong> Withdrawing this request will notify the JDMHUB operations desk to stop sourcing this part in Japan.
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-2">
+                Reason for Withdrawal <span className="text-rose-600">*</span>
+              </label>
+              <div className="space-y-2">
+                {[
+                  "Found part locally in New Zealand",
+                  "Vehicle repaired / alternative part installed",
+                  "Customer cancelled workshop booking",
+                  "Found part through alternative supplier",
+                  "Entered incorrect vehicle chassis or part details",
+                  "Other reason",
+                ].map((reason) => (
+                  <label
+                    key={reason}
+                    className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
+                      cancelReason === reason
+                        ? "bg-rose-50/70 border-rose-300 font-bold text-rose-950"
+                        : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="cancel_reason"
+                      value={reason}
+                      checked={cancelReason === reason}
+                      onChange={(e) => setCancelReason(e.target.value)}
+                      className="text-rose-600 focus:ring-rose-500"
+                    />
+                    <span>{reason}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Additional Notes (Optional)
+              </label>
+              <textarea
+                value={cancelNotes}
+                onChange={(e) => setCancelNotes(e.target.value)}
+                placeholder="Provide any details for the procurement team..."
+                rows={2}
+                className="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setIsCancelling(false)}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer"
+              >
+                Keep Request
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmCancel}
+                disabled={isConfirmingCancel}
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {isConfirmingCancel ? (
+                  <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+                <span>Confirm Withdrawal</span>
               </button>
             </div>
           </div>

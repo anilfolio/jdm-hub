@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { PartRequest } from "@/types/shared";
 import { useUnifiedData } from "@/context/unified-data-context";
+import { generateOfficialInvoicePdfDataUrl } from "@/lib/generate-invoice-pdf";
 
 interface InvoiceTabProps {
   request: PartRequest;
@@ -55,6 +56,7 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
   const [isMarking, setIsMarking] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [generatedNotice, setGeneratedNotice] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -117,6 +119,65 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
     request.status === "Shipped" ||
     request.status === "Delivered" ||
     request.status === "Completed";
+
+  const generateTaxInvoiceData = (invNum: string): { url: string; name: string; size: string } => {
+    const qty = request.part?.quantity || 1;
+    const freight =
+      request.customerQuote?.airFreightCost ||
+      request.customerQuote?.seaFreightCost ||
+      request.customerQuote?.freightCost ||
+      45.0;
+    const partUnitPrice = Math.max(
+      10,
+      Number(((finalAmount - freight) / qty).toFixed(2))
+    );
+    const gst =
+      request.customerQuote?.gstAmount ||
+      Number(((finalAmount * 15) / 115).toFixed(2));
+    const subtotal = Number((finalAmount - gst).toFixed(2));
+
+    const pdfDataUrl = generateOfficialInvoicePdfDataUrl({
+      invoiceNumber: invNum,
+      requestNumber: request.requestNumber,
+      customerName: request.customerName || request.contactName || "Trade Customer",
+      customerEmail: request.customerEmail || "accounts@customer.co.nz",
+      customerAddress: request.deliveryAddress
+        ? `${request.deliveryAddress.streetAddress}, ${request.deliveryAddress.city}`
+        : "Auckland, New Zealand",
+      vehicleSummary: `${request.vehicle?.year || "2020"} ${request.vehicle?.make || "Toyota"} ${request.vehicle?.model || "JDM Vehicle"}`,
+      vin: request.vehicle?.vin || "JDM-VERIFIED-CHASSIS",
+      partName: request.part?.name || "JDM Performance OEM Component",
+      partNumber: request.part?.partNumber || "OEM Verified",
+      quantity: qty,
+      partPrice: partUnitPrice,
+      freightCost: freight,
+      subtotal: subtotal,
+      gstAmount: gst,
+      totalAmount: finalAmount,
+      dateStr: new Date().toISOString().split("T")[0],
+      dueDateStr: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+    });
+
+    return {
+      url: pdfDataUrl,
+      name: `Official_Tax_Invoice_${invNum}.pdf`,
+      size: "Official JDMHUB Tax Invoice (A4 PDF)",
+    };
+  };
+
+  const handleGenerateOfficialInvoice = () => {
+    setUploadError(null);
+    const invNum = invoiceNumber.trim() || defaultInvoiceNumber;
+    setInvoiceNumber(invNum);
+
+    const generated = generateTaxInvoiceData(invNum);
+    setAttachedPdfUrl(generated.url);
+    setAttachedPdfName(generated.name);
+    setAttachedPdfSize(generated.size);
+    setPreviewBlobUrl(getBlobUrl(generated.url));
+    setGeneratedNotice(true);
+    setTimeout(() => setGeneratedNotice(false), 5000);
+  };
 
   const processFile = (file: File) => {
     setUploadError(null);
@@ -203,14 +264,20 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
     e.preventDefault();
     setUploadError(null);
 
-    if (!attachedPdfUrl) {
-      setUploadError("Please drag & drop or select a real PDF invoice before releasing.");
-      return;
-    }
+    const invNum = invoiceNumber.trim() || defaultInvoiceNumber;
+    let finalPdfUrl = attachedPdfUrl;
+    let finalPdfName = attachedPdfName;
 
-    if (!invoiceNumber.trim()) {
-      setUploadError("Please enter a valid invoice number.");
-      return;
+    if (!finalPdfUrl) {
+      // Auto-generate official invoice on the fly so admin is never blocked
+      const generated = generateTaxInvoiceData(invNum);
+      finalPdfUrl = generated.url;
+      finalPdfName = generated.name;
+      setAttachedPdfUrl(generated.url);
+      setAttachedPdfName(generated.name);
+      setAttachedPdfSize(generated.size);
+      setPreviewBlobUrl(getBlobUrl(generated.url));
+      setInvoiceNumber(invNum);
     }
 
     setIsMarking(true);
@@ -221,9 +288,9 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
       updateRequestStatus(
         request.id,
         nextStatus,
-        invoiceNumber.trim(),
-        attachedPdfUrl || undefined,
-        attachedPdfName || undefined
+        invNum,
+        finalPdfUrl || undefined,
+        finalPdfName || undefined
       );
       setIsMarking(false);
       setSaveSuccess(true);
@@ -360,11 +427,51 @@ export function InvoiceTab({ request: initialRequest, onNavigateToTab }: Invoice
                 </p>
               </div>
 
-              {/* 1. Drag & Drop PDF Invoice Upload */}
+              {/* 1-Click JDMHUB Tax Invoice Generator Card */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="p-1 rounded-md bg-[#e20c0c] text-white">
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </span>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-white">
+                      1-Click JDMHUB Tax Invoice Generator
+                    </h4>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/20 text-white shrink-0">
+                      Recommended
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 mt-1 max-w-md leading-relaxed">
+                    No external PDF to upload? Automatically generate a complete NZ GST tax invoice with NZBN, customer details, parts breakdown, and bank remittance advice.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleGenerateOfficialInvoice}
+                  className="px-4 py-2 bg-[#e20c0c] hover:bg-[#b00a0a] text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer shrink-0 active:scale-95"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Generate &amp; Attach Invoice</span>
+                </button>
+              </div>
+
+              {generatedNotice && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Official JDMHUB Tax Invoice generated! Preview below or click release to publish.</span>
+                </div>
+              )}
+
+              {/* 1. Drag & Drop PDF Invoice Upload (Optional / Custom) */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-2">
-                  Attach Official PDF Invoice (Drag &amp; Drop) <span className="text-[#e20c0c]">*</span>
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold text-slate-700">
+                    Attach External PDF Invoice (Drag &amp; Drop)
+                  </label>
+                  <span className="text-[11px] font-medium text-slate-400">
+                    Optional (Replaces generated invoice)
+                  </span>
+                </div>
 
                 <input
                   type="file"

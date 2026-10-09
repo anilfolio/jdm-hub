@@ -119,11 +119,13 @@ export function RequestDetailWorkspace({
     if (currentStageIndex < LIFECYCLE_STAGES.length - 1) {
       const nextStage = LIFECYCLE_STAGES[currentStageIndex + 1];
       updateRequestStatus(request.id, nextStage);
+      handleStageClick(nextStage);
     }
   };
 
   const handleStageSelect = (stage: RequestStatus) => {
     updateRequestStatus(request.id, stage);
+    handleStageClick(stage);
   };
 
   const handleStageClick = (stage: RequestStatus) => {

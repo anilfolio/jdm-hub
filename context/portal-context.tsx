@@ -56,6 +56,7 @@ interface PortalContextType {
   submitNewRequest: (reqData: Partial<PartRequest>) => PartRequest;
   acceptQuote: (requestId: string, acceptanceAudit: QuoteAcceptanceAudit) => void;
   rejectQuote: (requestId: string, reason: string) => void;
+  cancelCustomerRequest: (requestId: string, reason: string) => void;
   requestQuoteRevision: (
     requestId: string,
     revision: {
@@ -99,6 +100,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     submitCustomerRequest,
     acceptCustomerQuote,
     rejectCustomerQuote,
+    cancelCustomerRequest: sharedCancelCustomerRequest,
     requestQuoteRevision: sharedRequestRevision,
     addNoteReply: sharedAddNoteReply,
     sendRequestMessage,
@@ -346,6 +348,26 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     ]);
   };
 
+  const cancelCustomerRequest = (requestId: string, reason: string) => {
+    sharedCancelCustomerRequest(requestId, reason);
+
+    const target = requests.find((r) => r.id === requestId);
+    const reqNum = target?.requestNumber || "Request";
+
+    setActivities((prev) => [
+      {
+        id: `act-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        timeLabel: "Just now",
+        title: `Request Withdrawn: ${reqNum}`,
+        description: `Cancelled by customer. Reason: ${reason}. Japan sourcing stopped.`,
+        type: "alert",
+        requestId,
+      },
+      ...prev,
+    ]);
+  };
+
   const submitPayment = (
     requestId: string,
     reference?: string,
@@ -467,6 +489,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         submitNewRequest,
         acceptQuote,
         rejectQuote,
+        cancelCustomerRequest,
         requestQuoteRevision,
         addNoteReply,
         submitPayment,

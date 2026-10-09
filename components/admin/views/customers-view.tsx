@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Building2,
   User,
@@ -14,10 +14,14 @@ import {
   Shield,
   Layers,
   X,
+  Search,
+  RotateCcw,
 } from "lucide-react";
 import { CustomerRecord, CustomerStatus, PartRequest } from "@/types/shared";
 import { useUnifiedData } from "@/context/unified-data-context";
 import { StatusBadge } from "../status-badge";
+
+type CustomerFilterStatus = "All" | CustomerStatus;
 
 export function CustomersView() {
   const { customers, requests, updateCustomerStatus, addCustomer } = useUnifiedData();
@@ -55,6 +59,49 @@ export function CustomersView() {
     setPhone("");
   };
 
+  const [statusFilter, setStatusFilter] = useState<CustomerFilterStatus>("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [approvedToast, setApprovedToast] = useState<string | null>(null);
+
+  const pendingCount = useMemo(
+    () => customers.filter((c) => c.status === "Pending Approval").length,
+    [customers]
+  );
+  const activeCount = useMemo(
+    () => customers.filter((c) => c.status === "Active").length,
+    [customers]
+  );
+  const suspendedCount = useMemo(
+    () => customers.filter((c) => c.status === "Suspended").length,
+    [customers]
+  );
+
+  const filteredCustomers = useMemo(() => {
+    return customers.filter((c) => {
+      if (statusFilter !== "All" && c.status !== statusFilter) return false;
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matches =
+          c.businessName.toLowerCase().includes(q) ||
+          c.contactName.toLowerCase().includes(q) ||
+          c.email.toLowerCase().includes(q) ||
+          c.phone.toLowerCase().includes(q) ||
+          (c.nzbn || "").toLowerCase().includes(q);
+        if (!matches) return false;
+      }
+      return true;
+    });
+  }, [customers, statusFilter, searchQuery]);
+
+  const handleApproveCustomer = (cust: CustomerRecord) => {
+    updateCustomerStatus(cust.id, "Active");
+    setApprovedToast(`Trade Account "${cust.businessName}" successfully approved!`);
+    setTimeout(() => setApprovedToast(null), 4000);
+    if (selectedCustomer?.id === cust.id) {
+      setSelectedCustomer({ ...selectedCustomer, status: "Active" });
+    }
+  };
+
   const getCustomerRequests = (customerId: string): PartRequest[] => {
     return requests.filter(
       (r) =>
@@ -88,6 +135,123 @@ export function CustomersView() {
         </button>
       </div>
 
+      {/* Success Toast */}
+      {approvedToast && (
+        <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold flex items-center justify-between gap-2 shadow-xs animate-in fade-in">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{approvedToast}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setApprovedToast(null)}
+            className="text-emerald-600 hover:text-emerald-900 cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Pending Registrations Attention Banner */}
+      {pendingCount > 0 && (
+        <div className="bg-amber-500/10 border border-amber-300 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-xs shrink-0">
+              <Clock className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-amber-950">
+                  {pendingCount} Trade Account Registration{pendingCount > 1 ? "s" : ""} Pending Approval
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-500 text-white">
+                  Action Required
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                New trade workshops awaiting verification of NZBN and account privileges.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setStatusFilter("Pending Approval")}
+            className="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+          >
+            <span>Filter Pending ({pendingCount})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Filter & Search Bar */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-4 shadow-xs space-y-3">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          {/* Status Tabs */}
+          <div className="flex flex-wrap items-center gap-1.5 text-xs">
+            <button
+              type="button"
+              onClick={() => setStatusFilter("All")}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors cursor-pointer ${
+                statusFilter === "All"
+                  ? "bg-slate-900 text-white shadow-2xs"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+              }`}
+            >
+              All ({customers.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("Pending Approval")}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${
+                statusFilter === "Pending Approval"
+                  ? "bg-amber-600 text-white shadow-2xs"
+                  : pendingCount > 0
+                  ? "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+              }`}
+            >
+              {pendingCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />}
+              Pending Approval ({pendingCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("Active")}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors cursor-pointer ${
+                statusFilter === "Active"
+                  ? "bg-emerald-600 text-white shadow-2xs"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+              }`}
+            >
+              Active ({activeCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("Suspended")}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors cursor-pointer ${
+                statusFilter === "Suspended"
+                  ? "bg-rose-600 text-white shadow-2xs"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+              }`}
+            >
+              Suspended ({suspendedCount})
+            </button>
+          </div>
+
+          {/* Search Box */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search business, contact, email, NZBN..."
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-100 hover:bg-slate-100/80 focus:bg-white text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#e20c0c] transition-all"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Customer Accounts Table */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
         <div className="overflow-x-auto custom-scrollbar">
@@ -105,9 +269,19 @@ export function CustomersView() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {customers.map((cust) => {
-                const custReqs = getCustomerRequests(cust.id);
-                const reqCount = custReqs.length || cust.requestCount || 0;
+              {filteredCustomers.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="py-12 text-center text-slate-400">
+                    <p className="font-bold text-slate-600 text-sm">No trade accounts found</p>
+                    <p className="text-xs text-slate-400 mt-1">
+                      No customer accounts match your current filter criteria.
+                    </p>
+                  </td>
+                </tr>
+              ) : (
+                filteredCustomers.map((cust) => {
+                  const custReqs = getCustomerRequests(cust.id);
+                  const reqCount = custReqs.length || cust.requestCount || 0;
 
                 return (
                   <tr key={cust.id} className="hover:bg-slate-50/70 transition-colors">
@@ -167,10 +341,12 @@ export function CustomersView() {
                         {cust.status === "Pending Approval" && (
                           <button
                             type="button"
-                            onClick={() => updateCustomerStatus(cust.id, "Active")}
-                            className="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-xs"
+                            onClick={() => handleApproveCustomer(cust)}
+                            className="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-xs flex items-center gap-1 cursor-pointer active:scale-95 transition-all"
+                            title="Activate trade pricing & sourcing privileges"
                           >
-                            Approve
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Approve</span>
                           </button>
                         )}
 
@@ -197,7 +373,7 @@ export function CustomersView() {
                     </td>
                   </tr>
                 );
-              })}
+              }))}
             </tbody>
           </table>
         </div>
@@ -352,11 +528,8 @@ export function CustomersView() {
                 {selectedCustomer.status === "Pending Approval" && (
                   <button
                     type="button"
-                    onClick={() => {
-                      updateCustomerStatus(selectedCustomer.id, "Active");
-                      setSelectedCustomer({ ...selectedCustomer, status: "Active" });
-                    }}
-                    className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                    onClick={() => handleApproveCustomer(selectedCustomer)}
+                    className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer active:scale-95"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Approve Trade Account</span>

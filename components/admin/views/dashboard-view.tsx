@@ -50,8 +50,20 @@ export function AdminDashboardView() {
           r.status === "Awaiting Payment" ||
           r.status === "Invoicing" ||
           r.payment?.status === "Unpaid" ||
+          r.customerResponse === "Revision Requested" ||
+          Boolean(r.quoteRevisionRequest) ||
           (r.status === "Ordered" && !r.shipment)
       ),
+    [requests]
+  );
+
+  const revisionCount = useMemo(
+    () =>
+      requests.filter(
+        (r) =>
+          r.customerResponse === "Revision Requested" ||
+          Boolean(r.quoteRevisionRequest)
+      ).length,
     [requests]
   );
 
@@ -140,6 +152,37 @@ export function AdminDashboardView() {
           </Link>
         ))}
       </div>
+
+      {/* Urgent Revision Requests Alert Banner */}
+      {revisionCount > 0 && (
+        <div className="bg-amber-500/10 border border-amber-300/80 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black shadow-xs shrink-0">
+              <AlertTriangle className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-amber-950">
+                  {revisionCount} Quote Revision Request{revisionCount > 1 ? "s" : ""} Pending Review
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-500 text-white">
+                  Action Required
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 mt-0.5">
+                Customers submitted counter-offers or freight modifications. Review and issue adjusted quotes.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin/requests?status=Revision+Requested"
+            className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto cursor-pointer shrink-0"
+          >
+            <span>Review Revisions ({revisionCount})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      )}
 
       {/* Main Section: ACTIVE & OPEN ORDERS (Default) */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
@@ -319,7 +362,15 @@ export function AdminDashboardView() {
                       )}
                     </td>
                     <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">
-                      <StatusBadge status={req.status} size="sm" />
+                      <div className="flex flex-col gap-1 items-start">
+                        <StatusBadge status={req.status} size="sm" />
+                        {(req.customerResponse === "Revision Requested" || Boolean(req.quoteRevisionRequest)) && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 inline-flex items-center gap-1 shadow-2xs">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                            Revision Requested
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-3.5 sm:py-4 px-3 sm:px-4 first:pl-4 sm:first:pl-6 last:pr-4 sm:last:pr-6">
                       <PaymentStatusBadge status={req.payment?.status || "Unpaid"} size="sm" />

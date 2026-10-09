@@ -11,7 +11,8 @@ export type RequestStatus =
   | "Ready for Dispatch"
   | "Shipped"
   | "Delivered"
-  | "Completed";
+  | "Completed"
+  | "Cancelled";
 
 export type PaymentStatus = "Unpaid" | "Paid";
 
@@ -30,7 +31,8 @@ export type CustomerResponse =
   | "Accepted"
   | "Rejected"
   | "Request More Information"
-  | "Revision Requested";
+  | "Revision Requested"
+  | "Cancelled";
 
 // ─── Vehicle & Part ────────────────────────────────────────
 
@@ -485,6 +487,7 @@ export type NotificationType =
   | "Delivered"
   | "Customer Registration"
   | "Registration Approval"
+  | "Request Cancelled"
   | "General";
 
 export interface PortalNotification {
