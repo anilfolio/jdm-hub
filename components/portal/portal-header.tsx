@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Search, Menu } from "lucide-react";
+import { Search, Menu, Building2, Check, ChevronDown } from "lucide-react";
 import { usePortal } from "@/context/portal-context";
 import { useGlobalSearch } from "@/context/global-search-context";
 import { NotificationCenter } from "./notification-center";
@@ -17,7 +17,19 @@ export function PortalHeader({
   isSidebarCollapsed,
   onToggleMobile,
 }: PortalHeaderProps = {}) {
-  const { activeTab } = usePortal();
+  const { activeTab, activeCustomer, setActiveCustomerId, availableCustomers, filterByCustomerOnly, setFilterByCustomerOnly } = usePortal();
+  const [showDealerDropdown, setShowDealerDropdown] = React.useState(false);
+  const dealerMenuRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dealerMenuRef.current && !dealerMenuRef.current.contains(e.target as Node)) {
+        setShowDealerDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   const { openSearch } = useGlobalSearch();
 
   const getTabTitle = () => {
@@ -91,6 +103,81 @@ export function PortalHeader({
           >
             <Search className="w-4 h-4 text-slate-500" />
           </button>
+
+          {/* Active Trade Dealer Switcher */}
+          <div className="relative" ref={dealerMenuRef}>
+            <button
+              type="button"
+              onClick={() => setShowDealerDropdown((prev) => !prev)}
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-slate-50 hover:bg-slate-100/90 rounded-xl text-xs font-bold text-slate-800 transition-colors border border-slate-200 shadow-2xs cursor-pointer"
+              title="Switch Trade Workshop / Dealer Account"
+            >
+              <Building2 className="w-3.5 h-3.5 text-[#e20c0c] shrink-0" />
+              <span className="max-w-[110px] sm:max-w-[160px] truncate text-left">
+                {filterByCustomerOnly ? activeCustomer.businessName : "All Workshops (Demo)"}
+              </span>
+              <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${showDealerDropdown ? "rotate-180" : ""}`} />
+            </button>
+
+            {showDealerDropdown && (
+              <div className="absolute right-0 mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-2xl p-2 z-50 text-xs animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-2.5 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1 flex items-center justify-between">
+                  <span>Switch Dealer Account</span>
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Synced</span>
+                </div>
+                <div className="max-h-60 overflow-y-auto space-y-0.5 custom-scrollbar">
+                  {availableCustomers.map((c) => {
+                    const isSelected = filterByCustomerOnly && activeCustomer.id === c.id;
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveCustomerId(c.id);
+                          setFilterByCustomerOnly(true);
+                          setShowDealerDropdown(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-2 rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
+                          isSelected
+                            ? "bg-red-50 text-[#e20c0c] font-bold"
+                            : "text-slate-700 hover:bg-slate-50 font-medium"
+                        }`}
+                      >
+                        <div className="truncate pr-2">
+                          <p className="truncate font-bold text-xs">{c.businessName}</p>
+                          <p className="text-[10px] text-slate-400 truncate">
+                            {c.contactName} • <span className={`${c.status === "Pending Approval" ? "text-amber-600 font-bold" : ""}`}>{c.status}</span>
+                          </p>
+                        </div>
+                        {isSelected && <Check className="w-4 h-4 text-[#e20c0c] shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="border-t border-slate-100 mt-1 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterByCustomerOnly(false);
+                      setShowDealerDropdown(false);
+                    }}
+                    className={`w-full text-left px-2.5 py-2 rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
+                      !filterByCustomerOnly
+                        ? "bg-slate-900 text-white font-bold shadow-xs"
+                        : "text-slate-700 hover:bg-slate-100 font-medium"
+                    }`}
+                  >
+                    <div>
+                      <p className="font-bold text-xs">⚡ All Dealers (Global Demo)</p>
+                      <p className="text-[10px] opacity-75">View all NZ workshop requests together</p>
+                    </div>
+                    {!filterByCustomerOnly && <Check className="w-4 h-4 shrink-0" />}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Desktop Search Trigger with ⌘K */}
           <button

@@ -113,13 +113,47 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
   } = useUnifiedData();
 
   // Active customer management (default SP Motors Ltd, customizable for testing)
-  const [activeCustomerId, setActiveCustomerId] = useState<string>("cust-02");
+  const [activeCustomerId, setActiveCustomerIdState] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("JDMHUB_active_customer_id");
+        if (saved) return saved;
+      } catch (e) {}
+    }
+    return "cust-02";
+  });
+
+  const setActiveCustomerId = useCallback((id: string) => {
+    setActiveCustomerIdState(id);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("JDMHUB_active_customer_id", id);
+      } catch (e) {}
+    }
+  }, []);
   const activeCustomer = useMemo(() => {
     return customers.find((c) => c.id === activeCustomerId) || customers[1] || customers[0];
   }, [customers, activeCustomerId]);
 
   const [simulateZeroState, setSimulateZeroState] = useState(false);
-  const [filterByCustomerOnly, setFilterByCustomerOnly] = useState(true);
+  const [filterByCustomerOnly, setFilterByCustomerOnlyState] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("JDMHUB_filter_by_customer");
+        if (saved !== null) return saved === "true";
+      } catch (e) {}
+    }
+    return true;
+  });
+
+  const setFilterByCustomerOnly = useCallback((val: boolean) => {
+    setFilterByCustomerOnlyState(val);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("JDMHUB_filter_by_customer", String(val));
+      } catch (e) {}
+    }
+  }, []);
 
   // Normalize shared requests for customer components (ensuring quotation and customerQuote alias is always present)
   const requests: PartRequest[] = useMemo(() => {

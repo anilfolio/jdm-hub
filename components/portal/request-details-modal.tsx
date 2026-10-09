@@ -178,7 +178,7 @@ export function RequestDetailsModal() {
       return;
     }
     if (!selectedRequest) return;
-    const req = requests.find((r) => r.id === selectedRequest.id) || selectedRequest;
+    const req = requests.find((r) => r.id === selectedRequest.id || r.requestNumber === selectedRequest.requestNumber || (selectedRequest.id && r.id.toLowerCase() === selectedRequest.id.toLowerCase())) || selectedRequest;
     if (req.status === "Quoted" && (req.quotation || req.customerQuote)) {
       setActiveTab("quote");
     } else if ((req.status === "Shipped" || req.status === "Delivered") && req.shipment) {

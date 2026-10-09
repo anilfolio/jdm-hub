@@ -48,6 +48,7 @@ const STORAGE_SUPPLIERS = "JDMHUB_shared_suppliers_v4";
 const STORAGE_STAFF = "JDMHUB_shared_staff_v4";
 const STORAGE_NOTIFICATIONS = "JDMHUB_shared_notifications_v4";
 const STORAGE_ACTIVE_ROLE = "JDMHUB_active_staff_role_v4";
+const STORAGE_ADMIN_SETTINGS = "JDMHUB_shared_admin_settings_v4";
 
 interface UnifiedDataContextType {
   // State
@@ -243,6 +244,12 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
         }
       }
       const savedNotifications = localStorage.getItem(STORAGE_NOTIFICATIONS);
+        const savedSettings = localStorage.getItem(STORAGE_ADMIN_SETTINGS);
+        if (savedSettings) {
+          try {
+            setAdminSettings(JSON.parse(savedSettings));
+          } catch(e) {}
+        }
       if (savedNotifications) {
         const parsed = JSON.parse(savedNotifications);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -269,6 +276,41 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
   const broadcastChannelRef = useRef<BroadcastChannel | null>(null);
   const isSyncingRef = useRef(false);
 
+  const getBroadcastChannel = useCallback((): BroadcastChannel | null => {
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      if (!broadcastChannelRef.current) {
+        try {
+          const ch = new BroadcastChannel("JDMHUB_sync_channel");
+          ch.onmessage = (event) => {
+            const { type, key, data } = event.data || {};
+            if (type === "SYNC_STATE") {
+              isSyncingRef.current = true;
+              if (key === STORAGE_REQUESTS && Array.isArray(data)) setRequests(data);
+              else if (key === STORAGE_CUSTOMERS && Array.isArray(data)) setCustomers(data);
+              else if (key === STORAGE_SUPPLIERS && Array.isArray(data)) setSuppliers(data);
+              else if (key === STORAGE_STAFF && Array.isArray(data)) setStaffUsers(data);
+              else if (key === STORAGE_NOTIFICATIONS && Array.isArray(data)) setNotifications(data);
+              else if (key === STORAGE_ADMIN_SETTINGS && data) setAdminSettings(data);
+              setTimeout(() => {
+                isSyncingRef.current = false;
+              }, 50);
+            } else if (type === "RESET_ALL") {
+              setRequests(INITIAL_SHARED_REQUESTS);
+              setCustomers(MOCK_CUSTOMERS);
+              setSuppliers(MOCK_SUPPLIERS);
+              setStaffUsers(MOCK_STAFF_USERS);
+              setNotifications(INITIAL_NOTIFICATIONS);
+              setActiveStaffRole("Administrator");
+            }
+          };
+          broadcastChannelRef.current = ch;
+        } catch (err) {}
+      }
+      return broadcastChannelRef.current;
+    }
+    return null;
+  }, []);
+
   // Sync state changes to localStorage, broadcast CustomEvent and post to persistent BroadcastChannel
   const persistState = useCallback(
     (key: string, data: any) => {
@@ -280,8 +322,9 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
           if (existing !== serialized) {
             localStorage.setItem(key, serialized);
             window.dispatchEvent(new CustomEvent("JDMHUB_state_sync", { detail: { key, data } }));
-            if (broadcastChannelRef.current) {
-              broadcastChannelRef.current.postMessage({ type: "SYNC_STATE", key, data });
+            const ch = getBroadcastChannel();
+            if (ch) {
+              ch.postMessage({ type: "SYNC_STATE", key, data });
             }
           }
         } catch (e) { }
@@ -315,6 +358,11 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
     persistState(STORAGE_NOTIFICATIONS, notifications);
   }, [notifications, isHydrated, persistState]);
 
+  useEffect(() => {
+    if (!isHydrated) return;
+    persistState(STORAGE_ADMIN_SETTINGS, adminSettings);
+  }, [adminSettings, isHydrated, persistState]);
+
   // Listen to external window/tab storage events, custom window sync, and persistent BroadcastChannel for instant live sync
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
@@ -332,6 +380,8 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
           setStaffUsers(parsed);
         } else if (e.key === STORAGE_NOTIFICATIONS && Array.isArray(parsed)) {
           setNotifications(parsed);
+        } else if (e.key === STORAGE_ADMIN_SETTINGS && parsed) {
+          setAdminSettings(parsed);
         }
       } catch (err) { }
       setTimeout(() => {
@@ -351,6 +401,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
       else if (key === STORAGE_SUPPLIERS && Array.isArray(data)) setSuppliers(data);
       else if (key === STORAGE_STAFF && Array.isArray(data)) setStaffUsers(data);
       else if (key === STORAGE_NOTIFICATIONS && Array.isArray(data)) setNotifications(data);
+      else if (key === STORAGE_ADMIN_SETTINGS && data) setAdminSettings(data);
       setTimeout(() => {
         isSyncingRef.current = false;
       }, 50);

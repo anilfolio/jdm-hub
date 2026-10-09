@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useUnifiedData } from "@/context/unified-data-context";
 import {
   X,
   Car,
@@ -32,6 +33,8 @@ export function InteractiveRequestModal({
   const [partName, setPartName] = useState(initialPart || "Left Front Lower Control Arm");
   const [urgency, setUrgency] = useState<"urgent" | "standard">("urgent");
   const [submitted, setSubmitted] = useState(false);
+  const [createdRefNumber, setCreatedRefNumber] = useState<string>("");
+  const { submitCustomerRequest } = useUnifiedData();
 
   useEffect(() => {
     if (initialVehicle) setVehicle(initialVehicle);
@@ -42,6 +45,27 @@ export function InteractiveRequestModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const created = submitCustomerRequest({
+      vehicle: {
+        make: vehicle.split(" ")[0] || "Toyota",
+        model: vehicle.split(" ").slice(1, -1).join(" ") || "Hiace",
+        year: parseInt(vehicle.match(/\d{4}/)?.[0] || "2020"),
+        vin: "JDM-FAST-" + Math.floor(100000 + Math.random() * 900000),
+      },
+      part: {
+        name: partName,
+        quantity: 1,
+        preference: urgency === "urgent" ? "Genuine OEM" : "Quality Aftermarket",
+        condition: urgency === "urgent" ? "Brand New OEM" : "Brand New Certified Aftermarket",
+      },
+      supporting: {
+        notes: `Direct inquiry submitted via landing fast-intake. Priority: ${urgency.toUpperCase()}.`,
+        freightPreference: urgency === "urgent" ? "Air Express" : "Sea Freight",
+        photos: [],
+        documents: [],
+      },
+    });
+    setCreatedRefNumber(created.requestNumber);
     setSubmitted(true);
   };
 
