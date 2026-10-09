@@ -287,8 +287,8 @@ export function NewRequestModal() {
 
   const handleNextStep = () => {
     if (step === 1) {
-      if (!vehicle.make || !vehicle.model || !vehicle.year || !vehicle.vin || !vehicle.registration) {
-        alert("Please fill in all mandatory vehicle fields (Make, Model, Year, VIN, and Registration).");
+      if (!vehicle.make || !vehicle.model || !vehicle.year || !vehicle.vin) {
+        alert("Please fill in all mandatory vehicle fields (Make, Model, Year, and VIN / Chassis).");
         return;
       }
     }

@@ -7,6 +7,7 @@ import {
   Car,
   Package,
   Clock,
+  CalendarClock,
   ShieldCheck,
   Send,
   Truck,
@@ -970,6 +971,43 @@ export function RequestDetailsModal() {
                         OEM Ref: {quote.oemNumber || req.part.partNumber || "Verified"} • Supplier Hub:{" "}
                         {quote.supplierLocation || "Japan / Global"}
                       </p>
+                      {/* Quote Validity Countdown Badge */}
+                      {(() => {
+                        const validUntilStr = quote.validUntil || req.customerQuote?.validUntil;
+                        if (!validUntilStr) return null;
+                        const validDate = new Date(validUntilStr);
+                        const now = new Date();
+                        const diffMs = validDate.getTime() - now.getTime();
+                        const daysRemaining = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                        const isExpired = daysRemaining < 0;
+                        const isExpiringSoon = daysRemaining >= 0 && daysRemaining <= 2;
+
+                        return (
+                          <div className="pt-1 flex items-center gap-2 flex-wrap">
+                            <span
+                              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                                isExpired
+                                  ? "bg-rose-50 text-rose-700 border-rose-200"
+                                  : isExpiringSoon
+                                  ? "bg-amber-50 text-amber-800 border-amber-300 animate-pulse"
+                                  : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                              }`}
+                            >
+                              <Clock className="w-3 h-3" />
+                              {isExpired
+                                ? `Quote Expired (${validUntilStr})`
+                                : isExpiringSoon
+                                ? `Expires in ${daysRemaining === 0 ? "Today" : daysRemaining === 1 ? "1 day" : `${daysRemaining} days`} (${validUntilStr})`
+                                : `Valid for ${daysRemaining} days (until ${validUntilStr})`}
+                            </span>
+                            {isExpired && (
+                              <span className="text-[10px] text-rose-600 font-semibold">
+                                Sourcing rates may require reconfirmation.
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })()}
                       {req.supporting?.freightPreference && (
                         <div className="pt-0.5">
                           <span className="text-[10px] font-bold text-[#e20c0c] bg-red-50 px-2 py-0.5 rounded border border-red-100 inline-flex items-center gap-1">

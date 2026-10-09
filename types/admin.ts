@@ -45,4 +45,5 @@ export interface AdminSettings {
   baseMarginPercent: number;
   defaultAirFreight: number;
   defaultSeaFreight: number;
+  jpyToNzdRate?: number;
 }

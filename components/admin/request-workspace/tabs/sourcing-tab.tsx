@@ -35,6 +35,7 @@ export function SourcingTab({ request }: SourcingTabProps) {
     editSupplierQuotation,
     deleteSupplierQuotation,
     selectSupplierQuotation,
+    adminSettings,
   } = useUnifiedData();
 
   const [showAddModal, setShowAddModal] = useState(false);
@@ -45,6 +46,9 @@ export function SourcingTab({ request }: SourcingTabProps) {
   const [supplierPartRef, setSupplierPartRef] = useState("");
   const [availability, setAvailability] = useState<SupplierAvailability>("In Stock");
   const [supplierCost, setSupplierCost] = useState<string | number>("");
+  const [currencyMode, setCurrencyMode] = useState<"NZD" | "JPY">("JPY");
+  const [jpyAmount, setJpyAmount] = useState<string>("");
+  const activeFxRate = adminSettings?.jpyToNzdRate || 0.0108;
   const defaultAirCost = request.specs?.weight ? request.specs.weight * 12.5 : 850;
   const defaultSeaCost = request.specs?.weight ? request.specs.weight * 4.2 : 250;
 
@@ -74,6 +78,7 @@ export function SourcingTab({ request }: SourcingTabProps) {
     setSupplierPartRef(quote.supplierPartRef);
     setAvailability(quote.availability);
     setSupplierCost(quote.supplierCost.toString());
+    setCurrencyMode("NZD");
     setAirFreightInput(quote.airFreightCost ?? quote.supplierFreight);
     setOceanFreightInput(quote.seaFreightCost ?? defaultSeaCost);
     setLeadTimeDays(quote.leadTimeDays);
@@ -553,17 +558,70 @@ export function SourcingTab({ request }: SourcingTabProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">
-                    Supplier Cost (NZD)
-                  </label>
-                  <input
-                    type="text"
-                    value={supplierCost}
-                    onChange={(e) => setSupplierCost(e.target.value)}
-                    required
-                    placeholder="e.g. 250 or TBA"
-                    className="w-full text-sm p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c]"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-sm font-semibold text-slate-700">
+                      Supplier Cost *
+                    </label>
+                    <div className="flex items-center gap-1 p-0.5 bg-slate-100 rounded-lg text-[10px] font-bold">
+                      <button
+                        type="button"
+                        onClick={() => setCurrencyMode("JPY")}
+                        className={`px-2 py-0.5 rounded cursor-pointer ${currencyMode === "JPY" ? "bg-white text-slate-900 shadow-2xs font-extrabold" : "text-slate-500 hover:text-slate-700"}`}
+                      >
+                        JPY (¥)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setCurrencyMode("NZD")}
+                        className={`px-2 py-0.5 rounded cursor-pointer ${currencyMode === "NZD" ? "bg-white text-slate-900 shadow-2xs font-extrabold" : "text-slate-500 hover:text-slate-700"}`}
+                      >
+                        NZD ($)
+                      </button>
+                    </div>
+                  </div>
+
+                  {currencyMode === "JPY" ? (
+                    <div className="space-y-1">
+                      <div className="relative">
+                        <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-500">¥</span>
+                        <input
+                          type="number"
+                          step="1"
+                          placeholder="e.g. 45000"
+                          value={jpyAmount}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setJpyAmount(val);
+                            if (val && !isNaN(Number(val))) {
+                              const nzdVal = (Number(val) * activeFxRate).toFixed(2);
+                              setSupplierCost(nzdVal);
+                            } else {
+                              setSupplierCost("");
+                            }
+                          }}
+                          className="w-full text-sm pl-7 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] font-mono"
+                        />
+                      </div>
+                      <div className="text-[11px] text-slate-500 flex items-center justify-between pt-0.5">
+                        <span>Rate: 1 JPY = ${activeFxRate} NZD</span>
+                        <span className="font-bold text-emerald-600">
+                          ≈ NZ${supplierCost ? Number(supplierCost).toFixed(2) : "0.00"}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <span className="absolute left-3 top-2.5 text-xs text-slate-400">$</span>
+                      <input
+                        type="text"
+                        value={supplierCost}
+                        onChange={(e) => setSupplierCost(e.target.value)}
+                        required
+                        placeholder="e.g. 250.00"
+                        className="w-full text-sm pl-7 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]/30 focus:border-[#e20c0c] font-mono"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>

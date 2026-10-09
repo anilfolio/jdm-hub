@@ -22,6 +22,7 @@ export function AdminSettingsView() {
   const [defaultMargin, setDefaultMargin] = useState(adminSettings.baseMarginPercent || 20);
   const [defaultAirFreight, setDefaultAirFreight] = useState(adminSettings.defaultAirFreight || 185);
   const [defaultSeaFreight, setDefaultSeaFreight] = useState(adminSettings.defaultSeaFreight || 65);
+  const [jpyFxRate, setJpyFxRate] = useState(adminSettings.jpyToNzdRate || 0.0108);
   const [taxRate, setTaxRate] = useState(15);
   const [refPrefix, setRefPrefix] = useState("JDM-P-");
   const [m365Connected, setM365Connected] = useState(true);
@@ -38,6 +39,7 @@ export function AdminSettingsView() {
       baseMarginPercent: defaultMargin,
       defaultAirFreight: defaultAirFreight,
       defaultSeaFreight: defaultSeaFreight,
+      jpyToNzdRate: Number(jpyFxRate),
     });
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);

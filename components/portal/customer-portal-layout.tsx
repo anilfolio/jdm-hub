@@ -8,6 +8,7 @@ import { NewRequestModal } from "./new-request-modal";
 import { RequestDetailsModal } from "./request-details-modal";
 import { PaymentModal } from "./payment-modal";
 import { usePortal } from "@/context/portal-context";
+import { Clock, ShieldAlert } from "lucide-react";
 
 interface CustomerPortalLayoutProps {
   children?: React.ReactNode;
@@ -17,7 +18,7 @@ export function CustomerPortalLayout({ children }: CustomerPortalLayoutProps) {
   const pathname = usePathname();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { selectedRequest, setSelectedRequest, setSelectedRequestDetailsTab, setActiveTab, activeTab, requests } = usePortal();
+  const { activeCustomer, selectedRequest, setSelectedRequest, setSelectedRequestDetailsTab, setActiveTab, activeTab, requests } = usePortal();
 
   // Close mobile drawer whenever pathname or activeTab changes
   useEffect(() => {
@@ -121,6 +122,46 @@ export function CustomerPortalLayout({ children }: CustomerPortalLayoutProps) {
 
         {/* Dynamic Page Content */}
         <main className="flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 flex flex-col">
+        {/* CUSTOMER ACCOUNT STATUS BANNER */}
+        {activeCustomer?.status === "Pending Approval" && (
+          <div className="mb-5 bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300">
+                    Trade Account Under Review
+                  </span>
+                  <span className="text-xs font-bold text-slate-800">
+                    {activeCustomer.businessName}
+                  </span>
+                </div>
+                <p className="text-xs text-amber-950 font-medium mt-1 leading-relaxed">
+                  Your trade account application is currently being verified by the JDMHUB Trade Desk. Sourcing specialists will commence supplier negotiations once your trade credentials are confirmed.
+                </p>
+              </div>
+            </div>
+            <span className="text-[11px] font-bold text-amber-800 bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200 self-start sm:self-auto shrink-0">
+              Review in Progress
+            </span>
+          </div>
+        )}
+
+        {activeCustomer?.status === "Suspended" && (
+          <div className="mb-5 bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 sm:p-5 shadow-xs flex items-center gap-3 animate-in fade-in duration-200">
+            <ShieldAlert className="w-6 h-6 text-rose-600 shrink-0" />
+            <div>
+              <span className="text-xs font-bold text-rose-900 block">
+                Trade Account Suspended
+              </span>
+              <span className="text-xs text-rose-800 block mt-0.5">
+                Your account is currently suspended. Please contact JDMHUB Operations (ops@jdmhub.co.nz) to resolve outstanding invoices.
+              </span>
+            </div>
+          </div>
+        )}
           {selectedRequest ? <RequestDetailsModal /> : children}
         </main>
       </div>

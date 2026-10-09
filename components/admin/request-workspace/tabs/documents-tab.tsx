@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { PartRequest, RequestDocument } from "@/types/shared";
 import { useUnifiedData } from "@/context/unified-data-context";
+import { SupplierPoDocument } from "@/components/shared/supplier-po-document";
 
 interface DocumentsTabProps {
   request: PartRequest;
@@ -23,6 +24,7 @@ export function DocumentsTab({ request }: DocumentsTabProps) {
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [previewDoc, setPreviewDoc] = useState<RequestDocument | null>(null);
+  const [showPoModal, setShowPoModal] = useState(false);
 
   // Form State
   const [docName, setDocName] = useState("");
@@ -43,7 +45,20 @@ export function DocumentsTab({ request }: DocumentsTabProps) {
     setShowUploadModal(false);
   };
 
+  const hasPo = Boolean(request.supplierOrder) || ["Ordered", "Ready for Dispatch", "Shipped", "Delivered", "Completed"].includes(request.status);
+  const poDoc: RequestDocument | null = hasPo
+    ? {
+        id: `po-${request.id}`,
+        name: `Japanese_Supplier_Purchase_Order_${request.supplierOrder?.supplierRef || request.requestNumber}.pdf`,
+        type: "Supplier",
+        size: "Formal 発注書 (A4)",
+        uploadedAt: request.supplierOrder?.orderDate || request.dateSubmitted || "2026-09-08",
+        url: "#po-view",
+      }
+    : null;
+
   const allDocuments: RequestDocument[] = [
+    ...(poDoc ? [poDoc] : []),
     ...(request.documents || []),
     // Add customer photos as previewable document objects if not already listed
     ...(request.supporting?.photos?.map((photoUrl, idx) => ({

@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   Calendar,
   AlertCircle,
+  RotateCcw,
   Eye,
   ExternalLink,
   FileText,
@@ -273,6 +274,38 @@ export function RequestDetailWorkspace({
         </div>
       </div>
 
+      {/* REQUEST CANCELLED BANNER */}
+      {request.status === "Cancelled" && (
+        <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in duration-200">
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <AlertCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-wider bg-rose-200 text-rose-900 px-2.5 py-0.5 rounded-full border border-rose-300">
+                  Request Cancelled / Withdrawn
+                </span>
+                <span className="text-xs font-semibold text-rose-800">
+                  {request.lastUpdated || "Halted"}
+                </span>
+              </div>
+              <p className="text-xs text-rose-950 font-bold mt-1.5 leading-relaxed">
+                {request.actionRequired || "Customer withdrew this request. Japanese sourcing and freight operations halted."}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => updateRequestStatus(request.id, "Submitted")}
+            className="px-4 py-2 bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl text-xs font-bold transition-colors shadow-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Re-Open Request</span>
+          </button>
+        </div>
+      )}
+
       {/* REQUEST SUMMARY HEADER CARD (Section 7) */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-100">
@@ -370,7 +403,7 @@ export function RequestDetailWorkspace({
             </h3>
             <span className="text-xs font-semibold text-slate-500">
               Stage {currentStageIndex + 1}/{LIFECYCLE_STAGES.length}:{" "}
-              <span className="text-[#e20c0c] font-bold">{request.status}</span>
+              <span className="text-[#e20c0c] font-bold">{request.status === "Cancelled" ? "Cancelled [Halted]" : request.status}</span>
             </span>
           </div>
 
@@ -381,6 +414,7 @@ export function RequestDetailWorkspace({
               className="flex-1 sm:flex-none text-xs font-bold bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-700 outline-none focus:border-[#e20c0c] cursor-pointer"
               title="Quickly jump or update stage status"
             >
+              {request.status === "Cancelled" && <option value="Cancelled">Cancelled [Halted]</option>}
               {LIFECYCLE_STAGES.map((s, idx) => (
                 <option key={s} value={s}>
                   {idx + 1}. {s}
