@@ -20,7 +20,12 @@ import {
   Edit3,
   ImagePlus,
   X,
-  Camera
+  Camera,
+  RefreshCw,
+  History,
+  TrendingDown,
+  ArrowRight,
+  AlertCircle,
 } from "lucide-react";
 import { PartRequest, SupplierQuotation } from "@/types/shared";
 import { useUnifiedData } from "@/context/unified-data-context";
@@ -61,6 +66,22 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
   const [quotePhotos, setQuotePhotos] = useState<string[]>([]);
   const [isDraggingPhotos, setIsDraggingPhotos] = useState(false);
   const [photoLightbox, setPhotoLightbox] = useState<string | null>(null);
+
+  const isRevision = Boolean(request.customerQuote) || Boolean(request.quoteRevisionRequest) || request.customerResponse === "Revision Requested";
+  const quoteVersions = request.customerQuoteVersions || [];
+  const nextVersionNumber = (quoteVersions.length || (request.customerQuote ? 1 : 0)) + 1;
+  const revisionReq = request.quoteRevisionRequest;
+
+  const handleApplyTargetBudget = () => {
+    if (!revisionReq?.targetBudget) return;
+    const targetSubtotal = revisionReq.targetBudget / 1.15;
+    const combined = basePartCost + freightCost;
+    if (combined > 0) {
+      const rawMargin = ((targetSubtotal - combined) / combined) * 100;
+      const roundedMargin = Math.max(0, Math.round(rawMargin * 10) / 10);
+      setTargetMargin(roundedMargin);
+    }
+  };
 
   const numericMargin = targetMargin === "" ? 0 : parseFloat(targetMargin.toString()) || 0;
   const combinedCost = basePartCost + freightCost;
@@ -133,9 +154,105 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in duration-300">
-      {/* LEFT COLUMN: Vehicle, Part, Account Info */}
-      <div className="lg:col-span-1 space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-300">
+      {/* REVISION REQUEST ALERT BANNER */}
+      {revisionReq && (
+        <div className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 shadow-xs">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <RefreshCw className="w-5 h-5" />
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300">
+                    Quote Revision Requested
+                  </span>
+                  <span className="text-xs font-bold text-slate-800 bg-white/90 border border-amber-200 px-2 py-0.5 rounded">
+                    Category: {revisionReq.categoryLabel || revisionReq.category}
+                  </span>
+                  <span className="text-[11px] text-amber-800 font-medium">
+                    Received {revisionReq.requestedAt}
+                  </span>
+                </div>
+                <p className="text-xs text-amber-950 font-medium leading-relaxed bg-white/70 p-2.5 rounded-xl border border-amber-200/60">
+                  &ldquo;{revisionReq.notes}&rdquo;
+                </p>
+                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+                  {revisionReq.requestedFreightPreference && (
+                    <span className="text-slate-700">
+                      Requested Freight:{" "}
+                      <strong className="text-slate-900">{revisionReq.requestedFreightPreference}</strong>
+                    </span>
+                  )}
+                  {revisionReq.targetBudget && (
+                    <span className="text-slate-700">
+                      Target Budget Cap:{" "}
+                      <strong className="text-emerald-700 font-bold">
+                        NZ${revisionReq.targetBudget.toFixed(2)}
+                      </strong>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 1-Click Quick Adjustment Actions */}
+            <div className="flex flex-wrap lg:flex-col gap-2 shrink-0">
+              {revisionReq.requestedFreightPreference === "Sea Freight" && selectedFreight !== "ocean" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFreight("ocean");
+                    setFreightCost(defaultOcean);
+                  }}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-colors shadow-xs flex items-center gap-1.5"
+                >
+                  <Anchor className="w-3.5 h-3.5" />
+                  <span>Switch to Ocean Freight (+${defaultOcean.toFixed(2)})</span>
+                </button>
+              )}
+              {revisionReq.requestedFreightPreference === "Air Freight" && selectedFreight !== "air" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFreight("air");
+                    setFreightCost(defaultAir);
+                  }}
+                  className="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-colors shadow-xs flex items-center gap-1.5"
+                >
+                  <Plane className="w-3.5 h-3.5" />
+                  <span>Switch to Air Express (+${defaultAir.toFixed(2)})</span>
+                </button>
+              )}
+              {revisionReq.targetBudget && (
+                <button
+                  type="button"
+                  onClick={handleApplyTargetBudget}
+                  className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-colors shadow-xs flex items-center gap-1.5"
+                >
+                  <TrendingDown className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Auto-Align Margin to Budget (NZ${revisionReq.targetBudget.toFixed(2)})</span>
+                </button>
+              )}
+              {onNavigateToTab && (
+                <button
+                  type="button"
+                  onClick={() => onNavigateToTab("messages")}
+                  className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-3.5 py-2 rounded-xl transition-colors shadow-2xs flex items-center gap-1.5"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-slate-400" />
+                  <span>In-App Thread</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* LEFT COLUMN: Vehicle, Part, Account Info */}
+        <div className="lg:col-span-1 space-y-6">
 
         {/* VEHICLE SPECIFICATIONS */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.05)]">
@@ -337,7 +454,89 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
           </div>
         </div>
 
-        {/* The Beautiful Landed Cost Schedule */}
+        {/* QUOTE VERSION HISTORY */}
+        {(quoteVersions.length > 0 || request.customerQuote) && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.05)]">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+              <h3 className="text-xs font-bold text-slate-700 uppercase flex items-center gap-2 tracking-wider">
+                <History className="w-4 h-4 text-slate-400" />
+                Quote Version History
+              </h3>
+              <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                Current: v{request.customerQuote?.version || 1}
+              </span>
+            </div>
+
+            <div className="space-y-3">
+              {quoteVersions.map((v) => (
+                <div
+                  key={v.version}
+                  className="p-3 rounded-xl border border-slate-200 bg-slate-50/60 text-xs space-y-1.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900">
+                      Version {v.version}
+                    </span>
+                    <span
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                        v.status === "Accepted"
+                          ? "bg-emerald-100 text-emerald-800"
+                          : v.status === "Revised"
+                          ? "bg-amber-100 text-amber-800"
+                          : v.status === "Rejected"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-slate-200 text-slate-700"
+                      }`}
+                    >
+                      {v.status || "Archived"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-slate-600">
+                    <span>Landed Total:</span>
+                    <span className="font-bold text-slate-900">
+                      NZ${v.totalAmount.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-[11px] text-slate-400">
+                    <span>Issued: {v.date}</span>
+                    <span>Transit: ~{v.estimatedTransitDays}d</span>
+                  </div>
+                  {v.notes && (
+                    <p className="text-[11px] text-slate-500 italic bg-white p-1.5 rounded border border-slate-100 mt-1">
+                      &ldquo;{v.notes}&rdquo;
+                    </p>
+                  )}
+                </div>
+              ))}
+              {quoteVersions.length === 0 && request.customerQuote && (
+                <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/60 text-xs space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900">
+                      Version {request.customerQuote.version} (Active)
+                    </span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">
+                      Current
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-slate-600">
+                    <span>Landed Total:</span>
+                    <span className="font-bold text-slate-900">
+                      NZ${request.customerQuote.totalAmount.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-[11px] text-slate-400">
+                    <span>Valid until: {request.customerQuote.validUntil}</span>
+                    <span>Transit: ~{request.customerQuote.estimatedTransitDays}d</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* RIGHT COLUMN: The Beautiful Landed Cost Schedule */}
+      <div className="lg:col-span-2 space-y-6">
         <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] relative overflow-hidden">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5 border-b border-slate-100 pb-5">
@@ -571,7 +770,6 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
-
             <button
               onClick={handleIssueQuote}
               disabled={!selectedQuote}
@@ -581,11 +779,16 @@ export function QuoteTab({ request, onNavigateToTab }: QuoteTabProps) {
                 }`}
             >
               <Check className="w-4 h-4" />
-              {selectedQuote ? "Issue Quote to Customer" : "Add a Supplier Quote First"}
+              {selectedQuote
+                ? isRevision
+                  ? `Issue Revised Quote (v${nextVersionNumber}) to Customer`
+                  : "Issue Quote to Customer"
+                : "Add a Supplier Quote First"}
             </button>
           </div>
         </div>
       </div>
+    </div>
 
       {/* SUCCESS MODAL */}
       {showSuccessModal && (

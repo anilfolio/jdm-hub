@@ -29,7 +29,8 @@ export type CustomerStatus = "Pending Approval" | "Active" | "Suspended";
 export type CustomerResponse =
   | "Accepted"
   | "Rejected"
-  | "Request More Information";
+  | "Request More Information"
+  | "Revision Requested";
 
 // ─── Vehicle & Part ────────────────────────────────────────
 
@@ -165,9 +166,10 @@ export interface CustomerQuoteVersion {
   notes: string;
   terms: string;
   sentAt: string;
-  status: "Draft" | "Sent" | "Accepted" | "Rejected" | "Revised";
+  status: "Draft" | "Sent" | "Accepted" | "Rejected" | "Revised" | "Revision Requested";
   createdBy: string;
   quotePhotos?: string[];
+  revisionRequest?: QuoteRevisionDetails;
 }
 
 export interface Quotation {
@@ -299,6 +301,15 @@ export interface RequestDocument {
   url?: string;
 }
 
+export interface NoteReply {
+  id: string;
+  author: string;
+  role: string;
+  text: string;
+  timestamp: string;
+  isCustomerVisible?: boolean;
+}
+
 export interface InternalNote {
   id: string;
   author: string;
@@ -306,6 +317,41 @@ export interface InternalNote {
   text: string;
   timestamp: string;
   isCustomerVisible?: boolean;
+  replies?: NoteReply[];
+}
+
+export type RevisionReasonCategory =
+  | "freight_mode"
+  | "aftermarket_alternative"
+  | "price_budget"
+  | "part_specification"
+  | "quantity"
+  | "other";
+
+export interface QuoteRevisionDetails {
+  id: string;
+  requestedAt: string;
+  requestedBy: string;
+  category: RevisionReasonCategory;
+  categoryLabel: string;
+  targetBudget?: number;
+  requestedFreightPreference?: "Air Freight" | "Sea Freight";
+  requestedPartPreference?: "Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A";
+  notes: string;
+  status: "Pending Admin Review" | "Under Review" | "Revision Issued" | "Declined";
+}
+
+export interface RequestMessage {
+  id: string;
+  requestId: string;
+  senderName: string;
+  senderRole: string;
+  senderType: "customer" | "admin";
+  message: string;
+  timestamp: string;
+  replyToNoteId?: string;
+  isRevisionRequest?: boolean;
+  avatarUrl?: string;
 }
 
 export interface RequestActivity {
@@ -406,7 +452,8 @@ export interface PartRequest {
   documents?: RequestDocument[];
   internalNotes?: InternalNote[];
   activity?: RequestActivity[];
-  messages?: any[];
+  messages?: RequestMessage[];
+  quoteRevisionRequest?: QuoteRevisionDetails;
 
   // Legacy / customer action prompt helpers
   actionRequired?: string;
@@ -424,6 +471,9 @@ export type NotificationType =
   | "Quote Sent"
   | "Quote Accepted"
   | "Quote Rejected"
+  | "Quote Revision Requested"
+  | "Quote Revision Ready"
+  | "New Message"
   | "Payment Received"
   | "Payment Updated"
   | "Order Placed"

@@ -94,6 +94,8 @@ export function CustomerResponseBadge({
         ? "Customer Response: Accepted"
         : response === "Rejected"
         ? "Customer Response: Declined"
+        : response === "Revision Requested"
+        ? "Quote Revision Requested"
         : "Info Requested"}
     </span>
   );

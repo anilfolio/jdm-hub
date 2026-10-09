@@ -26,6 +26,11 @@ import {
   Quotation,
   CustomerStatus,
   QuoteAcceptanceAudit,
+  InternalNote,
+  NoteReply,
+  QuoteRevisionDetails,
+  RevisionReasonCategory,
+  RequestMessage,
 } from "@/types/shared";
 import { AdminMetrics, AdminSettings } from "@/types/admin";
 import {
@@ -83,6 +88,18 @@ interface UnifiedDataContextType {
   ) => void;
   acceptCustomerQuote: (requestId: string, audit: QuoteAcceptanceAudit) => void;
   rejectCustomerQuote: (requestId: string, reason: string) => void;
+  requestQuoteRevision: (
+    requestId: string,
+    revision: {
+      category: RevisionReasonCategory;
+      categoryLabel: string;
+      targetBudget?: number;
+      requestedFreightPreference?: "Air Freight" | "Sea Freight";
+      requestedPartPreference?: "Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A";
+      notes: string;
+      requestedBy?: string;
+    }
+  ) => void;
   requestMoreInfo: (requestId: string, query: string) => void;
 
   // Actions - Payment
@@ -129,6 +146,22 @@ interface UnifiedDataContextType {
 
   // Actions - Notes & Documents
   addInternalNote: (requestId: string, text: string, isCustomerVisible?: boolean) => void;
+  addNoteReply: (
+    requestId: string,
+    noteId: string,
+    text: string,
+    author?: string,
+    role?: string,
+    isCustomerVisible?: boolean
+  ) => void;
+  sendRequestMessage: (
+    requestId: string,
+    message: string,
+    senderName?: string,
+    senderRole?: string,
+    senderType?: "customer" | "admin",
+    replyToNoteId?: string
+  ) => void;
   addDocument: (requestId: string, doc: { name: string; type: "Customer" | "Supplier" | "Shipment" | "General"; size: string }) => void;
 
   // Actions - Management
@@ -952,6 +985,11 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
         prev.map((r) => {
           if (r.id === requestId || r.requestNumber === requestId) {
             const nextVer = (r.customerQuoteVersions?.length || 0) + 1;
+            const updatedPreviousVersions = (r.customerQuoteVersions || []).map((v) => ({
+              ...v,
+              status: (v.status === "Revision Requested" ? "Revised" : v.status) as any,
+            }));
+
             const newVersion: CustomerQuoteVersion = {
               version: nextVer,
               date: new Date().toISOString().split("T")[0],
@@ -993,23 +1031,37 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
               quotePhotos: params.quotePhotos,
             };
 
+            const quoteThreadMsg: RequestMessage = {
+              id: `msg-${Date.now()}`,
+              requestId: r.id,
+              senderName: currentStaffUser.name,
+              senderRole: currentStaffUser.role,
+              senderType: "admin",
+              message: nextVer > 1
+                ? `[Quote Revision v${nextVer} Issued] Landed Total: NZ$${totalAmount.toFixed(2)} (Incl. 15% GST & Freight). ${params.notes ? `Specialist Note: "${params.notes}"` : ""}`
+                : `[Formal Quote v1 Issued] Landed Total: NZ$${totalAmount.toFixed(2)} (Incl. 15% GST & Freight). ${params.notes ? `Specialist Note: "${params.notes}"` : ""}`,
+              timestamp: "Just now",
+            };
+
             return {
               ...r,
               status: "Quoted",
               quotedValue: totalAmount,
               customerQuote: newQuotation,
               quotation: newQuotation,
-              customerQuoteVersions: [newVersion, ...(r.customerQuoteVersions || [])],
+              customerQuoteVersions: [newVersion, ...updatedPreviousVersions],
               customerResponse: undefined,
+              quoteRevisionRequest: undefined,
               actionRequired: "Review & approve quote to proceed to fulfillment",
               actionType: "review_quote",
               lastUpdated: "Just now",
+              messages: [...(r.messages || []), quoteThreadMsg],
               activity: [
                 {
                   id: `act-${Date.now()}`,
                   timestamp: new Date().toISOString(),
                   timeLabel: "Just now",
-                  title: `Customer quote v${nextVer} created`,
+                  title: nextVer > 1 ? `Customer quote revision v${nextVer} created` : `Customer quote v1 created`,
                   description: `Quote created for NZ$${totalAmount.toFixed(2)} (Part: $${params.sellPrice.toFixed(2)}, Freight: $${activeFreight.toFixed(2)}) and sent to ${r.customerName}.${params.notes ? ` Specialist Note: "${params.notes}"` : ""}`,
                   actor: currentStaffUser.name,
                   type: "quote",
@@ -1025,11 +1077,12 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
       // Notification
       const target = getRequestById(requestId);
       if (target) {
+        const isRevision = (target.customerQuoteVersions?.length || 0) > 0;
         setNotifications((prev) => [
           {
             id: `notif-${Date.now()}`,
-            type: "Quote Sent",
-            title: `Quote Ready: ${target.requestNumber}`,
+            type: isRevision ? "Quote Revision Ready" : "Quote Sent",
+            title: isRevision ? `Quote Revision Ready: ${target.requestNumber}` : `Quote Ready: ${target.requestNumber}`,
             description: `Quote for NZ$${totalAmount.toFixed(2)} dispatched to ${target.customerName}.${params.notes ? ` Note: "${params.notes}"` : ""}`,
             timestamp: "Just now",
             read: false,
@@ -1187,10 +1240,21 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
       setRequests((prev) =>
         prev.map((r) => {
           if (r.id === requestId || r.requestNumber === requestId) {
+            const customerName = r.contactName || r.customerName || "Customer";
+            const declineMsg: RequestMessage = {
+              id: `msg-${Date.now()}`,
+              requestId: r.id,
+              senderName: customerName,
+              senderRole: "Customer",
+              senderType: "customer",
+              message: `[Quote Declined] Reason: ${reason}`,
+              timestamp: "Just now",
+            };
             return {
               ...r,
               customerResponse: "Rejected",
               lastUpdated: "Just now",
+              messages: [...(r.messages || []), declineMsg],
               activity: [
                 {
                   id: `act-${Date.now()}`,
@@ -1198,7 +1262,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
                   timeLabel: "Just now",
                   title: "Customer declined quote",
                   description: `Quote declined. Customer reason: ${reason}.`,
-                  actor: r.contactName || "Customer",
+                  actor: customerName,
                   type: "quote",
                 },
                 ...(r.activity || []),
@@ -1208,8 +1272,143 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
           return r;
         })
       );
+
+      const target = getRequestById(requestId);
+      if (target) {
+        setNotifications((prev) => [
+          {
+            id: `notif-${Date.now()}`,
+            type: "Quote Rejected",
+            title: `Quote Declined: ${target.requestNumber}`,
+            description: `Quote declined by ${target.customerName}. Reason: ${reason}.`,
+            timestamp: "Just now",
+            read: false,
+            requestId: target.id,
+          },
+          ...prev,
+        ]);
+      }
     },
-    []
+    [getRequestById]
+  );
+
+  const requestQuoteRevision = useCallback(
+    (
+      requestId: string,
+      revision: {
+        category: RevisionReasonCategory;
+        categoryLabel: string;
+        targetBudget?: number;
+        requestedFreightPreference?: "Air Freight" | "Sea Freight";
+        requestedPartPreference?: "Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A";
+        notes: string;
+        requestedBy?: string;
+      }
+    ) => {
+      const nowStr = new Date().toLocaleString("en-NZ", { timeZone: "Pacific/Auckland" });
+      const revisionDetails: QuoteRevisionDetails = {
+        id: `rev-${Date.now()}`,
+        requestedAt: nowStr,
+        requestedBy: revision.requestedBy || "Customer Workshop",
+        category: revision.category,
+        categoryLabel: revision.categoryLabel,
+        targetBudget: revision.targetBudget,
+        requestedFreightPreference: revision.requestedFreightPreference,
+        requestedPartPreference: revision.requestedPartPreference,
+        notes: revision.notes,
+        status: "Pending Admin Review",
+      };
+
+      setRequests((prev) =>
+        prev.map((r) => {
+          if (r.id === requestId || r.requestNumber === requestId) {
+            const customerName = r.contactName || r.customerName || revision.requestedBy || "Customer";
+            const updatedVersions = (r.customerQuoteVersions || []).map((v, i) => {
+              if (i === 0) {
+                return {
+                  ...v,
+                  status: "Revision Requested" as const,
+                  revisionRequest: revisionDetails,
+                };
+              }
+              return v;
+            });
+
+            const revSummaryParts = [
+              `[Quote Revision Request] ${revision.categoryLabel}`,
+              revision.targetBudget ? `Target Budget: NZ$${revision.targetBudget}` : null,
+              revision.requestedFreightPreference ? `Preferred Freight: ${revision.requestedFreightPreference}` : null,
+              revision.requestedPartPreference ? `Preferred Part: ${revision.requestedPartPreference}` : null,
+              revision.notes ? `Feedback: "${revision.notes}"` : null,
+            ].filter(Boolean);
+            const revSummary = revSummaryParts.join(" • ");
+
+            const newNote: InternalNote = {
+              id: `note-${Date.now()}`,
+              author: customerName,
+              role: "Customer",
+              text: revSummary,
+              timestamp: "Just now",
+              isCustomerVisible: true,
+              replies: [],
+            };
+
+            const newMessage: RequestMessage = {
+              id: `msg-${Date.now()}`,
+              requestId: r.id,
+              senderName: customerName,
+              senderRole: "Customer",
+              senderType: "customer",
+              message: revSummary,
+              timestamp: "Just now",
+              isRevisionRequest: true,
+            };
+
+            return {
+              ...r,
+              customerResponse: "Revision Requested",
+              quoteRevisionRequest: revisionDetails,
+              customerQuoteVersions: updatedVersions,
+              lastUpdated: "Just now",
+              actionRequired: "Review customer counter-offer & prepare revised Quote v2",
+              actionType: "review_quote",
+              internalNotes: [newNote, ...(r.internalNotes || [])],
+              messages: [...(r.messages || []), newMessage],
+              activity: [
+                {
+                  id: `act-${Date.now()}`,
+                  timestamp: new Date().toISOString(),
+                  timeLabel: "Just now",
+                  title: "Quote revision requested",
+                  description: `${customerName} requested quote revision: ${revision.categoryLabel}.${revision.targetBudget ? ` Target budget: NZ$${revision.targetBudget}.` : ""}${revision.notes ? ` Note: "${revision.notes}"` : ""}`,
+                  actor: customerName,
+                  type: "quote",
+                },
+                ...(r.activity || []),
+              ],
+            };
+          }
+          return r;
+        })
+      );
+
+      const target = getRequestById(requestId);
+      if (target) {
+        setNotifications((prev) => [
+          {
+            id: `notif-${Date.now()}`,
+            type: "Quote Revision Requested",
+            title: `Quote Revision: ${target.requestNumber}`,
+            description: `${target.customerName} requested a quote revision (${revision.categoryLabel}).${revision.targetBudget ? ` Target: $${revision.targetBudget}.` : ""}`,
+            timestamp: "Just now",
+            read: false,
+            requestId: target.id,
+          },
+          ...prev,
+        ]);
+      }
+    },
+    [getRequestById]
   );
 
   const requestMoreInfo = useCallback(
@@ -1708,9 +1907,22 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
       setRequests((prev) =>
         prev.map((r) => {
           if (r.id === requestId || r.requestNumber === requestId) {
+            const threadMsg: RequestMessage | null = isCustomerVisible
+              ? {
+                  id: `msg-${Date.now()}`,
+                  requestId: r.id,
+                  senderName: currentStaffUser.name,
+                  senderRole: currentStaffUser.role,
+                  senderType: "admin",
+                  message: text,
+                  timestamp: "Just now",
+                }
+              : null;
+
             return {
               ...r,
               lastUpdated: "Just now",
+              messages: threadMsg ? [...(r.messages || []), threadMsg] : (r.messages || []),
               internalNotes: [
                 {
                   id: `note-${Date.now()}`,
@@ -1719,6 +1931,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
                   text,
                   timestamp: "Just now",
                   isCustomerVisible,
+                  replies: [],
                 },
                 ...(r.internalNotes || []),
               ],
@@ -1739,8 +1952,190 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
           return r;
         })
       );
+
+      if (isCustomerVisible) {
+        const target = getRequestById(requestId);
+        if (target) {
+          setNotifications((prev) => [
+            {
+              id: `notif-${Date.now()}`,
+              type: "New Message",
+              title: `New Note from JDMHUB: ${target.requestNumber}`,
+              description: `${currentStaffUser.name}: "${text.slice(0, 70)}${text.length > 70 ? "..." : ""}"`,
+              timestamp: "Just now",
+              read: false,
+              requestId: target.id,
+            },
+            ...prev,
+          ]);
+        }
+      }
     },
-    [currentStaffUser]
+    [currentStaffUser, getRequestById]
+  );
+
+  const addNoteReply = useCallback(
+    (
+      requestId: string,
+      noteId: string,
+      text: string,
+      author?: string,
+      role?: string,
+      isCustomerVisible: boolean = true
+    ) => {
+      const replyAuthor = author || currentStaffUser.name;
+      const replyRole = role || currentStaffUser.role;
+      const replyId = `rep-${Date.now()}`;
+      const newReply: NoteReply = {
+        id: replyId,
+        author: replyAuthor,
+        role: replyRole,
+        text,
+        timestamp: "Just now",
+        isCustomerVisible,
+      };
+
+      setRequests((prev) =>
+        prev.map((r) => {
+          if (r.id === requestId || r.requestNumber === requestId) {
+            const updatedNotes = (r.internalNotes || []).map((n) => {
+              if (n.id === noteId) {
+                return {
+                  ...n,
+                  replies: [...(n.replies || []), newReply],
+                };
+              }
+              return n;
+            });
+
+            const newMessage: RequestMessage = {
+              id: `msg-${Date.now()}`,
+              requestId: r.id,
+              senderName: replyAuthor,
+              senderRole: replyRole,
+              senderType: replyRole === "Customer" ? "customer" : "admin",
+              message: text,
+              timestamp: "Just now",
+              replyToNoteId: noteId,
+            };
+
+            return {
+              ...r,
+              lastUpdated: "Just now",
+              internalNotes: updatedNotes,
+              messages: [...(r.messages || []), newMessage],
+              activity: [
+                {
+                  id: `act-${Date.now()}`,
+                  timestamp: new Date().toISOString(),
+                  timeLabel: "Just now",
+                  title: `Reply added to note`,
+                  description: `${replyAuthor}: "${text}"`,
+                  actor: replyAuthor,
+                  type: "note",
+                },
+                ...(r.activity || []),
+              ],
+            };
+          }
+          return r;
+        })
+      );
+
+      const target = getRequestById(requestId);
+      if (target) {
+        setNotifications((prev) => [
+          {
+            id: `notif-${Date.now()}`,
+            type: "New Message",
+            title: `Note Reply: ${target.requestNumber}`,
+            description: `${replyAuthor}: "${text.slice(0, 70)}${text.length > 70 ? "..." : ""}"`,
+            timestamp: "Just now",
+            read: false,
+            requestId: target.id,
+          },
+          ...prev,
+        ]);
+      }
+    },
+    [currentStaffUser, getRequestById]
+  );
+
+  const sendRequestMessage = useCallback(
+    (
+      requestId: string,
+      message: string,
+      senderName?: string,
+      senderRole?: string,
+      senderType: "customer" | "admin" = "customer",
+      replyToNoteId?: string
+    ) => {
+      const sName = senderName || (senderType === "admin" ? currentStaffUser.name : "Customer");
+      const sRole = senderRole || (senderType === "admin" ? currentStaffUser.role : "Customer");
+      const newMessage: RequestMessage = {
+        id: `msg-${Date.now()}`,
+        requestId,
+        senderName: sName,
+        senderRole: sRole,
+        senderType,
+        message,
+        timestamp: "Just now",
+        replyToNoteId,
+      };
+
+      const newNote: InternalNote = {
+        id: `note-${Date.now()}`,
+        author: sName,
+        role: sRole,
+        text: message,
+        timestamp: "Just now",
+        isCustomerVisible: true,
+        replies: [],
+      };
+
+      setRequests((prev) =>
+        prev.map((r) => {
+          if (r.id === requestId || r.requestNumber === requestId) {
+            return {
+              ...r,
+              lastUpdated: "Just now",
+              messages: [...(r.messages || []), newMessage],
+              internalNotes: [newNote, ...(r.internalNotes || [])],
+              activity: [
+                {
+                  id: `act-${Date.now()}`,
+                  timestamp: new Date().toISOString(),
+                  timeLabel: "Just now",
+                  title: senderType === "customer" ? "Customer message received" : "Message sent to customer",
+                  description: `${sName}: "${message}"`,
+                  actor: sName,
+                  type: "note",
+                },
+                ...(r.activity || []),
+              ],
+            };
+          }
+          return r;
+        })
+      );
+
+      const target = getRequestById(requestId);
+      if (target) {
+        setNotifications((prev) => [
+          {
+            id: `notif-${Date.now()}`,
+            type: "New Message",
+            title: `New Message: ${target.requestNumber}`,
+            description: `${sName}: "${message.slice(0, 70)}${message.length > 70 ? "..." : ""}"`,
+            timestamp: "Just now",
+            read: false,
+            requestId: target.id,
+          },
+          ...prev,
+        ]);
+      }
+    },
+    [currentStaffUser, getRequestById]
   );
 
   const addDocument = useCallback(
@@ -1893,6 +2288,7 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
         createCustomerQuote,
         acceptCustomerQuote,
         rejectCustomerQuote,
+        requestQuoteRevision,
         requestMoreInfo,
         markPaymentPaid,
         markPaymentUnpaid,
@@ -1903,6 +2299,8 @@ export function UnifiedDataProvider({ children }: { children: React.ReactNode })
         recordDelivery,
         completeRequest,
         addInternalNote,
+        addNoteReply,
+        sendRequestMessage,
         addDocument,
         addCustomer,
         updateCustomerStatus,

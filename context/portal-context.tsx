@@ -9,6 +9,7 @@ import {
   ProcurementActivity,
   SavedAddress,
   QuoteAcceptanceAudit,
+  RevisionReasonCategory,
 } from "@/types/portal";
 import { CustomerRecord } from "@/types/shared";
 import {
@@ -55,6 +56,18 @@ interface PortalContextType {
   submitNewRequest: (reqData: Partial<PartRequest>) => PartRequest;
   acceptQuote: (requestId: string, acceptanceAudit: QuoteAcceptanceAudit) => void;
   rejectQuote: (requestId: string, reason: string) => void;
+  requestQuoteRevision: (
+    requestId: string,
+    revision: {
+      category: RevisionReasonCategory;
+      categoryLabel: string;
+      targetBudget?: number;
+      requestedFreightPreference?: "Air Freight" | "Sea Freight";
+      requestedPartPreference?: "Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A";
+      notes: string;
+    }
+  ) => void;
+  addNoteReply: (requestId: string, noteId: string, text: string) => void;
   submitPayment: (
     requestId: string,
     reference?: string,
@@ -86,6 +99,9 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     submitCustomerRequest,
     acceptCustomerQuote,
     rejectCustomerQuote,
+    requestQuoteRevision: sharedRequestRevision,
+    addNoteReply: sharedAddNoteReply,
+    sendRequestMessage,
     markPaymentPaid,
     issueInvoice,
     markNotificationAsRead: sharedMarkRead,
@@ -374,7 +390,41 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
   };
 
   const sendMessage = (requestId: string, text: string) => {
-    console.log("External communication recorded for request", requestId, text);
+    sendRequestMessage(
+      requestId,
+      text,
+      activeCustomer.contactName || activeCustomer.businessName,
+      activeCustomer.contactRole || "Customer",
+      "customer"
+    );
+  };
+
+  const addNoteReply = (requestId: string, noteId: string, text: string) => {
+    sharedAddNoteReply(
+      requestId,
+      noteId,
+      text,
+      activeCustomer.contactName || activeCustomer.businessName,
+      "Customer",
+      true
+    );
+  };
+
+  const requestQuoteRevision = (
+    requestId: string,
+    revision: {
+      category: RevisionReasonCategory;
+      categoryLabel: string;
+      targetBudget?: number;
+      requestedFreightPreference?: "Air Freight" | "Sea Freight";
+      requestedPartPreference?: "Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A";
+      notes: string;
+    }
+  ) => {
+    sharedRequestRevision(requestId, {
+      ...revision,
+      requestedBy: activeCustomer.contactName || activeCustomer.businessName,
+    });
   };
 
   return (
@@ -417,6 +467,8 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         submitNewRequest,
         acceptQuote,
         rejectQuote,
+        requestQuoteRevision,
+        addNoteReply,
         submitPayment,
         sendMessage,
         activeCustomer,

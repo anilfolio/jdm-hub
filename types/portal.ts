@@ -24,10 +24,14 @@ export type {
   ShipmentDetails,
   RequestDocument,
   InternalNote,
+  NoteReply,
   RequestActivity,
   PartRequest,
   NotificationType,
   PortalNotification,
+  QuoteRevisionDetails,
+  RevisionReasonCategory,
+  RequestMessage,
 } from "./shared";
 
 export type PortalTab =
@@ -37,16 +41,6 @@ export type PortalTab =
   | "shipments"
   | "payments"
   | "settings";
-
-
-export interface RequestMessage {
-  id: string;
-  senderName: string;
-  senderRole: "Customer" | "Autohub Operations";
-  message: string;
-  timestamp: string;
-  avatarUrl?: string;
-}
 
 export interface ProcurementActivity {
   id: string;

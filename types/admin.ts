@@ -18,6 +18,7 @@ export type RequestDetailTab =
   | "payment"
   | "shipment"
   | "documents"
+  | "messages"
   | "activity";
 
 export interface RequestFilterOptions {

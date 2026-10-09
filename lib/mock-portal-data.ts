@@ -449,8 +449,10 @@ export const INITIAL_REQUESTS: PartRequest[] = [
     messages: [
       {
         id: "msg-6",
+        requestId: "req-119",
         senderName: "Operations Dispatch",
         senderRole: "Autohub Operations",
+        senderType: "admin",
         message: "Payment settled on SP Motors 30-Day Credit Account. Official PO dispatched to Honda Japan central parts warehouse.",
         timestamp: "Today • 09:20 AM",
       },

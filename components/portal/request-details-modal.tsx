@@ -30,6 +30,9 @@ import {
   Download,
   ShoppingBag,
   Camera,
+  RefreshCw,
+  CornerDownRight,
+  RotateCcw,
 } from "lucide-react";
 import { usePortal } from "@/context/portal-context";
 import { InvoiceDocument } from "@/components/shared/invoice-document";
@@ -39,6 +42,7 @@ import {
   RequestStatus,
   ShipmentMilestone,
   QuoteAcceptanceAudit,
+  RevisionReasonCategory,
 } from "@/types/portal";
 import { DEFAULT_PART_IMAGE, handleImageError } from "@/lib/default-images";
 
@@ -50,6 +54,9 @@ export function RequestDetailsModal() {
     setSelectedRequest,
     acceptQuote,
     rejectQuote,
+    requestQuoteRevision,
+    addNoteReply,
+    sendMessage,
     setIsPaymentModalOpen,
     setPaymentRequest,
     setActiveTab: setPortalTab,
@@ -59,8 +66,8 @@ export function RequestDetailsModal() {
     setSelectedRequestDetailsTab,
   } = usePortal();
 
-  // Navigation tabs: overview | quote | shipment | invoice
-  const [activeTab, setActiveTab] = useState<"overview" | "quote" | "shipment" | "invoice">(
+  // Navigation tabs: overview | quote | shipment | invoice | messages
+  const [activeTab, setActiveTab] = useState<"overview" | "quote" | "shipment" | "invoice" | "messages">(
     (selectedRequestDetailsTab as any) || "overview"
   );
   const [showDirectContactModal, setShowDirectContactModal] = useState(false);
@@ -77,7 +84,23 @@ export function RequestDetailsModal() {
 
   // Quote reject state
   const [isRejecting, setIsRejecting] = useState(false);
-  const [rejectReason, setRejectReason] = useState("Local source found faster");
+  const [rejectReason, setRejectReason] = useState("Local source found faster in NZ");
+  const [rejectNotes, setRejectNotes] = useState("");
+
+  // Quote revision state
+  const [isRequestingRevision, setIsRequestingRevision] = useState(false);
+  const [revisionCategory, setRevisionCategory] = useState<RevisionReasonCategory>("freight_mode");
+  const [revisionBudget, setRevisionBudget] = useState("");
+  const [revisionFreight, setRevisionFreight] = useState<"Air Freight" | "Sea Freight">("Sea Freight");
+  const [revisionPartPreference, setRevisionPartPreference] = useState<"Genuine OEM" | "Aftermarket Quality" | "Used / Tested Grade A">("Aftermarket Quality");
+  const [revisionNotes, setRevisionNotes] = useState("");
+
+  // Direct Note reply state
+  const [replyingNoteId, setReplyingNoteId] = useState<string | null>(null);
+  const [noteReplyContent, setNoteReplyContent] = useState("");
+
+  // In-app conversation chat input
+  const [inAppChatInput, setInAppChatInput] = useState("");
 
   const [selectedFreightType, setSelectedFreightType] = useState<"Air" | "Sea" | null>(null);
   const [quotePhotoLightbox, setQuotePhotoLightbox] = useState<string | null>(null);
@@ -244,9 +267,33 @@ export function RequestDetailsModal() {
   };
 
   const handleConfirmReject = () => {
-    rejectQuote(req.id, rejectReason);
+    const finalReason = rejectNotes.trim() ? `${rejectReason} — Note: ${rejectNotes.trim()}` : rejectReason;
+    rejectQuote(req.id, finalReason);
     setIsRejecting(false);
-    setSelectedRequest(null);
+  };
+
+  const handleConfirmRevision = () => {
+    const categoryLabels: Record<RevisionReasonCategory, string> = {
+      freight_mode: "Switch Freight Mode (Sea / Air)",
+      aftermarket_alternative: "Lower-cost Aftermarket / Used Alternative",
+      price_budget: "Counter-Offer / Target Budget",
+      part_specification: "Part Specification / Condition Change",
+      quantity: "Change Requested Quantity",
+      other: "Custom Revision Request",
+    };
+
+    requestQuoteRevision(req.id, {
+      category: revisionCategory,
+      categoryLabel: categoryLabels[revisionCategory],
+      targetBudget: revisionBudget ? parseFloat(revisionBudget) : undefined,
+      requestedFreightPreference: revisionCategory === "freight_mode" ? revisionFreight : undefined,
+      requestedPartPreference: revisionCategory === "aftermarket_alternative" ? revisionPartPreference : undefined,
+      notes: revisionNotes.trim() || `Customer requested ${categoryLabels[revisionCategory]}`,
+    });
+
+    setIsRequestingRevision(false);
+    setRevisionBudget("");
+    setRevisionNotes("");
   };
 
   return (
@@ -503,6 +550,26 @@ export function RequestDetailsModal() {
                 )}
               </button>
             )}
+
+            <button
+              onClick={() => {
+                setActiveTab("messages");
+                setSelectedRequestDetailsTab?.("messages");
+              }}
+              className={`py-3 px-3 sm:px-4 border-b-2 flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 whitespace-nowrap ${
+                activeTab === "messages"
+                  ? "border-[#e20c0c] text-[#e20c0c]"
+                  : "border-transparent hover:text-slate-900"
+              }`}
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Messages &amp; Thread</span>
+              {(req.messages?.length || 0) > 0 && (
+                <span className="text-[10px] bg-red-100 text-[#e20c0c] px-1.5 py-0.2 rounded-full font-bold">
+                  {req.messages?.length}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -567,6 +634,34 @@ export function RequestDetailsModal() {
                       Record Settlement (Unpaid) →
                     </button>
                   )}
+                </div>
+              )}
+
+              {/* Revision Requested Alert Banner */}
+              {req.customerResponse === "Revision Requested" && (
+                <div className="p-3.5 sm:p-4 rounded-xl bg-amber-50 border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 mt-0.5">
+                      <RefreshCw className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-amber-950 flex items-center gap-2">
+                        <span>Quote Revision &amp; Counter-Offer Logged</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 border border-amber-300">
+                          Pending Revision v2
+                        </span>
+                      </h4>
+                      <p className="text-[11px] text-amber-900 mt-0.5 leading-relaxed">
+                        You requested a revision ({req.quoteRevisionRequest?.categoryLabel || "Specification alternative"}). JDMHUB operations is preparing revised pricing.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab("quote")}
+                    className="w-full sm:w-auto px-4 py-2 sm:py-1.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm text-center justify-center shrink-0 cursor-pointer active:scale-95 transition-all"
+                  >
+                    View Revision Details →
+                  </button>
                 </div>
               )}
 
@@ -870,14 +965,99 @@ export function RequestDetailsModal() {
                       )}
 
                       {customerVisibleNotes.length > 0 && (
-                        <div className="space-y-2 pt-1">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                            Operational Updates
-                          </span>
+                        <div className="space-y-2.5 pt-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                              Operational Updates &amp; Notes
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setActiveTab("messages");
+                                setSelectedRequestDetailsTab?.("messages");
+                              }}
+                              className="text-[11px] font-bold text-[#e20c0c] hover:underline flex items-center gap-1 cursor-pointer"
+                            >
+                              <MessageSquare className="w-3 h-3" />
+                              <span>Open In-App Thread</span>
+                            </button>
+                          </div>
                           {customerVisibleNotes.map((note: any) => (
-                            <div key={note.id} className="bg-white/70 p-2.5 rounded-lg border border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 text-xs">
-                              <p className="text-slate-700">{note.content}</p>
-                              <span className="text-[10px] text-slate-400 shrink-0">{note.createdAt}</span>
+                            <div key={note.id} className="bg-white/90 p-3 rounded-xl border border-amber-200/90 space-y-2 text-xs shadow-2xs">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <div className="flex items-center gap-1.5 font-bold text-slate-800">
+                                  <span>{note.author || "JDMHUB Operations"}</span>
+                                  <span className="text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.2 rounded font-medium">{note.role || "Specialist"}</span>
+                                </div>
+                                <span className="text-[10px] text-slate-400 shrink-0">{note.timestamp || note.createdAt}</span>
+                              </div>
+                              <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">{note.text || note.content}</p>
+
+                              {/* Threaded replies */}
+                              {note.replies && note.replies.length > 0 && (
+                                <div className="pl-3 border-l-2 border-amber-300 space-y-1.5 mt-2 pt-1">
+                                  {note.replies.map((rep: any) => (
+                                    <div key={rep.id} className="bg-amber-50/70 p-2 rounded-lg border border-amber-200/60 text-[11px]">
+                                      <div className="flex items-center justify-between gap-1 font-semibold text-slate-800 mb-0.5">
+                                        <span>{rep.author} <span className="text-[9px] text-slate-400 font-normal">({rep.role})</span></span>
+                                        <span className="text-[9px] text-slate-400">{rep.timestamp}</span>
+                                      </div>
+                                      <p className="text-slate-700">{rep.text}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Inline Reply Form */}
+                              {replyingNoteId === note.id ? (
+                                <div className="pt-2 border-t border-amber-100 space-y-2">
+                                  <textarea
+                                    rows={2}
+                                    value={noteReplyContent}
+                                    onChange={(e) => setNoteReplyContent(e.target.value)}
+                                    placeholder="Type your reply to this note..."
+                                    className="w-full text-xs p-2 rounded-lg border border-amber-300 focus:outline-none focus:ring-1 focus:ring-[#e20c0c] bg-white"
+                                  />
+                                  <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setReplyingNoteId(null);
+                                        setNoteReplyContent("");
+                                      }}
+                                      className="px-2.5 py-1 text-[11px] text-slate-500 hover:text-slate-700 font-bold"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        if (!noteReplyContent.trim()) return;
+                                        addNoteReply(req.id, note.id, noteReplyContent.trim());
+                                        setNoteReplyContent("");
+                                        setReplyingNoteId(null);
+                                      }}
+                                      className="px-3 py-1 bg-[#e20c0c] hover:bg-[#CC162C] text-white text-[11px] font-bold rounded-lg shadow-2xs"
+                                    >
+                                      Send Reply
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="pt-1 flex justify-end">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setReplyingNoteId(note.id);
+                                      setNoteReplyContent("");
+                                    }}
+                                    className="text-[11px] font-bold text-[#e20c0c] hover:underline flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <CornerDownRight className="w-3 h-3" />
+                                    <span>Reply to this Note</span>
+                                  </button>
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -1279,23 +1459,122 @@ export function RequestDetailsModal() {
                     </div>
                   )}
 
+                  {/* Revision Requested Status Banner on Quote Tab */}
+                  {req.customerResponse === "Revision Requested" && (
+                    <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/90 border-2 border-amber-300 shadow-xs space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 font-bold text-amber-950">
+                          <div className="w-8 h-8 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 shrink-0">
+                            <RefreshCw className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-amber-950">
+                              Quote Revision Request Logged (Pending Revision v2)
+                            </h4>
+                            <p className="text-[11px] text-amber-800 font-normal">
+                              Your counter-offer parameters have been forwarded to JDMHUB Operations. Sourcing specialists are preparing a revised quote.
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-200 text-amber-900 border border-amber-300 self-start sm:self-center">
+                          Awaiting v2 Quote
+                        </span>
+                      </div>
+
+                      <div className="bg-white/95 p-3.5 rounded-xl border border-amber-200 text-xs space-y-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-[11px]">
+                          <div>
+                            <span className="text-slate-400 block font-medium">Category:</span>
+                            <span className="font-bold text-slate-900">{req.quoteRevisionRequest?.categoryLabel || "Revision"}</span>
+                          </div>
+                          {req.quoteRevisionRequest?.targetBudget && (
+                            <div>
+                              <span className="text-slate-400 block font-medium">Target Landed Budget:</span>
+                              <span className="font-bold text-[#e20c0c]">NZ${req.quoteRevisionRequest.targetBudget.toFixed(2)}</span>
+                            </div>
+                          )}
+                          {req.quoteRevisionRequest?.requestedFreightPreference && (
+                            <div>
+                              <span className="text-slate-400 block font-medium">Requested Freight:</span>
+                              <span className="font-bold text-blue-900">{req.quoteRevisionRequest.requestedFreightPreference}</span>
+                            </div>
+                          )}
+                          {req.quoteRevisionRequest?.requestedPartPreference && (
+                            <div>
+                              <span className="text-slate-400 block font-medium">Part Preference:</span>
+                              <span className="font-bold text-slate-900">{req.quoteRevisionRequest.requestedPartPreference}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {req.quoteRevisionRequest?.notes && (
+                          <div className="pt-2 border-t border-amber-100">
+                            <span className="text-slate-400 block text-[10px] font-bold uppercase">Feedback &amp; Notes:</span>
+                            <p className="text-slate-800 italic mt-0.5">&ldquo;{req.quoteRevisionRequest.notes}&rdquo;</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs pt-1">
+                        <span className="text-slate-500 text-[11px]">Need to amend requirements or ask questions?</span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setIsRequestingRevision(true)}
+                            className="text-[11px] font-bold text-amber-800 hover:text-amber-950 underline cursor-pointer"
+                          >
+                            Update Counter-Offer
+                          </button>
+                          <span className="text-slate-300">•</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveTab("messages");
+                              setSelectedRequestDetailsTab?.("messages");
+                            }}
+                            className="text-[11px] font-bold text-[#e20c0c] hover:underline flex items-center gap-1 cursor-pointer"
+                          >
+                            <MessageSquare className="w-3 h-3" />
+                            <span>In-App Messages →</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Action Buttons if in Quoted status */}
                   {req.status === "Quoted" && !isAcceptingQuote && (
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-slate-100">
-                      <button
-                        onClick={() => setIsRejecting(true)}
-                        className="w-full sm:w-auto px-4 py-2.5 text-xs bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors text-center cursor-pointer active:scale-95"
-                      >
-                        Decline Quote
-                      </button>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setIsRejecting(true)}
+                          className="w-full sm:w-auto px-3.5 py-2.5 text-xs bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors text-center cursor-pointer active:scale-95"
+                        >
+                          Decline Quote
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setIsRequestingRevision(true)}
+                          className="w-full sm:w-auto px-4 py-2.5 text-xs bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-xl font-bold transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5 text-amber-700" />
+                          <span>Request Quote Revision / Alternative</span>
+                        </button>
+                      </div>
 
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                         <button
-                          onClick={() => setShowDirectContactModal(true)}
+                          type="button"
+                          onClick={() => {
+                            setActiveTab("messages");
+                            setSelectedRequestDetailsTab?.("messages");
+                          }}
                           className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                         >
-                          <Mail className="w-3.5 h-3.5 text-slate-600" />
-                          <span>Request Info (Email/Teams/Phone)</span>
+                          <MessageSquare className="w-3.5 h-3.5 text-slate-600" />
+                          <span>In-App Messages</span>
                         </button>
                         <button
                           onClick={() => {
@@ -1680,6 +1959,145 @@ export function RequestDetailsModal() {
             </div>
           )}
 
+          {/* TAB 5: IN-APP REQUEST MESSAGES & DIRECT CONVERSATION */}
+          {activeTab === "messages" && (
+            <div className="space-y-4 sm:space-y-6 animate-in fade-in duration-200">
+              <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#e20c0c] font-black shrink-0">
+                      <MessageSquare className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span>Request Message Thread — {req.requestNumber}</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
+                          Live Sourcing Desk
+                        </span>
+                      </h3>
+                      <p className="text-xs text-slate-500">
+                        Two-way direct communication between {activeCustomer.businessName} and JDMHUB Operations.
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowDirectContactModal(true)}
+                    className="text-xs text-slate-600 hover:text-slate-900 font-bold inline-flex items-center gap-1 self-start sm:self-center"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-slate-400" />
+                    <span>External Support Desk</span>
+                  </button>
+                </div>
+
+                {/* Message Stream */}
+                <div className="space-y-3 min-h-[260px] max-h-[460px] overflow-y-auto p-3 bg-slate-50/70 rounded-xl border border-slate-200/80">
+                  {(!req.messages || req.messages.length === 0) ? (
+                    <div className="text-center py-12 text-xs text-slate-400 space-y-2">
+                      <div className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center mx-auto">
+                        <MessageSquare className="w-5 h-5" />
+                      </div>
+                      <p className="font-semibold text-slate-700">No messages in this request yet.</p>
+                      <p className="text-[11px] max-w-md mx-auto">Send an in-app inquiry below to discuss part fitment, request alternative sourcing, or ask questions directly about this vehicle order.</p>
+                    </div>
+                  ) : (
+                    req.messages.map((msg: any) => {
+                      const isCustomer = msg.senderType === "customer" || msg.senderRole === "Customer" || msg.senderName === (req.contactName || activeCustomer.contactName);
+                      return (
+                        <div
+                          key={msg.id}
+                          className={`flex flex-col ${isCustomer ? "items-end" : "items-start"} space-y-1`}
+                        >
+                          <div className="flex items-center gap-2 text-[10px] text-slate-400 px-1">
+                            <span className="font-bold text-slate-700">{msg.senderName}</span>
+                            <span className="text-[9px] bg-white px-1.5 py-0.2 rounded border border-slate-200">{msg.senderRole}</span>
+                            <span>•</span>
+                            <span>{msg.timestamp}</span>
+                          </div>
+                          <div
+                            className={`p-3.5 rounded-2xl max-w-[85%] sm:max-w-[75%] text-xs leading-relaxed shadow-xs ${
+                              isCustomer
+                                ? "bg-red-50 text-slate-900 border border-red-200/90 rounded-tr-xs"
+                                : "bg-white text-slate-800 border border-slate-200 rounded-tl-xs"
+                            }`}
+                          >
+                            {msg.isRevisionRequest && (
+                              <div className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded mb-1.5 uppercase tracking-wider">
+                                <RefreshCw className="w-3 h-3" />
+                                <span>Quote Revision Request</span>
+                              </div>
+                            )}
+                            <p className="whitespace-pre-wrap">{msg.message}</p>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                {/* Quick Suggestion Chips */}
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Quick Inquiries:</span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {[
+                      "Can we quote with Sea Freight to reduce costs?",
+                      "Do you have a tested Grade A used OEM alternative?",
+                      "Could you confirm the exact lead time?",
+                      "Vehicle VIN and engine numbers verified with owner.",
+                    ].map((chip) => (
+                      <button
+                        key={chip}
+                        type="button"
+                        onClick={() => setInAppChatInput(chip)}
+                        className="px-2.5 py-1 text-[11px] rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors cursor-pointer text-left"
+                      >
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Composer */}
+                <div className="pt-2 border-t border-slate-100 space-y-2">
+                  <div className="flex gap-2">
+                    <textarea
+                      rows={2}
+                      value={inAppChatInput}
+                      onChange={(e) => setInAppChatInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          if (!inAppChatInput.trim()) return;
+                          sendMessage(req.id, inAppChatInput.trim());
+                          setInAppChatInput("");
+                        }
+                      }}
+                      placeholder={`Send a message regarding ${req.requestNumber} to JDMHUB Operations... (Press Enter to send)`}
+                      className="flex-1 text-xs p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c] bg-white resize-none"
+                    />
+                    <button
+                      type="button"
+                      disabled={!inAppChatInput.trim()}
+                      onClick={() => {
+                        if (!inAppChatInput.trim()) return;
+                        sendMessage(req.id, inAppChatInput.trim());
+                        setInAppChatInput("");
+                      }}
+                      className="px-4 py-2 bg-[#e20c0c] hover:bg-[#CC162C] disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl transition-colors shadow-sm flex items-center justify-center gap-1.5 cursor-pointer self-end"
+                    >
+                      <Send className="w-4 h-4" />
+                      <span className="text-xs">Send</span>
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-slate-400">
+                    Messages are delivered directly to the JDMHUB operations desk and recorded on the request audit log.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 
@@ -1818,6 +2236,311 @@ export function RequestDetailsModal() {
                 className="w-full sm:w-auto px-4 py-2 border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer active:scale-95"
               >
                 Close Support
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── MODAL: REQUEST QUOTE REVISION & COUNTER-OFFER ─── */}
+      {isRequestingRevision && (
+        <div className="fixed inset-0 z-60 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
+          <div className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border border-slate-200 space-y-4 p-4 sm:p-6">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center font-bold shrink-0">
+                  <RefreshCw className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                    Request Quote Revision &amp; Counter-Offer
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    {req.requestNumber} • {req.vehicle.year} {req.vehicle.make} {req.vehicle.model} ({req.part.name})
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsRequestingRevision(false)}
+                className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Current Reference Card */}
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <div>
+                <span className="text-[10px] uppercase font-bold text-slate-400 block">Current Quoted Total</span>
+                <span className="font-bold text-slate-900 text-sm">
+                  ${(req.customerQuote?.totalAmount || req.quotedValue || 0).toFixed(2)} NZD
+                </span>
+                <span className="text-[10px] text-slate-500 ml-1">
+                  (Air: ${req.customerQuote?.airFreightCost || 185} • Ocean: ${req.customerQuote?.seaFreightCost || 65})
+                </span>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200 self-start sm:self-center">
+                Current Quote v{req.customerQuote?.version || 1}
+              </span>
+            </div>
+
+            {/* Revision Category Selection */}
+            <div className="space-y-2 text-xs">
+              <label className="font-bold text-slate-800 block">
+                1. What would you like to revise or counter-offer?
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {[
+                  { id: "freight_mode", label: "Switch Freight Option", desc: "e.g. Switch from Air to Ocean Freight" },
+                  { id: "aftermarket_alternative", label: "Aftermarket / Used Alternative", desc: "Request lower-cost verified brand" },
+                  { id: "price_budget", label: "Price / Target Budget Cap", desc: "Propose maximum workshop landed budget" },
+                  { id: "part_specification", label: "Part Specification / Condition", desc: "Change color, trim, or condition requirements" },
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setRevisionCategory(cat.id as any)}
+                    className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                      revisionCategory === cat.id
+                        ? "border-[#e20c0c] bg-red-50/20 ring-1 ring-[#e20c0c]"
+                        : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
+                  >
+                    <div className="font-bold text-slate-900 text-xs">{cat.label}</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">{cat.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Conditional Sub-options */}
+            {revisionCategory === "freight_mode" && (
+              <div className="p-3.5 bg-blue-50/60 rounded-xl border border-blue-200 text-xs space-y-2">
+                <label className="font-bold text-blue-950 block">Select Preferred Logistics Routing:</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setRevisionFreight("Sea Freight")}
+                    className={`p-2.5 rounded-lg border text-center transition-all cursor-pointer ${
+                      revisionFreight === "Sea Freight"
+                        ? "border-blue-600 bg-white shadow-xs font-bold text-blue-900"
+                        : "border-blue-200 text-blue-700 bg-blue-50/50"
+                    }`}
+                  >
+                    🚢 Ocean Freight (25-40 days)
+                    <span className="block text-[10px] font-normal text-slate-500 mt-0.5">Lowest cost consolidated</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRevisionFreight("Air Freight")}
+                    className={`p-2.5 rounded-lg border text-center transition-all cursor-pointer ${
+                      revisionFreight === "Air Freight"
+                        ? "border-blue-600 bg-white shadow-xs font-bold text-blue-900"
+                        : "border-blue-200 text-blue-700 bg-blue-50/50"
+                    }`}
+                  >
+                    ✈️ Air Express (7-10 days)
+                    <span className="block text-[10px] font-normal text-slate-500 mt-0.5">Urgent workshop dispatch</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {revisionCategory === "aftermarket_alternative" && (
+              <div className="p-3.5 bg-emerald-50/60 rounded-xl border border-emerald-200 text-xs space-y-2">
+                <label className="font-bold text-emerald-950 block">Preferred Alternative Sourcing Tier:</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setRevisionPartPreference("Aftermarket Quality")}
+                    className={`p-2.5 rounded-lg border text-left transition-all cursor-pointer ${
+                      revisionPartPreference === "Aftermarket Quality"
+                        ? "border-emerald-600 bg-white shadow-xs font-bold text-emerald-900"
+                        : "border-emerald-200 text-emerald-800 bg-emerald-50/50"
+                    }`}
+                  >
+                    Quality Japanese Aftermarket
+                    <span className="block text-[10px] font-normal text-slate-500 mt-0.5">Denso, Aisin, 555, Exedy</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRevisionPartPreference("Used / Tested Grade A")}
+                    className={`p-2.5 rounded-lg border text-left transition-all cursor-pointer ${
+                      revisionPartPreference === "Used / Tested Grade A"
+                        ? "border-emerald-600 bg-white shadow-xs font-bold text-emerald-900"
+                        : "border-emerald-200 text-emerald-800 bg-emerald-50/50"
+                    }`}
+                  >
+                    Tested Grade A Used / Recycled OEM
+                    <span className="block text-[10px] font-normal text-slate-500 mt-0.5">Verified salvage unit from Japan</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Target Budget Counter-Offer */}
+            <div className="space-y-1.5 text-xs">
+              <label className="font-bold text-slate-800 flex items-center justify-between">
+                <span>2. Target Landed Budget (NZD incl. GST)</span>
+                <span className="text-[10px] font-normal text-slate-400">Optional counter-offer cap</span>
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-2.5 text-slate-400 font-bold">$</span>
+                <input
+                  type="number"
+                  step="1"
+                  value={revisionBudget}
+                  onChange={(e) => setRevisionBudget(e.target.value)}
+                  placeholder="e.g. 450"
+                  className="w-full pl-7 pr-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c]"
+                />
+              </div>
+            </div>
+
+            {/* Feedback / Instructions Notes */}
+            <div className="space-y-1.5 text-xs">
+              <label className="font-bold text-slate-800 block">
+                3. Additional Workshop Notes for Procurement Specialist:
+              </label>
+              <textarea
+                rows={3}
+                value={revisionNotes}
+                onChange={(e) => setRevisionNotes(e.target.value)}
+                placeholder="e.g., Customer is price-sensitive on this repair. Sea freight or a verified Japanese aftermarket equivalent will work well if landed under NZ$450."
+                className="w-full p-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c] resize-none bg-white"
+              />
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <button
+                type="button"
+                onClick={() => setIsRequestingRevision(false)}
+                className="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmRevision}
+                className="px-5 py-2.5 bg-[#e20c0c] hover:bg-[#CC162C] text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md inline-flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Submit Revision Request to Operations</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── MODAL: DECLINE QUOTE CONFIRMATION ─── */}
+      {isRejecting && (
+        <div className="fixed inset-0 z-60 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150">
+          <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border border-slate-200 space-y-4 p-4 sm:p-6">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center font-bold shrink-0">
+                  <X className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">
+                    Decline Quotation — {req.requestNumber}
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Please provide a reason to help us improve our procurement terms
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsRejecting(false)}
+                className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Reasons List */}
+            <div className="space-y-2 text-xs">
+              <label className="font-bold text-slate-800 block">Select primary reason:</label>
+              {[
+                "Found part locally faster in New Zealand",
+                "Quoted price is too high / over budget",
+                "Transit lead time is too long for vehicle owner",
+                "Customer or vehicle owner cancelled the repair job",
+                "Vehicle sold or repair deferred",
+                "Other reason",
+              ].map((reason) => (
+                <label
+                  key={reason}
+                  className={`flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer transition-colors ${
+                    rejectReason === reason
+                      ? "border-red-500 bg-red-50/30 font-semibold text-slate-900"
+                      : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="rejectReason"
+                    checked={rejectReason === reason}
+                    onChange={() => setRejectReason(reason)}
+                    className="w-4 h-4 text-[#e20c0c] focus:ring-0"
+                  />
+                  <span>{reason}</span>
+                </label>
+              ))}
+            </div>
+
+            {/* Helpful alternative upsell if price or transit is the problem */}
+            {(rejectReason.includes("price") || rejectReason.includes("lead time") || rejectReason.includes("budget") || rejectReason.includes("high")) && (
+              <div className="p-3 bg-amber-50 rounded-xl border border-amber-300 text-xs text-amber-900 space-y-2">
+                <p className="leading-relaxed">
+                  💡 <strong>Need a better price or alternative shipping?</strong> Instead of declining, you can submit a counter-offer or switch to Ocean Freight.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsRejecting(false);
+                    setIsRequestingRevision(true);
+                  }}
+                  className="font-bold text-[#e20c0c] hover:underline flex items-center gap-1 cursor-pointer"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                  <span>Switch to Request Quote Revision Instead →</span>
+                </button>
+              </div>
+            )}
+
+            {/* Additional notes */}
+            <div className="space-y-1.5 text-xs">
+              <label className="font-bold text-slate-800 block">
+                Additional Notes (Optional):
+              </label>
+              <textarea
+                rows={2}
+                value={rejectNotes}
+                onChange={(e) => setRejectNotes(e.target.value)}
+                placeholder="Optional feedback for JDMHUB operations..."
+                className="w-full p-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#e20c0c] resize-none"
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={() => setIsRejecting(false)}
+                className="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50"
+              >
+                Keep Quote
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmReject}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm"
+              >
+                Confirm Decline
               </button>
             </div>
           </div>

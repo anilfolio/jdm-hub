@@ -32,6 +32,7 @@ import { PaymentTab } from "./tabs/payment-tab";
 import { ShipmentTab } from "./tabs/shipment-tab";
 import { DocumentsTab } from "./tabs/documents-tab";
 import { ActivityTab } from "./tabs/activity-tab";
+import { MessagesTab } from "./tabs/messages-tab";
 
 import { useUnifiedData } from "@/context/unified-data-context";
 
@@ -51,7 +52,7 @@ export function RequestDetailWorkspace({
   const [activeTab, setActiveTab] = useState<RequestDetailTab>(initialTab || "overview");
 
   React.useEffect(() => {
-    if (initialTab && ["overview", "sourcing", "quote", "invoice", "payment", "shipment", "documents", "activity"].includes(initialTab)) {
+    if (initialTab && ["overview", "sourcing", "quote", "invoice", "payment", "shipment", "documents", "messages", "activity"].includes(initialTab)) {
       setActiveTab(initialTab);
     }
   }, [initialTab]);
@@ -137,7 +138,7 @@ export function RequestDetailWorkspace({
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case "overview":
-        return <OverviewTab request={request} />;
+        return <OverviewTab request={request} onNavigateToTab={(tab) => setActiveTab(tab as any)} />;
       case "sourcing":
         return <SourcingTab request={request} />;
       case "quote":
@@ -150,12 +151,16 @@ export function RequestDetailWorkspace({
         return <ShipmentTab request={request} />;
       case "documents":
         return <DocumentsTab request={request} />;
+      case "messages":
+        return <MessagesTab request={request} onNavigateToTab={(tab) => setActiveTab(tab as any)} />;
       case "activity":
         return <ActivityTab request={request} />;
       default:
-        return <OverviewTab request={request} />;
+        return <OverviewTab request={request} onNavigateToTab={(tab) => setActiveTab(tab as any)} />;
     }
   };
+
+  const hasRevisionRequested = request.customerResponse === "Revision Requested" || Boolean(request.quoteRevisionRequest);
 
   const tabsConfig: { id: RequestDetailTab; label: string; badge?: number | string }[] = [
     { id: "overview", label: "Overview" },
@@ -167,7 +172,11 @@ export function RequestDetailWorkspace({
     {
       id: "quote",
       label: "Quote",
-      badge: request.customerQuote ? `v${request.customerQuote.version}` : undefined,
+      badge: hasRevisionRequested
+        ? "Revision!"
+        : request.customerQuote
+        ? `v${request.customerQuote.version}`
+        : undefined,
     },
     {
       id: "invoice",
@@ -188,6 +197,11 @@ export function RequestDetailWorkspace({
       id: "documents",
       label: "Documents",
       badge: ((request.documents?.length || 0) + (request.supporting.photos?.length || 0)) || undefined,
+    },
+    {
+      id: "messages",
+      label: "Messages & Thread",
+      badge: request.messages?.length || undefined,
     },
     {
       id: "activity",
