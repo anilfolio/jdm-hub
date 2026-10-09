@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     "Automotive Freight Logistics",
     "Car Workshop Parts Procurement",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "JDMHub — B2B Automotive Procurement Platform",
     description: "Need a Part? We'll Handle the Rest. One Request. One Workflow.",

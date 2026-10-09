@@ -41,6 +41,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={roboto.variable}>
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={`${roboto.className} min-h-screen bg-slate-50 text-slate-900 antialiased font-sans`}>
         <AuthProvider>
           <UnifiedDataProvider>
