@@ -58,6 +58,25 @@ JDMHub is currently operating as a comprehensive, fully functional Single Page /
 
 ---
 
+### 1.1.1 Official High-Definition Brand Logo Architecture
+
+The platform's brand identity has been upgraded to a **100% mathematically precise vector architecture**, replacing all previous raster/low-res placeholder assets:
+- **Brand Mark**: Pure vector SVG of the official Hexagon with internal automotive gear, upward chevron crest, and dual diagonal logistics arrows.
+- **Primary Horizontal Logo (Light)**:
+  - Left: Official Hexagon Gear Arrow mark in Brand Red (`#EC002E` / `#e20c0c`).
+  - Wordmark: `jdm` in Brand Red (`#EC002E`), `hub` in Charcoal Black (`#200000`).
+  - Baseline: 2.2px solid divider rule flush from `j` to `b`.
+  - Tagline: `AUTOMOTIVE PROCUREMENT` in Clean Geometric Sans All-Caps (`Mulish Bold`), letter-spaced to match the baseline divider rule.
+- **Primary Horizontal Logo (Dark)**:
+  - Left: Official mark in Brand Red (`#EC002E`).
+  - Wordmark: `jdm` in Brand Red (`#EC002E`), `hub` in Crisp White (`#FFFFFF`).
+  - Baseline & Tagline: Crisp White (`#FFFFFF`).
+- **Favicons & App Icons**:
+  - Official rounded white squircle tile with red mark centered inside (`public/favicon.ico`, `public/favicon.svg`, `public/apple-touch-icon.png`, `public/icon-512.png`).
+- **Reusable Component**: `<JDMHubLogo />` in `components/shared/jdmhub-logo.tsx`, delivering pure inline SVG vectors across the sticky header, footer, customer & admin sidebars, auth brand panels, and tax invoices with zero blurriness and infinite resolution.
+
+---
+
 ### 1.2 Active Runtime Architecture & Tech Stack Status
 
 The platform runs on a modern, zero-dependency-bloat stack adhering to `Rules.md`:

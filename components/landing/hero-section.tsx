@@ -10,6 +10,7 @@ import {
   ChevronDown,
   Sparkles,
 } from "lucide-react";
+import { JDMHubLogo } from "@/components/shared/jdmhub-logo";
 
 interface HeroSectionProps {
   onRequestClick?: () => void;
@@ -153,9 +154,7 @@ export function HeroSection({ onRequestClick }: HeroSectionProps) {
                   {/* Card Header: Brand + Stage Tag */}
                   <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#e20c0c] to-[#c40b0b] text-white flex items-center justify-center font-black text-[11px] shadow-sm">
-                        JD
-                      </div>
+                      <JDMHubLogo variant="app-icon" size="xs" className="w-6 h-6 rounded-md" />
                       <span className="text-xs font-black tracking-tight text-slate-900 uppercase">
                         JDM<span className="text-[#e20c0c]">Hub</span>
                       </span>

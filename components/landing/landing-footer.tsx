@@ -10,6 +10,7 @@ import {
   Clock,
 } from "lucide-react";
 import { PoweredByJdmhub } from "@/components/auth/powered-by-jdmhub";
+import { JDMHubLogo } from "@/components/shared/jdmhub-logo";
 
 export function LandingFooter() {
   return (
@@ -22,21 +23,14 @@ export function LandingFooter() {
         <div className="py-12 lg:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 border-b border-slate-200">
           {/* Col 1: Brand Info & Legal Links */}
           <div className="lg:col-span-5 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-[#e20c0c] shadow-md shadow-red-500/20 flex items-center justify-center font-black text-xl text-white tracking-tighter leading-none shrink-0 group-hover:scale-105 transition-transform">
-                JD
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-black italic tracking-tight text-slate-900 uppercase leading-none">
-                    JDM<span className="not-italic text-[#e20c0c]">HUB</span>
-                  </span>
-                </div>
-                <span className="text-[10px] font-bold text-slate-500 tracking-wider mt-0.5 uppercase">
-                  Automotive Procurement
-                </span>
-              </div>
-            </Link>
+            <JDMHubLogo
+              variant="horizontal"
+              theme="light"
+              height={52}
+              width={183}
+              href="/"
+              className="hover:scale-[1.02] transition-transform"
+            />
 
             <p className="text-xs sm:text-sm text-slate-600 max-w-sm leading-relaxed">
               Dedicated B2B cross-border automotive procurement connecting Australasian trade workshops, collision repairers, and dealerships directly with Japanese domestic OEM parts networks.

@@ -9,6 +9,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import { JDMHubLogo } from "@/components/shared/jdmhub-logo";
 
 interface BuiltForTradeSectionProps {
   onRequestClick?: () => void;
@@ -96,9 +97,11 @@ export function BuiltForTradeSection({ onRequestClick }: BuiltForTradeSectionPro
               
               {/* Floating badge on image */}
               <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 bg-white/90 backdrop-blur-md rounded-2xl p-4 border border-white/50 shadow-xl">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e20c0c] to-[#c40b0b] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-md shadow-red-500/20">
-                  JD
-                </div>
+                <JDMHubLogo
+                  variant="app-icon"
+                  size="sm"
+                  className="w-10 h-10 rounded-xl shadow-md shrink-0"
+                />
                 <div className="flex-1">
                   <div className="text-xs font-black text-slate-900 uppercase tracking-tight">Trusted by NZ Trade Workshops</div>
                   <div className="text-[10px] text-slate-500 font-medium mt-0.5">Direct Japan-to-NZ procurement coordination</div>

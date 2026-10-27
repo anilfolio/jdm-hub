@@ -20,6 +20,7 @@ import {
   X,
 } from "lucide-react";
 import { useUnifiedData } from "@/context/unified-data-context";
+import { JDMHubLogo } from "@/components/shared/jdmhub-logo";
 
 interface AdminSidebarProps {
   collapsed: boolean;
@@ -157,9 +158,11 @@ export function AdminSidebar({
             onClick={onCloseMobile}
             className={`flex items-center gap-3 ${collapsed ? "lg:hidden" : "flex"}`}
           >
-            <div className="w-9 h-9 rounded-xl border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
-              <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">JD</span>
-            </div>
+            <JDMHubLogo
+              variant="app-icon"
+              size="sm"
+              className="w-9 h-9 rounded-xl shadow-sm hover:scale-105 transition-transform"
+            />
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-black italic text-white uppercase text-lg tracking-tight leading-none ">
@@ -177,10 +180,13 @@ export function AdminSidebar({
             <Link
               href="/admin/dashboard"
               className="hidden lg:flex items-center justify-center"
+              aria-label="Admin Dashboard"
             >
-              <div className="w-9 h-9 rounded-lg border-2 border-white bg-[#e20c0c] flex items-center justify-center shadow-sm">
-                <span className="text-white font-black text-sm tracking-tighter leading-none shrink-0">JD</span>
-              </div>
+              <JDMHubLogo
+                variant="app-icon"
+                size="sm"
+                className="w-9 h-9 rounded-lg shadow-sm hover:scale-105 transition-transform"
+              />
             </Link>
           )}
 

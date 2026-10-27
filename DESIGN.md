@@ -60,7 +60,30 @@ JDMHub is built for automotive trade professionals, parts managers, mechanics, a
 
 ---
 
-## 2. Color Palette
+## 2. Official Brand Identity & Logo Architecture
+
+JDMHub's official brand identity is engineered with mathematical precision, combining automotive mechanics (the inner gear/cog), logistical velocity (the diagonal dual-ended procurement arrows), and institutional security (the outer hexagon frame and inner chevron shield).
+
+### Official Logo Anatomy & Colors
+- **Brand Mark**: Precision hexagon housing an internal automotive gear, an upward chevron crest, and dual diagonal logistics arrows (down-left and up-right).
+- **Wordmark Typography**: Clean Geometric Sans (`Mulish` / `Muli Bold`), lowercase `jdmhub`:
+  - `jdm` rendered in **Brand Red (`#EC002E` / `#e20c0c`)**
+  - `hub` rendered in **Charcoal Black (`#200000`)** on light surfaces, or **Crisp White (`#FFFFFF`)** on dark surfaces.
+- **Baseline Divider**: Solid 2.2px horizontal rule flush from the start of `j` to the end of `b`.
+- **Tagline**: `AUTOMOTIVE PROCUREMENT` in Clean Geometric Sans All-Caps (`Mulish Regular / Bold`), tracked to match the exact span of the baseline divider.
+- **App Icons & Favicons**: Crisp white rounded squircle tile (`rx="108"`) with the official red mark centered inside.
+
+### Core Brand Color Tokens
+
+| Color Name | Hex Code | Purpose |
+| :--- | :--- | :--- |
+| **Brand Red** | `#EC002E` (`#e20c0c`) | Primary logo mark, `jdm` wordmark, primary CTAs, active highlights |
+| **Charcoal Black** | `#200000` | Wordmark `hub`, baseline divider line, tagline on light backgrounds |
+| **Off-White / White** | `#FFFFFF` | Backgrounds, squircle app icon tiles, white typography on dark navigation |
+
+---
+
+## 3. Color Palette
 
 JDMHub uses a tailored color palette anchored by Japanese motorsport heritage red, institutional trade navy, deep midnight chrome, and an accessible slate neutral scale.
 

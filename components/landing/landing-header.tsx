@@ -8,6 +8,7 @@ import {
   ArrowRight,
   ChevronRight,
 } from "lucide-react";
+import { JDMHubLogo } from "@/components/shared/jdmhub-logo";
 
 interface LandingHeaderProps {
   onRequestClick?: () => void;
@@ -56,22 +57,16 @@ export function LandingHeader({ onRequestClick }: LandingHeaderProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group select-none">
-            <div className="w-10 h-10 rounded-xl border-2 border-white bg-gradient-to-br from-[#e20c0c] to-[#c40b0b] shadow-lg shadow-red-500/20 flex items-center justify-center font-black text-xl text-white tracking-tighter leading-none shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-red-500/30">
-              JD
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-black italic tracking-tight text-slate-900 uppercase leading-none">
-                  JDM<span className="not-italic text-[#e20c0c]">HUB</span>
-                </span>
-              </div>
-              <span className="text-[10px] font-semibold text-slate-500 tracking-wider mt-0.5">
-                Automotive Procurement
-              </span>
-            </div>
-          </Link>
+          {/* Official Primary Horizontal Logo (Light) */}
+          <JDMHubLogo
+            variant="horizontal"
+            theme="light"
+            height={46}
+            width={162}
+            href="/"
+            priority
+            className="hover:scale-[1.02] transition-transform"
+          />
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 xl:gap-2">

@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { PartRequest } from "@/types/shared";
 import Link from "next/link";
+import { JDMHubLogo } from "./jdmhub-logo";
 
 interface InvoiceDocumentProps {
   request: PartRequest;
@@ -298,18 +299,14 @@ export function InvoiceDocument({
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5 sm:gap-6 pb-6 sm:pb-8 border-b border-slate-200">
             {/* Left: JDMHUB Branding */}
             <div>
-              <div className="flex items-center gap-2.5 mb-2">
-                <div className="w-9 h-9 rounded-xl bg-[#e20c0c] flex items-center justify-center text-white font-black text-sm tracking-wider shadow-sm">
-                  JD
-                </div>
-                <div>
-                  <h1 className="text-xl font-black text-slate-900 tracking-tight leading-none">
-                    JDM<span className="text-[#e20c0c]">HUB</span>
-                  </h1>
-                  <span className="text-[9px] font-bold tracking-widest text-slate-500 uppercase">
-                    Procurement &amp; Global Logistics NZ
-                  </span>
-                </div>
+              <div className="mb-2">
+                <JDMHubLogo
+                  variant="horizontal"
+                  theme="light"
+                  height={42}
+                  width={148}
+                  priority
+                />
               </div>
 
               <div className="text-xs text-slate-600 space-y-0.5 mt-2.5 leading-relaxed">

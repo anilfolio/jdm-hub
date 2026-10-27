@@ -2,6 +2,7 @@
 
 import React from "react";
 import { PoweredByJdmhub } from "@/components/auth/powered-by-jdmhub";
+import { JDMHubLogo } from "@/components/shared/jdmhub-logo";
 
 export function BrandPanel() {
   return (
@@ -87,14 +88,16 @@ export function BrandPanel() {
         </svg>
       </div>
 
-      {/* Top Platform Identity with JDMHUB 'JD' Logo Badge */}
+      {/* Top Platform Identity with JDMHUB Official Brand Icon */}
       <div className="relative z-10 flex items-center gap-3 select-none">
-        <div className="w-10 h-10 rounded-xl border-2 border-white bg-[#e20c0c] shadow-md flex items-center justify-center font-black text-xl text-white tracking-tighter leading-none shrink-0 transition-transform duration-200 hover:scale-105">
-          JD
-        </div>
+        <JDMHubLogo
+          variant="app-icon"
+          size="lg"
+          className="w-24 h-24 rounded-xl shadow-md transition-transform duration-200 hover:scale-105"
+        />
         <div className="flex flex-col">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm sm:text-[20px] font-black tracking-tight text-white uppercase ">
+            <span className="text-sm sm:text-[24px] font-black tracking-tight text-white uppercase ">
               JDMHUB
             </span>
             <span className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/70 bg-white/40 px-1.5 py-0.5 rounded border border-white/15 leading-none">
